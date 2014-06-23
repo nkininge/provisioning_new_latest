@@ -1,12 +1,29 @@
 ---
 - hosts: jenkins-slaves
   vars:
-    maven_url: "http://mirror.nexcess.net/apache/maven/maven-3/3.2.1/binaries/apache-maven-3.2.1-bin.tar.gz"
+    mvn_version: "3.1.1"
+    maven_url: "http://mirror.metrocast.net/apache/maven/maven-3/{{ mvn_version }}/binaries/apache-maven-{{ mvn_version }}-bin.tar.gz"
+
     ant_url: "http://www.dsgnwrld.com/am//ant/binaries/apache-ant-1.9.4-bin.tar.gz"
-    j_home: "/home/jenkins"
+    td_repo: "http://s3.amazonaws.com/dev.hortonworks.com/sles11/sles11.repo"
+    j6_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/jdk6_31.tar.gz"
+    j7_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/jdk-7u21-linux-x64.gz"
+    forrest_version: "0.9"
+    forrest_url: "http://psg.mtu.edu/pub/apache//forrest/apache-forrest-{{forrest_version}}-sources.tar.gz"
+    s3tools_url: "http://s3tools.org/repo/SLE_11/s3tools.repo"
+    s3cfg_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/s3cfg"
+    settings_url: "http://s3.amazonaws.com/dev.hortonworks.com/jenkins_bk/54.243.248.12/settings.xml"
+    gpgkeys_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/jenkins-gpg-keys.tar.gz"
+    ssh_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/hortonworksre.tar.gz"
+
+    j_home: /home/jenkins
+    jenkins_home: /home/jenkins
     t_home: /home/jenkins/tools
     m_home: /home/jenkins/tools/maven
     a_home: /home/jenkins/tools/ant
+    j6_home: /home/jenkins/tools/jdk64_31
+    j7_home: /home/jenkins/tools/jdk7
+    f_home: /home/jenkins/tools/forrest
 
   tasks:
     - include: tasks/setup_user.yml

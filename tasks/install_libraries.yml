@@ -1,22 +1,15 @@
 ---
+  - name: "Install suse11 TD repo"
+    get_url: url={{ td_repo }} dest=/etc/zypp/repos.d/sles11.repo
+
+  - name: "Install s3tools repo"
+    get_url: url={{ s3tools_url }} dest=/etc/zypp/repos.d/s3tools.repo
+
   - name: "Installing Libraries"
     sudo: yes
     sudo_user: root
-    apt: pkg={{item}} update_cache=yes state=latest
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
-      - libsnappy-dev
-      - libcppunit-dev
-      - liblzo2-dev
-      - protobuf-compiler
+      - s3cmd
       - subversion
-      - autoconf
-      - automake
-      - libz-dev
-      - sharutils
-      - libfuse-dev
-      - libssl-dev
-      - build-essential 
-      - dh-make 
-      - debhelper 
-      - devscripts
-      - asciidoc
+

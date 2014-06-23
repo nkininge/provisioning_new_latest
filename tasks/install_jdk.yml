@@ -1,19 +1,30 @@
 ---
-  - name: "Add Oracle Jdk apt repo"
+  - name: "Download Jdk6" 
     sudo: yes
-    sudo_user: root
-    apt_repository: 
-       repo='{{item}} http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main' 
-       state=present
-    with_items:
-      - deb
-      - deb-src
+    sudo_user: jenkins
+    get_url: url={{j6_url}} dest={{j6_home}}/jdk6.tar.gz mode=744
 
-  - name: "Select Oracle License"
-    shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+  - name: "Download Jdk7" 
+    sudo: yes
+    sudo_user: jenkins
+    get_url: url={{j7_url}} dest={{j7_home}}/jdk7.gz mode=744
 
-  - name: "Install Oracle JDK6"
-    sudo: yes 
-    sudo_user: root
-    apt: pkg=oracle-java6-installer state=present force=yes
+  - name: "Install Jdk7"
+    sudo: yes
+    sudo_user: jenkins
+    unarchive: copy=no src={{j7_home}}/jdk7.gz dest={{j7_home}}
 
+  - name: "Symlink jdk7 -> latest"
+    sudo: yes
+    sudo_user: jenkins
+    file: src=jdk1.7.0_21 dest={{j7_home}}/latest state=link 
+    
+  - name: "Install Jdk6"
+    sudo: yes
+    sudo_user: jenkins
+    unarchive: copy=no src={{j6_home}}/jdk6.tar.gz dest={{j6_home}}
+
+  - name: "Symlink jdk6 -> latest"
+    sudo: yes
+    sudo_user: jenkins
+    file: src=jdk1.6.0_31 dest={{j6_home}}/latest state=link 

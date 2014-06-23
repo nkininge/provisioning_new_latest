@@ -9,3 +9,12 @@
     sudo_user: jenkins
     copy: src=files/jenkins_env.sh dest={{t_home}}/env.sh mode=755
 
+  - name: "setup s3cfg"
+    sudo: yes
+    sudo_user: jenkins
+    get_url: url={{s3cfg_url}} dest=/home/jenkins/.s3cfg mode=744 
+
+  - name: "setup ./m2 settings.xml"
+    sudo: yes
+    sudo_user: jenkins
+    get_url: url={{settings_url}} dest=/home/jenkins/.m2/settings.xml mode=744

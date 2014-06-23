@@ -1,2 +1,6 @@
 [jenkins-slaves]
-asf90[0:5]  ansible_ssh_user=gkesavan
+172.18.146.50  ansible_ssh_user=root
+172.18.145.49 ansible_ssh_user=root
+172.18.145.147 ansible_ssh_user=root
+172.18.146.76 ansible_ssh_user=root
+172.18.146.78 ansible_ssh_user=root

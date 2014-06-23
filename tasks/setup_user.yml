@@ -2,4 +2,62 @@
   - name: "Setup jenkins user"
     sudo: yes
     sudo_user: root
-    user: name="jenkins" comment="Jenkins Slave" shell="/bin/bash"
+    user: name="jenkins" uid=1000 comment="Jenkins Slave" shell="/bin/bash"
+
+  - name: "Download jenkins user ssh Keys"
+    sudo: yes
+    sudo_user: jenkins
+    get_url: url={{ ssh_url }} dest={{jenkins_home}}/hortonworksre.tar.gz
+
+  - name: "Setup jenkins user ssh keys"
+    sudo: yes
+    sudo_user: jenkins
+    unarchive: copy=no src={{jenkins_home}}/hortonworksre.tar.gz dest={{jenkins_home}}/
+
+  - name: "Setup jenkins user ssh keys mv to .ssh"
+    sudo: yes
+    sudo_user: jenkins
+    command: cp -R {{jenkins_home}}/hortonworksre/ {{jenkins_home}}/.ssh/
+             removes={{jenkins_home}}/hortonworksre/
+
+  - name: "Setup jenkins user ssh keys file attributes"
+    sudo: yes
+    sudo_user: jenkins
+    file: path={{jenkins_home}}/.ssh/ owner=jenkins mode=700
+
+  - name: "Setup jenkins user ssh keys file attributes"
+    sudo: yes
+    sudo_user: jenkins
+    file: path={{jenkins_home}}/.ssh/authorized_keys mode=644
+
+  - name: "Download gpg keys "
+    sudo: yes
+    sudo_user: jenkins
+    get_url: url={{ gpgkeys_url }}
+            dest={{ jenkins_home }}/
+
+  - name: "Setup jenkins user ssh keys"
+    sudo: yes
+    sudo_user: jenkins
+    unarchive: copy=no src={{jenkins_home}}/jenkins-gpg-keys.tar.gz
+        dest={{jenkins_home}}/
+
+  - name: "Setup jenkins gpg keys"
+    sudo: yes
+    sudo_user: jenkins
+    command: "gpg --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_pub.gpg "
+
+  - name: "Setup jenkins gpg keys"
+    sudo: yes
+    sudo_user: jenkins
+    command: "gpg --allow-secret-key-import {{jenkins_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
+
+  - name: "create ssh dir"
+    sudo: yes
+    sudo_user: root
+    file: path=/root/.ssh state=directory mode=700
+
+  - name: "update authorized_keys"
+    sudo: yes
+    sudo_user: root
+    copy: src=files/gkesavan_id_rsa.pub dest=/root/.ssh/authorized_keys mode=600
