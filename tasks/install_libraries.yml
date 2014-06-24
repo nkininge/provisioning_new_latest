@@ -1,13 +1,44 @@
 ---
+  - name: "Disabling suse11 TD repo"
+    shell: rm -rf /etc/zypp/repos.d/*.repo 
+
+  - name: "Installing c++"
+    zypper: name="gcc-c++" disable_gpg_check=yes state=present
+  
   - name: "Install suse11 TD repo"
-    get_url: url={{ td_repo }} dest=/etc/zypp/repos.d/sles11.repo
+    zypper_repository: repo={{ td_repo }} name="TD-sles11" state=present
 
-  - name: "Install s3tools repo"
-    get_url: url={{ s3tools_url }} dest=/etc/zypp/repos.d/s3tools.repo
+  - name: "Install s3tools repopresent"
+    zypper_repository: repo={{ s3tools_url }} name="s3toos" state=present
 
-  - name: "Install s3tools repo"
-    get_url: url={{ hdp_utils_url }} dest=/etc/zypp/repos.d/hdp-util.repo
+  - name: "Install HDP-UTILS"
+    zypper_repository: repo={{ hdp_utils_url }} name="HDP-UTILS" state=present
+ 
+  - name: "Install suse11 sp2 repo"
+    zypper_repository: repo={{ sles_sp2_url }} name="suse11-sp2" state=present   
 
+  - name: "wget misc rpm's"
+    sudo: yes
+    sudo_user: root
+    shell: wget {{item}}
+    with_items:
+      - "{{fakeroot_rpm_url}}"
+
+  - name: "Installing misc rpm's"
+    sudo: yes
+    sudo_user: root
+    zypper: name="./{{item}}" state=present
+    with_items:
+      - "fakeroot-1.9.3-5.2.x86_64.rpm"
+
+  - name: "rm fakeroot-1.9.3-5.2.x86_64.rpm"
+    shell: rm -rf fakeroot-1.9.3-5.2.x86_64.rpm*
+
+  - name: "Installing Libraries"
+    sudo: yes
+    sudo_user: root
+    zypper: pkg=git-core disable_gpg_check=yes state=absent
+  
   - name: "Installing Libraries"
     sudo: yes
     sudo_user: root
@@ -19,9 +50,7 @@
       - lzo-devel
       - asciidoc
       - libcppunit-devel
-      - git-core
       - gcc
-      - gcc-c++
       - automake 
       - autoconf
       - libconfuse-devel
@@ -33,5 +62,19 @@
       - libxslt
       - libopenssl-devel
       - docbook_5
-
+      - libssh-devel
+      - openldap2-devel
+      - libmysqlclient-devel
+      - texlive-latex-doc
+      - cmake
+      - ant
+      - ant-nodeps 
+      - ant-trax
+      - git-2.0.0-201.1.x86_64
+      - python-devel
+      - python-setuptools
+      - libxml2-devel
+      - libxslt-devel
+      - krb5-devel
+      - sqlite3-devel
 
