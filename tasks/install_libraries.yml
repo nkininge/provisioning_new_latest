@@ -5,6 +5,9 @@
   - name: "Install s3tools repo"
     get_url: url={{ s3tools_url }} dest=/etc/zypp/repos.d/s3tools.repo
 
+  - name: "Install s3tools repo"
+    get_url: url={{ hdp_utils_url }} dest=/etc/zypp/repos.d/hdp-util.repo
+
   - name: "Installing Libraries"
     sudo: yes
     sudo_user: root
@@ -12,4 +15,26 @@
     with_items:
       - s3cmd
       - subversion
+      - snappy-devel
+      - lzo-devel
+      - asciidoc
+      - libcppunit-devel
+      - git-core
+      - gcc
+      - gcc-c++
+      - libstdc++-devel 
+      - automake 
+      - autoconf
+      - libconfuse-devel
+      - fuse-devel
+      - relaxngDatatype
+      - docbook-utils 
+      - docbook-simple
+      - docbook5
+      - docbook5-xsl-stylesheets
+      - xmlformat
+      - xmlto 
+      - libxslt
+      - libopenssl-devel
+
 
