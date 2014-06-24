@@ -22,19 +22,16 @@
       - git-core
       - gcc
       - gcc-c++
-      - libstdc++-devel 
       - automake 
       - autoconf
       - libconfuse-devel
       - fuse-devel
-      - relaxngDatatype
       - docbook-utils 
-      - docbook-simple
-      - docbook5
       - docbook5-xsl-stylesheets
       - xmlformat
       - xmlto 
       - libxslt
       - libopenssl-devel
+      - docbook_5
 
 
