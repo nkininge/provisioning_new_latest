@@ -1,0 +1,7 @@
+- hosts: master
+  vars:
+    jenkins_user_uid: 1001
+  
+  roles:
+ #   - { role: common, tags: master }
+    - jenkins-master

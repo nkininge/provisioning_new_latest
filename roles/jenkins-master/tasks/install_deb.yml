@@ -1,0 +1,27 @@
+---
+- name: Jenkins Install - Add Key
+  sudo: yes
+  sudo_user: root
+  apt_key: 
+    url='http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key'
+    id='D50582E6'
+
+- name: Jenkins Install - Add Repo
+  sudo: yes
+  sudo_user: root
+  apt_repository: 
+    repo: 'deb http://pkg.jenkins-ci.org/debian binary/'
+    update_cache: yes
+
+- name: Jenkins Install - Installing Jenkins
+  sudo: yes
+  sudo_user: root
+  apt: 
+    pkg=jenkins 
+    state=latest
+
+- name: Jenkins Install - Installing Jenkins
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} state=latest
+  with_items: apt_packages

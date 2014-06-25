@@ -1,0 +1,3 @@
+---
+  - include: install_deb.yml 
+  - include: install_jdk.yml 

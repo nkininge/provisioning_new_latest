@@ -1,18 +1,7 @@
 ---
 - hosts: jenkins-slaves
   vars:
-    mvn_version: "3.1.1"
-    ant_version: "1.9.4"
-    forrest_version: "0.9"
-    node_version: "0.10.28"
-    utils_version: "1.1.0.17"
-    maven_url: "http://mirror.metrocast.net/apache/maven/maven-3/{{ mvn_version }}/binaries/apache-maven-{{ mvn_version }}-bin.tar.gz"
-    ant_url: "http://www.dsgnwrld.com/am//ant/binaries/apache-ant-{{ant_version}}-bin.tar.gz"
-    td_repo: "http://s3.amazonaws.com/dev.hortonworks.com/sles11/sles11.repo"
-    jdk6_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/jdk6_31.tar.gz"
-    jdk7_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/jdk-7u21-linux-x64.gz"
-    forrest_url: "http://psg.mtu.edu/pub/apache//forrest/apache-forrest-{{forrest_version}}-sources.tar.gz"
-    s3tools_url: "http://s3tools.org/repo/SLE_11/s3tools.repo"
+       s3tools_url: "http://s3tools.org/repo/SLE_11/s3tools.repo"
     s3cfg_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/s3cfg"
     settings_url: "http://s3.amazonaws.com/dev.hortonworks.com/jenkins_bk/54.243.248.12/settings.xml"
     gpgkeys_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/jenkins-gpg-keys.tar.gz"
@@ -24,23 +13,8 @@
     git_rpm_url: "http://download.opensuse.org/repositories/devel:/tools:/scm/SLE_11_SP2/x86_64/git-2.0.0-201.1.x86_64.rpm"
     libstdc_url: "http://mirror.linux.or.id/sles11sp164/suse/x86_64/libstdc++43-4.3.4_20091019-0.7.35.x86_64.rpm"
     sles_sp2_url: "http://download.opensuse.org/repositories/devel:/tools:/scm/SLE_11_SP2/devel:tools:scm.repo"
-    protobuf_url: "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
     ruby_url: "http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz"
-    autoconf_url: "http://ftp.gnu.org/gnu/autoconf/autoconf-2.63.tar.gz"
-    node_js_url: "http://nodejs.org/dist/v{{node_version}}/node-v{{node_version}}-linux-x64.tar.gz"
-
-    ssh_url_dest: "{{jenkins_home}}/hortonworksre.tar.gz"
-    gpgkey_dest: "{{jenkins_home}}/jenkins-gpg-keys"
-
-    jenkins_home: /home/jenkins
-    tools_home: "{{jenkins_home}}/tools"
-    maven_home: "{{tools_home}}/maven"
-    ant_home: "{{tools_home}}/ant" 
-    jdk6_home: "{{tools_home}}/jdk64_31"
-    jdk7_home: "{{tools_home}}/jdk7"
-    forrest_home: "{{tools_home}}/forrest"
-
-  tasks:
+      tasks:
     - include: tasks/setup_user.yml
     - include: tasks/install_tools.yml
     - include: tasks/install_jdk.yml

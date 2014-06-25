@@ -1,0 +1,70 @@
+---
+- name: create repo file for jenkins
+  template: src=jenkins.repo dest=/etc/yum.repos.d/jenkins.repo owner=root group=root mode=0645
+  tags:
+    - yum
+    - jenkins
+
+- name: copy jenkins key file
+  copy: src=jenkins-ci.org.key dest=/etc/pki/rpm-gpg/jenkins-ci.org.key owner=root group=root mode=0644
+  tags:
+        - yum
+        - jenkins
+
+- name: install jenkins packages loop
+  yum: name={{ item }} state=installed enablerepo=epel*
+  with_items:
+    - java-1.6.0-openjdk
+    - jenkins
+    - python-httplib2
+  tags:
+    - jenkins
+    - yum
+    - packages
+
+- name: ensure jenkins user has ssh key
+  user: name=jenkins state=present generate_ssh_key=yes shell=/bin/bash
+  tags:
+    - jenkins
+    - users
+
+- name: make jenkins plugin dir
+  file: path=/var/lib/jenkins/plugins state=directory owner=jenkins group=jenkins
+  tags:
+    - jenkins
+
+- name: disable jenkins plugins
+  copy: dest=/var/lib/jenkins/plugins/{{ item }}.jpi.disabled content=""
+  with_items: disable_plugins
+  notify:
+    - reload jenkins
+  tags:
+    - jenkins
+
+- name: enable jenkins
+  service: name=jenkins enabled=yes
+  tags:
+    - jenkins
+
+- name: start jenkins
+  service: name=jenkins state=started
+  tags:
+    - jenkins
+
+# TODO make this more generic
+- name: grep for {{ jenkins_web_port }} in /etc/sysconfig/iptables
+  command: /bin/grep -- '-A INPUT -m state --state NEW -m tcp -p tcp --dport {{ jenkins_web_port }} -j ACCEPT' /etc/sysconfig/iptables
+  register: jenkins_port
+  changed_when: False
+  ignore_errors: True
+  tags:
+    - jenkins
+    - iptables
+
+# TODO make this more generic
+- name: run lokkit for iptables of jenkins port
+  command: /usr/sbin/lokkit -p {{ jenkins_web_port }}:tcp
+  when: "jenkins_port.rc != 0"
+  tags:
+    - jenkins
+    - iptables
