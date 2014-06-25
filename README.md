@@ -1,7 +1,7 @@
-toolchain
-=========
+Provisioning Jenkins slaves
+===========================
 
-build toolchain based on Ansible - http://docs.ansible.com 
+Configure slaves using Ansible - http://docs.ansible.com 
 
 1) Establish connectivity b/w the ansible control machine and the ASF jenkins slaves
 
@@ -9,14 +9,14 @@ build toolchain based on Ansible - http://docs.ansible.com
 
 * http://docs.ansible.com/intro_installation.html#installation
 
-3) Clone toolchain - this github repo
+3) Clone provision - this github repo
 
-git clone git@github.com:hortonworks/toolchain.git
+git clone git@github.com:hortonworks/provision.git
 
-git checkout -t origin/ASF-jenkins-setup -b ASF-jenkins-setup
+git checkout -t origin/master -b master
 
-cd toolchain
+cd provision
 
 4) run ansible-playbook 
 
-ansible-playbook -i hosts init.yml  -v -f6
+ansible-playbook -i hosts init.yml  -v 
