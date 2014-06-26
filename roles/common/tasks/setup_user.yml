@@ -1,8 +1,14 @@
 ---
+  - name: Configuring Jenkins - Add group
+    sudo: yes
+    sudo_user: root
+    group: name={{jenkins_group}} state=present
+
   - name: Configuring Jenkins - Add user
     sudo: yes
     sudo_user: root
-    user: name="jenkins" uid={{ jenkins_user_uid }} comment="Jenkins Slave" shell="/bin/bash"
+    user: name="jenkins" home={{jenkins_home}} uid={{ jenkins_user_uid }}
+      group={{jenkins_group}} comment="Jenkins Slave" shell="/bin/bash"
 
   - name: Configuring Jenkins - ssh keys - Download
     sudo: yes
