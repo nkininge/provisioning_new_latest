@@ -1,3 +1,0 @@
----
-- name: reload jenkins
-  uri: method=POST url={{ jenkins_uri }}:{{ jenkins_web_port }}/safeRestart follow_redirects=no status_code=302
