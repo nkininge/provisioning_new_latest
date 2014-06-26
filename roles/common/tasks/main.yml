@@ -1,2 +1,4 @@
 ---
 - include: setup_user.yml
+- include: setup_user_configs.yml
+  when: slave

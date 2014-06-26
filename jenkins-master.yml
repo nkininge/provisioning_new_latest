@@ -1,7 +1,23 @@
 - hosts: master
   vars:
     jenkins_user_uid: 1001
+    slave: False
+    jenkins_http_port: 8000
+    jenkins_home: /var/lib/jenkins
+    jenkins_user: jenkins
+    jenkins_group: users
+    jenkins_configuration: /etc/default/jenkins
+    jenkins_run_standalone: yes
+    jenkins_name: jenkins
+    jenkins_java: /usr/bin/java
+    jenkins_pidfile: /var/run/jenkins.pid
+    jenkins_logdir: /var/log/jenkins
+    jenkins_log: "{{jenkins}logdir}}/{{jenkins_name}}.log"
+    jenkins_prefix: "/"
+    jenkins_war: /usr/share/jenkins/jenkins.war
+    jenkins_plugins: true
+
   
   roles:
- #   - { role: common, tags: master }
+    - common
     - jenkins-master

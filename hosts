@@ -1,5 +1,5 @@
 [master]
-192.168.25.200 ansible_ssh_user=gkesavan
+localhost ansible_ssh_user=ubuntu
 
 [suse11sp1]]
 172.18.146.50  ansible_ssh_user=root

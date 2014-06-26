@@ -1,0 +1,24 @@
+---
+  - name: Jenkins Slave Setup - Download gpg keys
+    sudo: yes
+    sudo_user: jenkins
+    get_url: url={{ gpgkeys_url }}
+            dest={{ jenkins_home }}/
+
+  - name: Jenkins Slave Setup - Untar gpg keys archive
+    sudo: yes
+    sudo_user: jenkins
+    unarchive: copy=no src={{jenkins_home}}/jenkins-gpg-keys.tar.gz
+        dest={{jenkins_home}}/
+
+  - name: Jenkins Slave Setup - Import gpg pub
+    sudo: yes
+    sudo_user: jenkins
+    shell: "gpg --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_pub.gpg "
+
+  - name: Jenkins Slave Setup - Import gpg secret
+    sudo: yes
+    sudo_user: jenkins
+    shell: "gpg --allow-secret-key-import --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
+
+  
