@@ -1,7 +1,7 @@
 ---
 - hosts: jenkins-slaves
   vars:
-       s3tools_url: "http://s3tools.org/repo/SLE_11/s3tools.repo"
+    s3tools_url: "http://s3tools.org/repo/SLE_11/s3tools.repo"
     s3cfg_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/s3cfg"
     settings_url: "http://s3.amazonaws.com/dev.hortonworks.com/jenkins_bk/54.243.248.12/settings.xml"
     gpgkeys_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/jenkins-gpg-keys.tar.gz"
