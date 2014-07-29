@@ -1,6 +1,6 @@
 ---
 jenkins_user_uid: 1000
-jenkins_home: /home/jenkins
+jenkins_home: /grid/0/jenkins
 tools_home: "{{jenkins_home}}/tools"
 maven_home: "{{tools_home}}/maven"
 ant_home: "{{tools_home}}/ant" 
@@ -23,9 +23,10 @@ forrest_url: "http://psg.mtu.edu/pub/apache/forrest/apache-forrest-{{forrest_ver
 protobuf_url: "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
 autoconf_url: "http://ftp.gnu.org/gnu/autoconf/autoconf-2.63.tar.gz"
 node_js_url: "http://nodejs.org/dist/v{{node_version}}/node-v{{node_version}}-linux-x64.tar.gz"
-
+s3cfg_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/s3cfg"
 ssh_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/hortonworksre.tar.gz"
-gpgkeys_url: ""
+gpgkeys_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/jenkins-gpg-keys.tar.gz"
+settings_url: "http://s3.amazonaws.com/dev.hortonworks.com/jenkins_bk/54.243.248.12/settings.xml"
 ssh_url_dest: "{{jenkins_home}}/hortonworksre.tar.gz"
 gpgkey_dest: "{{jenkins_home}}/jenkins-gpg-keys"
 

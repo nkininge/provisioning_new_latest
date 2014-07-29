@@ -2,8 +2,15 @@
 localhost ansible_ssh_user=ubuntu
 
 [suse11sp1]]
-172.18.146.50  ansible_ssh_user=root
+172.18.146.50 ansible_ssh_user=root
 172.18.145.49 ansible_ssh_user=root
 172.18.145.147 ansible_ssh_user=root
 172.18.146.76 ansible_ssh_user=root
 172.18.146.78 ansible_ssh_user=root
+
+[debian6]
+ec2-54-210-162-138.compute-1.amazonaws.com 
+
+[debian6:vars]
+ansible_ssh_user=root
+private_key_file=/Users/gkesavan/.ec2/ec2-keypair

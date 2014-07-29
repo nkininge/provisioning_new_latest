@@ -20,21 +20,35 @@
     sudo_user: jenkins
     unarchive: copy=no src={{jenkins_home}}/hortonworksre.tar.gz dest={{jenkins_home}}/
 
-  - name: Configuring Jenkins - ssh keys - copy
+  - name: setup_user | create ssh directory
     sudo: yes
     sudo_user: jenkins
-    command: cp -R {{jenkins_home}}/hortonworksre/ {{jenkins_home}}/.ssh/
-             removes={{jenkins_home}}/hortonworksre/
+    file: path={{jenkins_home}}/.ssh state=directory mode=700
+   
+  - name: Configuring Jenkins - ssh keys - id_rsa
+    sudo: yes
+    sudo_user: jenkins
+    command: cp {{jenkins_home}}/hortonworksre/id_rsa {{jenkins_home}}/.ssh/id_rsa
 
-  - name: Configuring Jenkins - ssh keys - file attributes for ssh dir
+  - name: Configuring Jenkins - ssh keys - id_rsa.pub
     sudo: yes
     sudo_user: jenkins
-    file: path={{jenkins_home}}/.ssh/ owner=jenkins mode=700
+    command: cp {{jenkins_home}}/hortonworksre/id_rsa.pub {{jenkins_home}}/.ssh/id_rsa.pub
+
+  - name: Configuring Jenkins - ssh keys - authorized_keys
+    sudo: yes
+    sudo_user: jenkins
+    command: cp {{jenkins_home}}/hortonworksre/authorized_keys {{jenkins_home}}/.ssh/authorized_keys
+             removes={{jenkins_home}}/hortonworksre/
 
   - name: Configuring Jenkins - ssh keys - file attributes for authorized keys
     sudo: yes
     sudo_user: jenkins
-    file: path={{jenkins_home}}/.ssh/authorized_keys mode=644
+    file: path={{jenkins_home}}/.ssh/{{item.name}} mode={{item.attr}} state=file
+    with_items:
+     - {name: id_rsa, attr: 600}
+     - {name: id_rsa.pub,  attr: 644}
+     - {name: authorized_keys, attr: 600}
 
   - name: Setup ssh keys for user - fix .ssh folder attributes
     sudo: yes

@@ -1,0 +1,14 @@
+---
+  - name: cleanup | rm downloads 
+    sudo: yes
+    sudo_user: jenkins
+    file: path={{item}} state=absent
+    with_items:
+      - {{ant_home}}/ant.tar.gz
+      - {{maven_home}}maven.tar.gz
+      - {{forrest_home}}/forrest.tar.gz
+      - {{ ssh_url_dest }}
+      - {{ gpgkey_dest }}
+      - {{ gpgkey_dest }}.tar.gz
+      - {{jenkins_home}}/jenkins-gpg-keys.tar.gz
+      - {{jenkins_home}}/jenkins-gpg-keys
