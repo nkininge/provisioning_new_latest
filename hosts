@@ -9,8 +9,8 @@ localhost ansible_ssh_user=ubuntu
 172.18.146.78 ansible_ssh_user=root
 
 [debian6]
-ec2-54-210-162-138.compute-1.amazonaws.com 
+ec2-54-210-234-231.compute-1.amazonaws.com
 
 [debian6:vars]
 ansible_ssh_user=root
-private_key_file=/Users/gkesavan/.ec2/ec2-keypair
+ansible_ssh_private_key_file=/Users/gkesavan/.ec2/ec2-keypair
