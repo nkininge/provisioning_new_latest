@@ -3,6 +3,14 @@
   sudo_user: root
   apt: pkg={{item}} update_cache=yes state=latest
   with_items:
+    - debian-keyring 
+    - debian-archive-keyring
+
+- name: Install_Libraries | Install Debian Libraries and build Tools
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest
+  with_items:
       - ant
       - asciidoc
       - autoconf
