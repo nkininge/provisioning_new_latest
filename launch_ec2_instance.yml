@@ -1,0 +1,17 @@
+---
+- name: ec2_start_instance 
+  hosts: localhost
+  gather_facts: False
+  vars:
+    key_name: ec2-keypair
+    instance_type: m3.large
+    security_group: default
+    image: ami-a849b5c1
+    region: us-east-1
+  tasks:
+    - name: Launch instance
+      local_action: ec2 key_name={{ key_name }} group={{ security_group }} instance_type={{ instance_type }} image={{ image }} wait=true region={{ region }}
+      register: ec2
+    - name: Wait for SSH to come up
+      local_action: wait_for host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
+      with_items: ec2.instances
