@@ -1,0 +1,3 @@
+---
+  - include: install_libraries.yml
+  - include: install_protobuf.yml
