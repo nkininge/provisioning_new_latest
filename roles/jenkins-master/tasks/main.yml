@@ -1,5 +1,5 @@
 ---
-  - include: install_deb.yml 
-  - include: install_jdk.yml 
+  - include: install_deb.yml
+  - include: install_jdk.yml
   - include: configure_jenkins.yml
   - include: install_jenkins_plugins.yml
