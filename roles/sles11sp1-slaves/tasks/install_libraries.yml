@@ -1,50 +1,21 @@
 ---
-  - name: "Disabling suse11 TD repo"
-    shell: rm -rf /etc/zypp/repos.d/*.repo 
-
-  - name: "Installing c++"
-    zypper: name="gcc-c++" disable_gpg_check=yes state=present
-  
-  - name: "Install suse11 TD repo"
-    zypper_repository: repo={{ td_repo }} name="TD-sles11" state=present
-
-  - name: "Install s3tools repopresent"
-    zypper_repository: repo={{ s3tools_url }} name="s3toos" state=present
-
-  - name: "Install HDP-UTILS"
-    zypper_repository: repo={{ hdp_utils_url }} name="HDP-UTILS" state=present
- 
-  - name: "Install suse11 sp2 repo"
-    zypper_repository: repo={{ sles_sp2_url }} name="suse11-sp2" state=present   
-
-  - name: "wget misc rpm's"
+  - name: install_libraries | zypper in
     sudo: yes
-    sudo_user: root
-    shell: wget {{item}}
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest 
     with_items:
-      - "{{fakeroot_rpm_url}}"
+      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-1.7.0-16.1.x86_64.rpm
+      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-devel-1.7.0-16.1.x86_64.rpm
+    tags: install_libraries
 
-  - name: "Installing misc rpm's"
-    sudo: yes
-    sudo_user: root
-    zypper: name="./{{item}}" state=present
-    with_items:
-      - "fakeroot-1.9.3-5.2.x86_64.rpm"
-
-  - name: "rm fakeroot-1.9.3-5.2.x86_64.rpm"
-    shell: rm -rf fakeroot-1.9.3-5.2.x86_64.rpm*
-
-  - name: "Installing Libraries"
-    sudo: yes
-    sudo_user: root
-    zypper: pkg=git-core disable_gpg_check=yes state=absent
-  
   - name: "Installing Libraries"
     sudo: yes
     sudo_user: root
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    tags: install_libraries
     with_items:
-      - s3cmd
+      - gcc-c++ 
+      - wget
+      - curl
       - subversion
       - snappy-devel
       - lzo-devel
@@ -70,11 +41,45 @@
       - ant
       - ant-nodeps 
       - ant-trax
-      - git-2.0.0-201.1.x86_64
       - python-devel
       - python-setuptools
       - libxml2-devel
       - libxslt-devel
       - krb5-devel
       - sqlite3-devel
+      - gd-devel
+      - libpng-devel
+      - libjpeg-devel
+      - cairo-devel
+      - freetype2-devel
+      - glib2-devel
+      - intltool
+      - libart_lgpl-devel
+      - pango-devel
+      - gettext-tools
+      - ruby-devel
+      - lua-devel
+      - tcpd-devel
+      - dejagnu
+      - googletest-devel
+      - rsh 
+      - apache2-devel
+      - pcre-devel  
+      - libapr-util1-devel 
+      - xorg-x11-devel 
+      - fdupes 
+      - tcl-devel 
+      - libconfuse-devel 
+      - rrdtool-devel 
+      - libtool
+
+  - name: install_libraries | s3cmd , fakeroot
+    sudo: yes
+    sudo_user: root
+    tags: install_libraries
+    zypper: name="{{item}}" state=present
+    with_items:
+      - http://s3tools.org/repo/SLE_11/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm
+      - "{{fakeroot_rpm_url}}"
+
 
