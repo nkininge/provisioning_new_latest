@@ -1,15 +1,42 @@
 [master]
 localhost ansible_ssh_user=ubuntu
 
-[suse11sp1]]
-172.18.146.50 ansible_ssh_user=root
-172.18.145.49 ansible_ssh_user=root
-172.18.145.147 ansible_ssh_user=root
-172.18.146.76 ansible_ssh_user=root
-172.18.146.78 ansible_ssh_user=root
+[sles11sp1]]
+#ec2-54-164-6-93.compute-1.amazonaws.com ansible_ssh_user=root
+sles
+
+[sles11sp3]]
+54.84.14.174
+54.84.16.115
+
+[centos5]
+54.210.121.133
+#54.210.105.170
+#54.210.121.170
+#54.210.121.51
+
+[centos6]
+54.210.125.169
+54.210.59.165
 
 [debian6]
 ec2-54-210-195-155.compute-1.amazonaws.com
+
+[sles11sp1:vars]
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_ssh_user=root
+
+[sles11sp3:vars]
+ansible_ssh_private_key_file=~/.ec2/ec2-keypair
+ansible_ssh_user=root
+
+[centos6:vars]
+ansible_ssh_private_key_file=~/.ec2/ec2-keypair
+ansible_ssh_user=ec2-user
+
+[centos5:vars]
+ansible_ssh_private_key_file=~/.ec2/ec2-keypair
+ansible_ssh_user=root
 
 [debian6:vars]
 ansible_ssh_user=root

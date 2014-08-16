@@ -1,0 +1,13 @@
+- hosts: centos5
+  gather_facts: no
+  vars:
+    jenkins_user_uid: 1001
+    slave: False
+    jenkins_user: jenkins
+    jenkins_group: users
+    jenkins_configuration: /etc/default/jenkins
+    jenkins_run_standalone: yes
+    jenkins_name: jenkins
+
+  roles:
+    - centos5-slaves

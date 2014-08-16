@@ -1,0 +1,38 @@
+---
+  - name: install_libraries | uninstall rrdtool
+    sudo: yes
+    sudo_user: root
+    yum: pkg={{item}} state=absent
+    with_items:
+     - postgresql-libs
+    ignore_errors: yes
+
+  - name: install_libraries | 
+    sudo: yes
+    sudo_user: root
+    yum: pkg={{item}} state=latest 
+    with_items:
+      - gd-devel
+      - libpng-devel
+      - libjpeg-devel
+      - cairo-devel
+      - gettext-devel
+      - intltool
+      - lua-devel
+      - pango-devel
+      - xulrunner-devel
+      - openssl-devel 
+      - intltool 
+      - cairo-devel 
+      - pango-devel 
+      - libxml2-devel 
+      - ruby 
+      - ruby-devel 
+      - tcl-devel
+      - gettext-devel 
+      - lua-devel 
+      - tk-devel 
+      - xulrunner-devel 
+      - python-setuptools
+      - rrdtool-python  
+
