@@ -1,15 +1,18 @@
 ---
   - name: install_libraries | zypper in
     sudo: yes
-    zypper: pkg={{item}} disable_gpg_check=yes state=latest 
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
       - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-1.7.0-16.1.x86_64.rpm
       - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-devel-1.7.0-16.1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-1.0.5-1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-devel-1.0.5-1.x86_64.rp
+      - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-2.06-1.x86_64.rpm
+      - https://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-devel-2.06-1.x86_64.rpm
     tags: install_libraries
 
   - name: "Installing Libraries"
     sudo: yes
-    sudo_user: root
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     tags: install_libraries
     with_items:
@@ -62,24 +65,37 @@
       - tcpd-devel
       - dejagnu
       - googletest-devel
-      - rsh 
+      - rsh
       - apache2-devel
-      - pcre-devel  
-      - libapr-util1-devel 
-      - xorg-x11-devel 
-      - fdupes 
-      - tcl-devel 
-      - libconfuse-devel 
-      - rrdtool-devel 
+      - pcre-devel
+      - libapr-util1-devel
+      - xorg-x11-devel
+      - fdupes
+      - tcl-devel
+      - libconfuse-devel
+      - rrdtool-devel
       - libtool
+      - python-magic
+      - python-dateutil
+
+  - name: install_libraries | download s3cmd zip
+    sudo: yes
+    get_url: url="https://github.com/s3tools/s3cmd/archive/master.zip"
+
+  - name: install_libraries | unarchive s3cmd
+    sudo: yes
+    unarchive: src=master.zip dest=master copy=no
+
+  - name: install_libraries | s3cmd setup install
+    sudo: yes
+    shell: python setup.py install
+    args:
+      chdir: master
 
   - name: install_libraries | s3cmd , fakeroot
     sudo: yes
-    sudo_user: root
     tags: install_libraries
     zypper: name="{{item}}" state=present
     with_items:
       - http://s3tools.org/repo/SLE_11/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm
       - "{{fakeroot_rpm_url}}"
-
-
