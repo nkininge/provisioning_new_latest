@@ -34,4 +34,5 @@
       - xulrunner-devel 
       - python-setuptools
       - rrdtool-python
+      - clamav
 

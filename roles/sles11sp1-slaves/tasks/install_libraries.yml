@@ -1,4 +1,3 @@
----
   - name: install_libraries | zypper in
     sudo: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
@@ -25,14 +24,14 @@
       - asciidoc
       - libcppunit-devel
       - gcc
-      - automake 
+      - automake
       - autoconf
       - libconfuse-devel
       - fuse-devel
-      - docbook-utils 
+      - docbook-utils
       - docbook5-xsl-stylesheets
       - xmlformat
-      - xmlto 
+      - xmlto
       - libxslt
       - libopenssl-devel
       - docbook_5
@@ -40,9 +39,10 @@
       - openldap2-devel
       - libmysqlclient-devel
       - texlive-latex-doc
+      - clamav
       - cmake
       - ant
-      - ant-nodeps 
+      - ant-nodeps
       - ant-trax
       - python-devel
       - python-setuptools
