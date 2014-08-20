@@ -1,7 +1,6 @@
 ---
   - name: install_libraries | uninstall rrdtool
     sudo: yes
-    sudo_user: root
     yum: pkg={{item}} state=absent
     with_items:
      - postgresql-libs
@@ -9,7 +8,13 @@
 
   - name: install_libraries | 
     sudo: yes
-    sudo_user: root
+    shell: rpm -Uvvh {{item}}
+    with_items:
+      - http://s3tools.org/repo/RHEL_5/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm
+    ignore_errors: yes
+
+  - name: install_libraries | 
+    sudo: yes
     yum: pkg={{item}} state=latest 
     with_items:
       - gd-devel
