@@ -98,3 +98,27 @@
       - sharutils
       - texlive-latex-base
       - xmlto
+      - libgd2-xpm-dev
+      - libperl-dev 
+      - libpng-dev
+      - hardening-wrapper
+      - gem2deb
+      - groff
+      - dh-autoreconf 
+      - quilt 
+      - libcairo2-dev 
+      - libpango1.0-dev 
+      - libdbi0-dev 
+      - tcl-dev
+      - liblua5.1-0-dev
+      - lua5.1
+      - libperl-dev 
+      - libpng12-dev 
+      - libgd2-noxpm-dev
+      - dpatch
+      - ruby1.9.1 
+      - ruby1.9.1-dev 
+      - librrd2-dev 
+      - libapr1-dev 
+      - libconfuse-dev 
+      - libpcre3-dev
