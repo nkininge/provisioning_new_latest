@@ -16,13 +16,14 @@
     tags: install_libraries
     with_items:
       - gcc-c++ 
+      - createrepo
       - wget
       - lsb-release
       - curl
       - subversion
       - snappy-devel
       - lzo-devel
-      - asciidoc
+      - asciidoc-8.6.8-6.1.noarch
       - libcppunit-devel
       - gcc
       - automake
