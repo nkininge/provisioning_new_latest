@@ -9,7 +9,13 @@
 [centos6]
 
 [debian6]
-
+ec2-54-165-226-197.compute-1.amazonaws.com
+ec2-54-165-226-210.compute-1.amazonaws.com
+ec2-54-165-226-65.compute-1.amazonaws.com
+ec2-54-165-230-119.compute-1.amazonaws.com
+ec2-54-165-230-143.compute-1.amazonaws.com
+ec2-54-165-226-206.compute-1.amazonaws.com
+ec2-54-165-226-209.compute-1.amazonaws.com
 
 [master:vars]
 ansible_ssh_private_key_file=
@@ -32,4 +38,4 @@ ansible_ssh_user=root
 
 [debian6:vars]
 ansible_ssh_user=root
-ansible_ssh_private_key_file=
+ansible_ssh_private_key_file=/Users/jab/.ssh/ec2-keypair.pem	

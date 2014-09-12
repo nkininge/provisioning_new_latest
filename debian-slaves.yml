@@ -8,7 +8,9 @@
     jenkins_configuration: /etc/default/jenkins
     jenkins_run_standalone: yes
     jenkins_name: jenkins
+    gem2deb_url: http://ftp.de.debian.org/debian/pool/main/g/gem2deb/gem2deb_0.9.1.tar.xz
 
   roles:
     - common
     - debian6-slaves
+

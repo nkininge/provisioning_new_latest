@@ -102,7 +102,7 @@
       - libperl-dev 
       - libpng-dev
       - hardening-wrapper
-      - gem2deb
+      - rubygems
       - groff
       - dh-autoreconf 
       - quilt 
@@ -114,7 +114,7 @@
       - lua5.1
       - libperl-dev 
       - libpng12-dev 
-      - libgd2-noxpm-dev
+      # - libgd2-noxpm-dev
       - dpatch
       - ruby1.9.1 
       - ruby1.9.1-dev 
@@ -122,3 +122,17 @@
       - libapr1-dev 
       - libconfuse-dev 
       - libpcre3-dev
+
+- name: Install_Libraries | Install Ruby Libraries and build Tools
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest
+  tags: install_rubygems
+  with_items:
+      - rubygems
+
+- name: Install_Libraries | Install Ruby Libraries and Debian build Tools
+  sudo: yes
+  sudo_user: root
+  gem:  name=gem2deb
+  tags: install_rubygems
