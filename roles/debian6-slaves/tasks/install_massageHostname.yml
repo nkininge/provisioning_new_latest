@@ -1,0 +1,6 @@
+- name: install massage-host-name boot sequence
+  sudo: yes
+  sudo_user: root
+  copy: src=S99massageHostname dest=/etc/rc2.d/S99massageHostname mode=755
+  tags: install_boot_sequence
+
