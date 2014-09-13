@@ -1,0 +1,14 @@
+---
+  - name: install_nexus | zypper in
+    sudo: yes
+    tags: install_nexus
+    get_url: url=http://www.sonatype.org/downloads/nexus-latest-bundle.zip dest=/usr/local/nexus.zip
+
+  - name: Create an extraction directory
+    file: path=/usr/local state=directory
+  - unarchive: src=/usr/local/nexus.zip dest=/usr/local copy=no
+  - file: src=/usr/local/nexus-2.9.1-02 dest=/usr/local/nexus  state=link
+  - shell:   RUN_AS_USER=root   ./bin/nexus start 
+    args:
+      chdir: /usr/local/nexus
+  
