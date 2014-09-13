@@ -88,6 +88,7 @@
       - python-all-dev
       - python-all-dbg
       - python-boto
+      - python-argparse
       - python-dev
       - python-setuptools
       - python-support
