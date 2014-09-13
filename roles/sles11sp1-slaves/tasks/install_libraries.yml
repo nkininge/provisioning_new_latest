@@ -80,6 +80,12 @@
       - python-magic
       - python-dateutil
 
+  - name: install-python-argparse | install python spare libs
+    sudo: yes
+    easy_install: name=pip
+    easy_install: name=argparse
+    tags:   install_argparse
+
   - name: install_libraries | download s3cmd zip
     sudo: yes
     get_url: url="https://github.com/s3tools/s3cmd/archive/master.zip" dest=/tmp/master.zip

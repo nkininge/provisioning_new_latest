@@ -95,3 +95,12 @@
       - sharutils
       - g++-4.8-multilib
       - libstdc++-4.8-dev
+
+
+- name: install-python-argparse | install python spare libs
+  sudo: yes
+  easy_install: name=pip
+  easy_install: name=argparse
+  tags:   install_argparse
+
+

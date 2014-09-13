@@ -88,7 +88,6 @@
       - python-all-dev
       - python-all-dbg
       - python-boto
-      - python-argparse
       - python-dev
       - python-setuptools
       - python-support
@@ -123,6 +122,12 @@
       - libapr1-dev 
       - libconfuse-dev 
       - libpcre3-dev
+
+- name: install-python-argparse | install python spare libs
+  sudo: yes
+  easy_install: name=pip
+  easy_install: name=argparse
+  tags:   install_argparse
 
 - name: Install_Libraries | Install Ruby Libraries and build Tools
   sudo: yes
