@@ -3,6 +3,7 @@
     sudo: yes
     sudo_user: root
     yum: pkg={{item}} state=absent
+    tags: install_libraries
     with_items:
       - postgresql-libs
 
@@ -10,6 +11,7 @@
     sudo: yes
     sudo_user: root
     yum: pkg={{item}} state=latest 
+    tags: install_libraries
     with_items:
       - gd-devel
       - libpng-devel
