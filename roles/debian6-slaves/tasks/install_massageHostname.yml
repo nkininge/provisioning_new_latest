@@ -4,3 +4,8 @@
   copy: src=S99massageHostname dest=/etc/rc2.d/S99massageHostname mode=755
   tags: install_boot_sequence
 
+- name: Install EC2 hostname
+  cron: name="Install standard EC2 hostname"
+        job="hostname `  curl -s http://169.254.169.254/latest/meta-data/hostname  ` "
+        special_time=reboot
+  tags: install_hostname_crontab
