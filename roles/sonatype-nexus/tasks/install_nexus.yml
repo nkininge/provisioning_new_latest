@@ -11,4 +11,22 @@
   - shell:   RUN_AS_USER=root   ./bin/nexus start 
     args:
       chdir: /usr/local/nexus
-  
+
+  - name: Add crontab-entry to start service
+    tags: install_nexus_crontab
+    cron: name="start nexus"   special_time=reboot user="root" job="cd /usr/local/nexus && ./bin/nexus start"
+
+  - name: Add sysctl mods for nexus TCP traffic
+    tags: install_nexus_sysctl
+    sysctl: name="net.core.rmem_max" value=16777216 sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.core.wmem_max" value=16777216 sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.tcp_rmem" value="4096 87380 16777216" sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.tcp_wmem" value="4096 16384 16777216" sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.core.somaxconn" value=256000 sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.core.netdev_max_backlog" value=512000 sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.tcp_syncookies" value=1 sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.ip_local_port_range" value="1024 65535" sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.tcp_tw_recycle" value=1 sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.tcp_tw_reuse" value=1 sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.tcp_congestion_control" value="cubic" sysctl_set=yes reload=yes ignoreerrors=no
+    sysctl: name="net.ipv4.tcp_max_syn_backlog" value=256000 sysctl_set=yes reload=yes ignoreerrors=no
