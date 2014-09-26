@@ -3,6 +3,7 @@
   - include: install_git.yml
   - include: install_protobuf.yml
   - include: install_autoconf.yml
+  - include: install_massageHostname.yml
   - include: install_ruby.yml
   - include: install_node_js.yml
   - include: install_crontab.yml
