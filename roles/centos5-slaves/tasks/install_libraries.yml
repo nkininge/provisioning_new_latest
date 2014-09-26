@@ -41,3 +41,23 @@
       - python-setuptools
       - rrdtool-python  
       - clamav
+  - name: install-python-argparse | install python spare libs
+    sudo: yes
+    easy_install: name=pip
+    easy_install: name=argparse
+    easy_install: name=requests
+    tags:   install_argparse
+  
+  - name: Install_Libraries | Install Ruby Libraries and build Tools
+    sudo: yes
+    sudo_user: root
+    apt: pkg={{item}} update_cache=yes state=latest
+    tags: install_rubygems
+    with_items:
+        - rubygems
+  
+  - name: Install_Libraries | Install Ruby Libraries and Debian build Tools
+    sudo: yes
+    sudo_user: root
+    gem:  name=gem2deb
+    tags: install_rubygems
