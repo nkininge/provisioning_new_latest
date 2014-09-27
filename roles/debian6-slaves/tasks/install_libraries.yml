@@ -142,4 +142,5 @@
   sudo: yes
   sudo_user: root
   gem:  name=gem2deb
+  gem:  name=json
   tags: install_rubygems
