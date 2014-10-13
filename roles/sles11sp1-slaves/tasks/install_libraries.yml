@@ -8,6 +8,7 @@
       - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-devel-1.0.5-1.x86_64.rpm
       - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-2.06-1.x86_64.rpm
       - https://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-devel-2.06-1.x86_64.rpm
+      - https://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/clamav/clamav-0.98.3-104.1.x86_64.rpm
     tags: install_libraries
 
   - name: "Installing Libraries"
@@ -41,7 +42,6 @@
       - openldap2-devel
       - libmysqlclient-devel
       - texlive-latex-doc
-      - clamav
       - cmake
       - ant
       - ant-nodeps
