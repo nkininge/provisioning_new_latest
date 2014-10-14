@@ -1,0 +1,9 @@
+---
+   - include: copy_hostfile.yml
+   - include: clean_hostsfile.yml
+   - include: install_libraries.yml
+   - include: update_repos.yml
+   - include: resetHostname.yml
+   - include: stop_IP_tables.yml
+   - include: update_limits.yml
+   - include: update_jdk_date.yml
