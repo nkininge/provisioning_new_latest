@@ -4,3 +4,4 @@
 - include: install_jdk.yml
 - include: setup_user_configs.yml
 - include: update_configs.yml
+- include: mvn-gpg-nexus-password.yml

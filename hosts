@@ -8,9 +8,12 @@
 
 [centos5]
 54.210.120.41
+54.236.81.179
 
 [centos6]
 54.210.66.157
+ec2-54-210-126-33.compute-1.amazonaws.com
+
 [debian6]
 ec2-54-165-226-197.compute-1.amazonaws.com
 ec2-54-165-226-210.compute-1.amazonaws.com
@@ -32,7 +35,7 @@ ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
 [centos6:vars]
-ansible_ssh_private_key_file=
+ansible_ssh_private_key_file=~/.ssh/ec2-keypair.pem
 ansible_ssh_user=ec2-user
 
 [centos5:vars]
