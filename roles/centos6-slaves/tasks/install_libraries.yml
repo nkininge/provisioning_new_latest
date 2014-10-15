@@ -37,6 +37,7 @@
       - python-setuptools
       - rrdtool-python
       - clamav
+      - python-virtualenv
 
   - name: install-python-argparse | install python spare libs
     sudo: yes

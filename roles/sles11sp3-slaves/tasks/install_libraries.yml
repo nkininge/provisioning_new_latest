@@ -2,12 +2,19 @@
   - name: install_libraries | zypper in
     sudo: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest 
+    tags: install_libraries
     with_items:
       - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-1.7.0-16.1.x86_64.rpm
       - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-devel-1.7.0-16.1.x86_64.rpm
 
+  - name: install_libraries | easy_install python modules
+    sudo: yes
+    tags: install_libraries
+    easy_install: name=virtualenv
+ 
   - name: install_libraries | zypper in
     sudo: yes
+    tags: install_libraries
     zypper: pkg={{item}} disable_gpg_check=yes state=latest 
     with_items:
       - gd-devel
@@ -35,6 +42,8 @@
       - tcl-devel 
       - libconfuse-devel 
       - rrdtool-devel 
+      - ant 
+      - ant-nodeps
 
   - name: install-python-argparse | install python spare libs
     sudo: yes

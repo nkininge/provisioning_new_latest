@@ -1,13 +1,16 @@
 [master]
 
 [sles11sp1]
+54.164.204.44
 
 [sles11sp3]
+54.88.225.158
 
 [centos5]
+54.210.120.41
 
 [centos6]
-
+54.210.66.157
 [debian6]
 ec2-54-165-226-197.compute-1.amazonaws.com
 ec2-54-165-226-210.compute-1.amazonaws.com
@@ -33,7 +36,7 @@ ansible_ssh_private_key_file=
 ansible_ssh_user=ec2-user
 
 [centos5:vars]
-ansible_python_interpreter=/usr/local/bin/python2.7
+ansible_python_interpreter=
 ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
