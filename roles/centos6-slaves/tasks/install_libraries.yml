@@ -3,6 +3,7 @@
     sudo: yes
     sudo_user: root
     yum: pkg={{item}} state=absent
+    tags: install_libraries
     with_items:
       - postgresql-libs
 
@@ -11,6 +12,7 @@
     sudo_user: root
     tags: install_libs
     yum: pkg={{item}} state=latest 
+    tags: install_libraries
     with_items:
       - gd-devel
       - libpng-devel
@@ -36,6 +38,7 @@
       - python-setuptools
       - rrdtool-python
       - clamav
+      - python-virtualenv
 
   - name: install-python-argparse | install python spare libs
     sudo: yes

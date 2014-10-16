@@ -1,5 +1,5 @@
 - hosts: centos5
-  gather_facts: no
+  gather_facts: yes
   vars:
     jenkins_user_uid: 1001
     slave: False
@@ -8,6 +8,11 @@
     jenkins_configuration: /etc/default/jenkins
     jenkins_run_standalone: yes
     jenkins_name: jenkins
+    gpg_file:
+    nexus_file:
+    security_file:
+    remote_tmp: /tmp/ansible
 
   roles:
+    - common
     - centos5-slaves

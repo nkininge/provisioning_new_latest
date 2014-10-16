@@ -1,0 +1,8 @@
+---
+  - name: install_repos | add debian squeeze backport 
+    sudo: yes
+    apt_repository: repo='deb http://ftp.us.debian.org/debian squeeze main'
+      state=present
+    tags: install_libraries
+
+
