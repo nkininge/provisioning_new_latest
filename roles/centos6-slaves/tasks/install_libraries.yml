@@ -9,6 +9,7 @@
   - name: install_libraries | 
     sudo: yes
     sudo_user: root
+    tags: install_libs
     yum: pkg={{item}} state=latest 
     with_items:
       - gd-devel
@@ -46,7 +47,7 @@
   - name: Install_Libraries | Install Ruby Libraries and build Tools
     sudo: yes
     sudo_user: root
-    apt: pkg={{item}} update_cache=yes state=latest
+    yum: name={{item}}  state=latest
     tags: install_rubygems
     with_items:
         - rubygems
@@ -55,4 +56,5 @@
     sudo: yes
     sudo_user: root
     gem:  name=gem2deb
+    gem:  name=json
     tags: install_rubygems
