@@ -1,3 +1,3 @@
 ---
   - name: clean_hostsfile | cleanhosts
-    file:   .ssh/known_hosts  state=absent
+    file:   path=.ssh/known_hosts  state=absent

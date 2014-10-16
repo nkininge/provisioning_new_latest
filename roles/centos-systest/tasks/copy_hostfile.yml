@@ -1,3 +1,4 @@
 ---
   - name: copy hosts | copy files to append to /etc/hosts
     copy: src={{internal_hosts_file}} dest=/tmp/internal-hosts-file
+    copy: src={{external_hosts_file}} dest=/tmp/external-hosts-file
