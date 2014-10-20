@@ -1,0 +1,200 @@
+- hosts:
+  - localhost
+  gather_facts: no
+  vars:
+    jenkins_user_uid: 1001
+    slave: False
+    jenkins_user: jenkins
+    jenkins_group: users
+    jenkins_configuration: /etc/default/jenkins
+    jenkins_run_standalone: yes
+    jenkins_name: jenkins
+    INSTALL_HDP:   no
+    WIRE_ENCRYPTION:   no
+    INSTALL_MAHOUT:   no
+    BUILD_URL:   http://54.86.163.166:8080/job/Nightly-Start-EC2-Run-HDP/18/
+    INSTALL_SQOOP:   no
+    SETUP_AMBARI_TESTS:   no
+    INSTALL_PRISM:   no
+    SHUTDOWN_CLUSTER:   yes
+    HUDSON_SERVER_COOKIE:   7a1f40acea280d5b
+    SHELL:   /bin/bash
+    INSTALL_HIVE:   yes
+    ENABLE_MON:   no
+    EC2_ACCOUNT:   hwqe
+    AMBARI_VERSION:   http://public-repo-1.hortonworks.com/ambari/centos6/1.x/updates/1.6.0/ambari.repo
+    SSH_CLIENT:   10.0.0.149 49923 22
+    ACCUMULO_BRANCH:   champlain
+    BUILD_TAG:   jenkins-Nightly-Start-EC2-Run-HDP-18
+    HMC_VERSION:   1
+    CLIENT_PORT:   5566
+    INSTALL_FALCON:   no
+    AMBARI_OLD_BRANCH:   none
+    QTDIR:   /usr/lib64/qt-3.3
+    GIT_PREVIOUS_COMMIT:   b78349f7174367765ba68bc11ef0b78dec4bd2ef
+    IS_EC2_HOST:   yes
+    QTINC:   /usr/lib64/qt-3.3/include
+    OOZIE_USE_EXTERNAL_DB:   yes
+    DATABASE_FLAVOR:   oracle
+    JOB_URL:   http://54.86.163.166:8080/job/Nightly-Start-EC2-Run-HDP/
+    BASE_REPO_URL:   s3.amazonaws.com/dev.hortonworks.com/HDP/centos6/2.x/updates/base-2.2.0.0/hdpbase.repo
+    IS_AMBARI_DEPLOY_TEST:   no
+    IS_HA_TEST:   no
+    REALM:   EXAMPLE.COM
+    # USER:   jenkins
+    RUN_QE_TETS:   yes
+    TESTSUITE_FILE:   Pig_1
+    RUN_INSTALLER:   gs
+    ENABLE_MULTIPLE_CLUSTERS:   no
+    INSTALL_TEMPLETON:   no
+    EC2_HOME:   /usr/local/ec2/ec2-api-tools-1.7.1.1
+    INSTALL_SQOOP2:   no
+    TEMPLETON_BRANCH:   champlain
+    USERNAME:   hadoopqe
+    GIT_AUTHOR_NAME:   Jenkins
+    IS_HMC_DEPLOY_TEST:   no
+    MR_FRAMEWORK:   yarn
+    GIT_COMMITTER_NAME:   Jenkins
+    INSTALL_HBASE:   no
+    GIT_COMMIT:   c5a0628518540eac6c9fddfabf5e1075c574bc96
+    FALCON_REGRESSION_REPO:   git@github.com:hortonworks/falcon.git
+    NLSPATH:   /usr/dt/lib/nls/msg/%L/%N.cat
+    JENKINS_HOME:   /var/lib/jenkins
+    USER_REALM:   HWQE.HORTONWORKS.COM
+    MAIL:   /var/mail/jenkins
+    EC2_DRY_RUN:   false
+    CLIENT_OS:   LINUX
+    INSTALL_OOZIE:   no
+    BUILD_CAUSE_MANUALTRIGGER:   true
+    GIT_COMMITTER_EMAIL:   jenkins@hortonworks.com
+    INSTALL_FLUME:   no
+    LIFETIME:   18
+    INSTALL_ACCUMULO:   no
+    NOTIFY_ON_FAILURE:   yes
+    SIDE_BY_SIDE_INSTALL:   no
+    HUDSON_URL:   http://54.86.163.166:8080/
+    PIG_BRANCH:   champlain
+    JDK_VERSION:   OpenJDK7
+    VERSION:   2
+    LANG:   en_US.UTF-8
+    JOB_NAME:   Nightly-Start-EC2-Run-HDP
+    NUM_OF_CLUSTERS:   3
+    BUILD_DISPLAY_NAME:   #18
+    XFILESEARCHPATH:   /usr/dt/app-defaults/%L/Dt
+    INSTALL_HCAT:   no
+    BUILD_CAUSE:   MANUALTRIGGER
+    STACK:   Default
+    FALCON_REGRESSION_BRANCH:   champlain
+    BUILD_ID:   2014-10-10_15-04-33
+    JENKINS_URL:   http://54.86.163.166:8080/
+    PLATFORM:   EC2-ORACLE6
+    KERBEROS_SERVER_TYPE:   MIT
+    INSTALL_SLIDER:   no
+    HMC_DEPLOY_REPORT:   yes
+    SHLVL:   2
+    GS_BRANCH:   hdp2
+    TEST_FRAMEWORK:   pytest
+    DATATEAMTEST_BRANCH:   master
+    GIT_BRANCH:   origin/master
+    INSTALL_STORM:   no
+    SETUP_HMC_TESTS:   no
+    PACKAGE:   rpm
+    EXECUTOR_NUMBER:   0
+    JENKINS_SERVER_COOKIE:   7a1f40acea280d5b
+    AMBARI_DEPLOY_REPORT:   no
+    INSTALL_JDK:   no
+    BUILD_USER_LAST_NAME:   A.
+    INSTALL_XASECURE:   yes
+    SECURITY:   yes
+    NANO_WAIT_TIME:   600
+    GIT_URL:   git@github.com:hortonworks/qe-infra.git
+    NODE_LABELS:   c64-s13 centos6-builds compileonly
+    IMAGE_TYPE:   m1.large
+    LOGNAME:   jenkins
+    CVS_RSH:   ssh
+    AD_SERVER_HOST:   ad-ec2.qe.hortonworks.com
+    QTLIB:   /usr/lib64/qt-3.3/lib
+    SSH_CONNECTION:   10.0.0.149 49923 10.0.0.86 22
+    USE_BLUEPRINT:   NO
+    CLIENT:   localhost
+    HUDSON_HOME:   /var/lib/jenkins
+    CLUSTER:   h2-ec2-example4-jab
+    USER_KERBEROS_SERVER_TYPE:   AD
+    NODE_NAME:   c64-s13
+    INSTALL_HUE:   no
+    NO_OF_INSTANCES:   1
+    PUBLISH_TEST_RESULTS:   yes
+    INSTALL_PIG:   yes
+    EMAIL:   jbowles@hortonworks.com
+    BUILD_NUMBER:   18
+    BROWSER:   firefox
+    INSTALL_LZO:   true
+    INSTALL_PDSH:   yes
+    INSTALL_KNOX:   no
+    HUDSON_COOKIE:   e34fbf27-bd7c-476c-80ca-332d69d9fa70
+    XA_DATABASE_FLAVOR:   mysql
+    GIT_AUTHOR_EMAIL:   jenkins@hortonworks.com
+    START_SERVICES:   yes
+    CERTIFICATION_TAG:   jab-example
+    POSTGRES_VERSION:   8
+    INSTALL_PHOENIX:   no
+    BUILD_USER_FIRST_NAME:   Jeff
+    G_BROKEN_FILENAMES:   1
+    EC2_SECURITY_GROUP:   hwqe
+    FALCON_MODE:   standalone
+    AMBARI_DB:   Postgres
+    ansible_ssh_private_key_file: /Users/jab/.ssh/ec2-keypair.pem    
+    ansible_ssh_user: ec2-user
+
+- name: Create a sandbox instance
+  hosts: localhost
+  user: jab
+  gather_facts: true
+  vars:
+    key_name: ec2_keypair
+    BUILD_USER_ID:   jabowles
+    instance_type: m1.medium
+    security_group: RE-JENKINS-SLAVES
+    image: ami-b61ae1de
+    keypair: ec2-keypair
+    region: us-east-1
+    currentTime: "{{ ansible_date_time.epoch }}"
+    lifetime: "{{ lookup('env','LIFETIME') }}"
+  tags: createInstances
+  tasks:
+    - debug: msg="{{ currentTime }} is the current Time"
+    - debug: msg="{{ lifetime }} is the current tag duration "
+    - name: Launch instance
+      register: ec2
+      local_action:
+         module: ec2
+         key_name: "{{ keypair }}"
+         instance_type: c1.medium
+         image: "{{ image }}"
+         assign_public_ip: yes
+         vpc_subnet_id: subnet-dc11f9ab
+         wait: yes
+         group: "{{ security_group }}"
+         region: "{{ region }}"
+         count: 3
+         instance_tags:
+            User: "{{ BUILD_USER_ID }}"
+            StartTime: "{{ currentTime }}"
+            LifetimeInHrs:  "{{ lifetime }}"
+
+    - name: Add new instance to host group
+      local_action: add_host hostname={{ item.public_ip }} groupname=launched
+      with_items: ec2.instances
+
+- hosts: launched
+  name: Wait for SSH to come up
+  local_action: wait_for host={{ item.public_dns_name }} port=22 delay=6 timeout=320 state=started
+      with_items: ec2.instances
+
+- hosts: launched
+  gather_facts: no
+  vars:
+     ansible_ssh_user: ec2-user
+     ansible_ssh_private_key_file: /Users/jab/.ssh/ec2-keypair.pem
+  roles:
+    - centos-systest
