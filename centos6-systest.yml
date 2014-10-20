@@ -5,7 +5,7 @@
     BUILD_USER_ID:   "{{lookup('env', 'USER')}}"
     instance_type: m1.medium
     security_group: RE-JENKINS-SLAVES
-    tagName:  System Test Build VM (trial)
+    tagName:  "System Test Build VM (trial)"
     ami: default
     count: 1
     keypair: ext-keypair
