@@ -3,10 +3,11 @@
   gather_facts: true
   vars:
     key_name: ec2_keypair
-    BUILD_USER_ID:   jabowles
+    BUILD_USER_ID:   "{{lookup('env', 'USER')}}"
     instance_type: m1.medium
     security_group: RE-JENKINS-SLAVES
-    image: ami-b61ae1de
+    ami: default
+    count: 1
     keypair: ec2-keypair
     region: us-east-1
     currentTime: "{{ ansible_date_time.epoch }}"
@@ -19,19 +20,22 @@
     - name: check-host-keys
       debug:  msg="Thank you for setting $ANSIBLE_HOST_KEY_CHECKING=false"
       when:  lookup('env', 'ANSIBLE_HOST_KEY_CHECKING') == 'false'
+    - name: debug-ami 
+      fail:  msg="try running with -e ami=ami-b61ae1de for a default AMI"
+      when: ami == "default"
     - name: Launch instance
       register: ec2
       local_action:
          module: ec2
          key_name: "{{ keypair }}"
-         instance_type: c1.medium
-         image: "{{ image }}"
+         instance_type: "{{instance_type}}"
+         image: "{{ ami }}"
          assign_public_ip: yes
          vpc_subnet_id: subnet-dc11f9ab
          wait: yes
          group: "{{ security_group }}"
          region: "{{ region }}"
-         count: 3
+         count: "{{count}}"
          instance_tags:
             User: "{{ BUILD_USER_ID }}"
             StartTime: "{{ currentTime }}"
