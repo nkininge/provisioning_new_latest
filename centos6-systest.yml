@@ -8,7 +8,7 @@
     tagName:  "System Test Build VM (trial)"
     ami: default
     count: 1
-    keypair: ext-keypair
+    keypair: ec2-keypair
     region: us-east-1
     currentTime: "{{ ansible_date_time.epoch }}"
     lifetime: "{{ lookup('env','LIFETIME') }}"
@@ -58,7 +58,7 @@
   gather_facts: no
   vars:
      ansible_ssh_user: ec2-user
-     ansible_ssh_private_key_file: "{{lookup('env','WORKSPACE')}/keys/ext-keypair.pem"
+     ansible_ssh_private_key_file: "{{lookup('env','WORKSPACE')}/keys/ec2-keypair.pem"
      internal_hosts_file: "{{lookup('env','PWD')}}/internal-hosts-file"
      external_hosts_file: "{{lookup('env','PWD')}}/hosts-file"
   roles:
