@@ -2,13 +2,12 @@
   hosts: localhost
   gather_facts: true
   vars:
-    key_name: ec2_keypair
     BUILD_USER_ID:   "{{lookup('env', 'USER')}}"
     instance_type: m1.medium
     security_group: RE-JENKINS-SLAVES
     ami: default
     count: 1
-    keypair: ec2-keypair
+    keypair: ext-keypair
     region: us-east-1
     currentTime: "{{ ansible_date_time.epoch }}"
     lifetime: "{{ lookup('env','LIFETIME') }}"
@@ -57,7 +56,7 @@
   gather_facts: no
   vars:
      ansible_ssh_user: ec2-user
-     ansible_ssh_private_key_file: "{{lookup('env','HOME')}}/.ssh/ec2-keypair.pem"
+     ansible_ssh_private_key_file: ./ext-keypair.pem"
      internal_hosts_file: "{{lookup('env','PWD')}}/internal-hosts-file"
      external_hosts_file: "{{lookup('env','PWD')}}/hosts-file"
   roles:
