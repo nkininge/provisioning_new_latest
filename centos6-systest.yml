@@ -23,8 +23,6 @@
     - name: debug-ami 
       fail:  msg="try running with -e ami=ami-b61ae1de for a default AMI"
       when: ami == "default"
-    - name:  fail-but-give-details
-      fail:  msg="ami={{ami}} instance_type={{instance_type}} keypair={{keypair}} count={{count}}"
     - name: Launch instance
       register: ec2
       local_action:
