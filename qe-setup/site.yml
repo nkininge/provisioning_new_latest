@@ -7,6 +7,7 @@
      root_ssh: /root/.ssh
      git_url: https://github.com/git/git/archive/v1.8.5.1.tar.gz
      tools_url: http://s3.amazonaws.com/qe-repo/ansible/jenkins-tools.tar.gz
+     artifacts_url: http://qe-repo.s3.amazonaws.com/ansible/jenkins-artifacts.tar.gz
      id_rsa_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa
      id_rsa_pub_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa.pub
 
@@ -61,6 +62,15 @@
 
    - name: slave setup | rm {{jenkins_home}}/jenkins-tools.tar.gz
      file: path={{jenkins_home}}/jenkins-tools.tar.gz state=absent
+
+   - name: slave setup | download {{artifacts_url}}
+     get_url: url={{artifacts_url}} dest={{jenkins_home}}
+
+   - name: slave setup | untar jenkins-artifacts.tar.gz
+     unarchive: copy=no src={{jenkins_home}}/jenkins-artifacts.tar.gz dest={{jenkins_home}}/ creates=yes
+
+   - name: slave setup | rm {{jenkins_home}}/jenkins-artifacts.tar.gz
+     file: path={{jenkins_home}}/jenkins-artifacts.tar.gz state=absent
 
    - name: slave setup | download id_rsa
      get_url: url={{id_rsa_url}} dest={{root_ssh}}/id_rsa
