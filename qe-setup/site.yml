@@ -70,7 +70,6 @@
 
    - name: slave setup | copy known_hosts
      shell: "ssh-keyscan -H github.com >> /root/.ssh/known_hosts"
-     tags: known_hosts
 
    - name: slave setup | append authorized_keys
      authorized_key: user=root state=present key="{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
