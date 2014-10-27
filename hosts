@@ -7,7 +7,7 @@
 54.88.225.158
 
 [centos5]
-54.210.120.41
+#54.210.120.41
 54.236.81.179
 
 [centos6]
@@ -27,20 +27,21 @@ ec2-54-165-226-209.compute-1.amazonaws.com
 ansible_ssh_private_key_file=
 
 [sles11sp1:vars]
-ansible_ssh_private_key_file=
+ansible_ssh_private_key_file=~/.ssh/ec2-keypair.pem
 ansible_ssh_user=root
 
 [sles11sp3:vars]
-ansible_ssh_private_key_file=
+ansible_ssh_private_key_file=~/.ssh/ec2-keypair.pem
 ansible_ssh_user=root
 
 [centos6:vars]
-ansible_ssh_private_key_file=~/.ssh/ec2-keypair.pem
+ansible_ssh_private_key_file=${USER}/.ec2/ec2-keypair
 ansible_ssh_user=ec2-user
 
 [centos5:vars]
-ansible_python_interpreter=
-ansible_ssh_private_key_file=
+#ansible_python_interpreter=
+ansible_ssh_private_key_file=/Users/gkesavan/.ec2/ec2-keypair
+remote_tmp=/tmp/tmp
 ansible_ssh_user=root
 
 [debian6:vars]
