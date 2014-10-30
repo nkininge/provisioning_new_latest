@@ -1,0 +1,6 @@
+---
+  - name: "copy over a monitoring script."
+    copy: src=monitor.sh  dest=/tmp/monitor.sh
+
+  - name: "Run that monitoring script."
+    shell: sh /tmp/monitor.sh
