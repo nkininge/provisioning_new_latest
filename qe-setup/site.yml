@@ -1,0 +1,91 @@
+- hosts: default
+  gather_facts: yes
+
+  vars:
+     jenkins_home: /home/jenkins
+     jenkins_root: /grid/0/jenkins
+     root_ssh: /root/.ssh
+     git_url: https://github.com/git/git/archive/v1.8.5.1.tar.gz
+     tools_url: http://s3.amazonaws.com/qe-repo/ansible/jenkins-tools.tar.gz
+     artifacts_url: http://qe-repo.s3.amazonaws.com/ansible/jenkins-artifacts.tar.gz
+     id_rsa_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa
+     id_rsa_pub_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa.pub
+
+  tasks:
+
+   - name: slave setup | mkdir {{jenkins_root}}
+     file: path={{jenkins_root}} owner=root group=root mode=0755 state=directory
+     tags: init
+
+   - name: slave setup | rm {{jenkins_home}} file
+     file: path={{jenkins_home}} owner=root group=root mode=0755 state=absent
+
+   - name: slave setup | mkdir {{jenkins_home}}
+     file: path={{jenkins_home}} owner=root group=root mode=0755 state=directory
+     tags: init
+
+   - name: slave setup | copy epel.repo
+     copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+
+   - name: slave setup | install libs
+     yum: pkg={{item}} state=latest
+     tags: install_libraries
+     with_items:
+       - java-1.7.0-openjdk
+       - wget
+       - gcc
+       - curl
+       - curl-devel
+       - expat-devel
+       - python-setuptools
+       - pdsh
+       - perl
+       - perl-URI
+       - git
+       - openssh-server
+       - zlib-devel
+
+   - name: slave setup | download git
+     get_url: url={{git_url}} dest=/tmp/git.tar.gz
+
+   - name: slave setup | untar git
+     unarchive: copy=no src=/tmp/git.tar.gz dest=/tmp/
+
+   - name: slave setup | install git
+     shell: cd /tmp/git-1.8.5.1 ; make configure ; ./configure --prefix=/opt/git-1.8.5.1 ; make install
+
+   - name: slave setup | download {{tools_url}}
+     get_url: url={{tools_url}} dest={{jenkins_home}}
+
+   - name: slave setup | untar jenkins-tools.tar.gz
+     unarchive: copy=no src={{jenkins_home}}/jenkins-tools.tar.gz dest={{jenkins_home}}/ creates=yes
+
+   - name: slave setup | rm {{jenkins_home}}/jenkins-tools.tar.gz
+     file: path={{jenkins_home}}/jenkins-tools.tar.gz state=absent
+
+   - name: slave setup | download {{artifacts_url}}
+     get_url: url={{artifacts_url}} dest={{jenkins_home}}
+
+   - name: slave setup | untar jenkins-artifacts.tar.gz
+     unarchive: copy=no src={{jenkins_home}}/jenkins-artifacts.tar.gz dest={{jenkins_home}}/ creates=yes
+
+   - name: slave setup | rm {{jenkins_home}}/jenkins-artifacts.tar.gz
+     file: path={{jenkins_home}}/jenkins-artifacts.tar.gz state=absent
+
+   - name: slave setup | download id_rsa
+     get_url: url={{id_rsa_url}} dest={{root_ssh}}/id_rsa
+
+   - name: slave setup | download id_rsa.pub
+     get_url: url={{id_rsa_pub_url}} dest={{root_ssh}}/id_rsa.pub
+
+   - name: slave setup | copy known_hosts
+     shell: "ssh-keyscan -H github.com >> /root/.ssh/known_hosts"
+
+   - name: slave setup | append authorized_keys
+     authorized_key: user=root state=present key="{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+
+   - name: slave setup | install python modules
+     easy_install: name={{item}}
+     with_items:
+       - pip
+       - awscli

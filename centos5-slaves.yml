@@ -8,10 +8,10 @@
     jenkins_configuration: /etc/default/jenkins
     jenkins_run_standalone: yes
     jenkins_name: jenkins
-    gpg_file:
-    nexus_file:
-    security_file:
-    remote_tmp: /tmp/ansible
+    push_password: false
+    gpg_file: ~/password_gpg.txt
+    nexus_file: ~/nexus_password.txt
+    security_file: ~/settings-security.xml
 
   roles:
     - common
