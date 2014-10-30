@@ -1,0 +1,10 @@
+- hosts: nexus
+  gather_facts: yes
+  vars:
+    lowbound:   15
+
+  tasks:
+    - name:  trillian
+      action: shell expr '(' '('  '{{item.size_available}}'  '*'  100 ')' '/' '{{item.size_total}}' ')'  '>' '{{lowbound}}'
+      with_items: ansible_mounts
+
