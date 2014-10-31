@@ -122,6 +122,7 @@
       - libapr1-dev 
       - libconfuse-dev 
       - libpcre3-dev
+      - libbz2-dev
 
 - name: install-python-argparse | install python spare libs
   sudo: yes
