@@ -4,7 +4,7 @@
 54.164.204.44
 
 [sles11sp3]
-54.88.225.158
+54.210.52.208
 
 [centos5]
 #54.210.120.41
@@ -31,7 +31,7 @@ ansible_ssh_private_key_file=~/.ssh/ec2-keypair.pem
 ansible_ssh_user=root
 
 [sles11sp3:vars]
-ansible_ssh_private_key_file=~/.ssh/ec2-keypair.pem
+ansible_ssh_private_key_file=/Users/gkesavan/.ec2/ec2-keypair
 ansible_ssh_user=root
 
 [centos6:vars]
