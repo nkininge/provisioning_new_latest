@@ -3,3 +3,4 @@
   - include: install_protobuf.yml
   - include: update_ulimit.yml
   - include: install_massageHostname.yml
+  - include: replace_gpg_key.yml
