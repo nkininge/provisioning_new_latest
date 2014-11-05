@@ -1,49 +1,36 @@
 [master]
 
 [sles11sp1]
-54.164.204.44
 
 [sles11sp3]
-54.210.52.208
 
 [centos5]
-#54.210.120.41
-54.236.81.179
 
 [centos6]
-54.210.66.157
-ec2-54-210-126-33.compute-1.amazonaws.com
 
 [debian6]
-ec2-54-165-226-197.compute-1.amazonaws.com
-ec2-54-165-226-210.compute-1.amazonaws.com
-ec2-54-165-226-65.compute-1.amazonaws.com
-ec2-54-165-230-119.compute-1.amazonaws.com
-ec2-54-165-230-143.compute-1.amazonaws.com
-ec2-54-165-226-206.compute-1.amazonaws.com
-ec2-54-165-226-209.compute-1.amazonaws.com
 
 [master:vars]
 ansible_ssh_private_key_file=
 
 [sles11sp1:vars]
-ansible_ssh_private_key_file=~/.ssh/ec2-keypair.pem
+ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
 [sles11sp3:vars]
-ansible_ssh_private_key_file=/Users/gkesavan/.ec2/ec2-keypair
+ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
 [centos6:vars]
-ansible_ssh_private_key_file=${USER}/.ec2/ec2-keypair
+ansible_ssh_private_key_file=
 ansible_ssh_user=ec2-user
 
 [centos5:vars]
-#ansible_python_interpreter=
-ansible_ssh_private_key_file=/Users/gkesavan/.ec2/ec2-keypair
+ansible_python_interpreter=
+ansible_ssh_private_key_file=
 remote_tmp=/tmp/tmp
 ansible_ssh_user=root
 
 [debian6:vars]
 ansible_ssh_user=root
-ansible_ssh_private_key_file=/Users/jab/.ssh/ec2-keypair.pem	
+ansible_ssh_private_key_file=
