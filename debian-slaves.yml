@@ -14,6 +14,7 @@
     gpg_file: ~/password_gpg.txt
     nexus_file: ~/nexus_password.txt
     security_file: ~/settings-security.xml
+    ec2_hostname: False
 
 
   roles:

@@ -25,6 +25,7 @@
     autoconf_url: "http://ftp.gnu.org/gnu/autoconf/autoconf-2.63.tar.gz"
     node_js_url: "http://nodejs.org/dist/v{{node_version}}/node-v{{node_version}}-linux-x64.tar.gz"
     node_version: "0.10.28"
+    ec2_hostname: False
 
   roles:
     - common

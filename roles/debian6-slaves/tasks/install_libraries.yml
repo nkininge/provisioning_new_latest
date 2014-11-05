@@ -98,7 +98,7 @@
       - sharutils
       - texlive-latex-base
       - xmlto
-      - libgd2-xpm-dev
+     # - libgd2-xpm-dev
       - libperl-dev 
       - libpng-dev
       - hardening-wrapper
