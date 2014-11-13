@@ -1,0 +1,7 @@
+#!/usr/bin/expect -f
+
+spawn gpg [lindex $argv 0]/jenkins-gpg-keys.tar.gz.gpg
+
+expect -exact "*passphrase*"
+send -- "[lindex $argv 1]\r"
+expect eof

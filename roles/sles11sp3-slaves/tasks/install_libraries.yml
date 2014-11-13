@@ -45,6 +45,7 @@
       - rrdtool-devel 
       - ant 
       - ant-nodeps
+      - pcre-devel
 
   - name: install-python-argparse | install python spare libs
     sudo: yes

@@ -1,0 +1,46 @@
+- name: Replace gpg key | Pre clean up
+  sudo: yes
+  sudo_user: jenkins
+  shell: rm -rf {{ jenkins_home }}/jenkins-gpg-keys{,.tar.gz,.tar.gz.gpg}
+  tags: replace_gpg_key
+
+- name: Replace gpg key | Download gpg keys
+  sudo: yes
+  sudo_user: jenkins
+  get_url: url={{ gpgkeys_url }}.gpg
+           dest={{ jenkins_home }}/jenkins-gpg-keys.tar.gz.gpg
+  tags: replace_gpg_key
+
+- name: Replace gpg key | Extract gpg keys
+  sudo: yes
+  sudo_user: jenkins
+  script: extract_gpg_tarball.exp {{ jenkins_home }} {{ gpg_tarball_pass }}
+  tags: replace_gpg_key
+
+
+- name: Replace gpg key | Untar gpg keys archive
+  sudo: yes
+  sudo_user: jenkins
+  unarchive: copy=no src={{jenkins_home}}/jenkins-gpg-keys.tar.gz
+      dest={{jenkins_home}}/
+  tags: replace_gpg_key
+
+- name: Replace gpg key | delete gpg secret key
+  sudo: yes
+  sudo_user: jenkins
+  shell: "gpg --batch --yes --delete-secret-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD"
+  ignore_errors: yes
+  tags: replace_gpg_key
+
+- name: Jenkins Slave Setup - Import gpg secret
+  sudo: yes
+  sudo_user: jenkins
+  shell: "gpg --allow-secret-key-import --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_sec_no_passphrase.gpg"
+  ignore_errors: yes
+  tags: replace_gpg_key
+
+- name: Replace gpg key | Post clean up
+  sudo: yes
+  sudo_user: jenkins
+  shell: rm -rf {{ jenkins_home }}/jenkins-gpg-keys{,.tar.gz,.tar.gz.gpg}
+  tags: replace_gpg_key
