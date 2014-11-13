@@ -1,0 +1,7 @@
+- hosts: jenkins
+  gather_facts: yes
+  vars:
+    upperbound:   90
+
+  roles:
+    - jenkins-monitor
