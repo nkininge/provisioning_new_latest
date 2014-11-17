@@ -133,7 +133,6 @@
       - libbz2-dev
       - rubygems
       - python-argparse
-      - libstdc++-4.8-dev
 
 - name: install_libraries | install python spare libs
   sudo: yes
