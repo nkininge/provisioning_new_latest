@@ -1,0 +1,23 @@
+- hosts: default
+  gather_facts: yes
+  vars:
+    jenkins_user_uid: 1001
+    slave: False
+    jenkins_user: jenkins
+    jenkins_group: users
+    jenkins_configuration: /etc/default/jenkins
+    jenkins_run_standalone: yes
+    jenkins_name: jenkins
+    gem2deb_url: http://ftp.de.debian.org/debian/pool/main/g/gem2deb/gem2deb_0.9.1.tar.xz
+    protobuf_url: https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+    push_password: false
+    gpg_file: ~/password_gpg.txt
+    nexus_file: ~/nexus_password.txt
+    security_file: ~/settings-security.xml
+    ec2_hostname: False
+
+
+  roles:
+    - common
+    - jenkins-slaves
+
