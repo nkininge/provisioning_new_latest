@@ -9,9 +9,8 @@
     shell: MAX="{{upperbound}}" sh /tmp/monitor.sh
     register: mergatroid
 
-  - name: "remove target-script first."
+  - name: "remove target-script before thinking we are done."
     file: path=/tmp/monitor.sh state=absent
-
 
   - name: "Tell what we learned."
     debug: msg="{{mergatroid.stdout}}"
