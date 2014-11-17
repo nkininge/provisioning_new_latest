@@ -1,5 +1,5 @@
-- hosts: debian6
-  gather_facts: no
+- hosts: default
+  gather_facts: yes
   vars:
     jenkins_user_uid: 1001
     slave: False
@@ -9,7 +9,7 @@
     jenkins_run_standalone: yes
     jenkins_name: jenkins
     gem2deb_url: http://ftp.de.debian.org/debian/pool/main/g/gem2deb/gem2deb_0.9.1.tar.xz
-    protobuf_url: "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
+    protobuf_url: https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
     push_password: false
     gpg_file: ~/password_gpg.txt
     nexus_file: ~/nexus_password.txt
@@ -19,5 +19,5 @@
 
   roles:
     - common
-    - debian6-slaves
+    - jenkins-slaves
 

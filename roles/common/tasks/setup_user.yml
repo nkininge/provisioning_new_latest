@@ -1,50 +1,63 @@
 ---
-  - name: Configuring Jenkins - Add group
+  - name: setup_user | Add group
     sudo: yes
     sudo_user: root
-    group: name={{jenkins_group}} state=present
+    tags: setup_user
+    group: name="{{item}}" state=present
+    with_items:
+      - "{{jenkins_group}}"
+      - docker
 
-  - name: Configuring Jenkins - Add user
+  - name: setup_user | Add user
     sudo: yes
     sudo_user: root
+    tags: setup_user
     user: name="jenkins" home={{jenkins_home}} uid={{ jenkins_user_uid }}
       group={{jenkins_group}} comment="Jenkins Slave" shell="/bin/bash"
 
-  - name: Configuring Jenkins - ssh keys - Download
+  - name: setup_user | ssh keys - Download
     sudo: yes
     sudo_user: jenkins
+    tags: setup_user
     get_url: url={{ ssh_url }} dest={{jenkins_home}}/hortonworksre.tar.gz
 
-  - name: Configuring Jenkins - ssh keys - untar
+  - name: setup_user | ssh keys - untar
     sudo: yes
     sudo_user: jenkins
+    tags: setup_user
     unarchive: copy=no src={{jenkins_home}}/hortonworksre.tar.gz dest={{jenkins_home}}/
 
   - name: setup_user | create ssh directory
     sudo: yes
     sudo_user: jenkins
+    sudo_user: jenkins
+    tags: setup_user
     file: path={{jenkins_home}}/.ssh state=directory mode=700
    
-  - name: Configuring Jenkins - ssh keys - id_rsa
+  - name: setup_user | ssh keys - id_rsa
     sudo: yes
     sudo_user: jenkins
+    tags: setup_user
     command: cp {{jenkins_home}}/hortonworksre/id_rsa {{jenkins_home}}/.ssh/id_rsa
 
-  - name: Configuring Jenkins - ssh keys - id_rsa.pub
+  - name: setup_user | ssh keys - id_rsa.pub
     sudo: yes
     sudo_user: jenkins
+    tags: setup_user
     command: cp {{jenkins_home}}/hortonworksre/id_rsa.pub {{jenkins_home}}/.ssh/id_rsa.pub
 
-  - name: Configuring Jenkins - ssh keys - authorized_keys
+  - name: setup_user | ssh keys - authorized_keys
     sudo: yes
     sudo_user: jenkins
+    tags: setup_user
     command: cp {{jenkins_home}}/hortonworksre/authorized_keys {{jenkins_home}}/.ssh/authorized_keys
              removes={{jenkins_home}}/hortonworksre/
 
-  - name: Configuring Jenkins - ssh keys - file attributes for authorized keys
+  - name: setup_user | ssh keys - file attributes for authorized keys
     sudo: yes
     sudo_user: jenkins
     file: path={{jenkins_home}}/.ssh/{{item.name}} mode={{item.attr}} state=file
+    tags: setup_user
     with_items:
      - {name: id_rsa, attr: 600}
      - {name: id_rsa.pub,  attr: 644}
