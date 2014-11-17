@@ -145,7 +145,7 @@
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
   sudo_user: root
-  gem:  name={{items}}
+  gem:  name={{item}}
   tags: install_libraries
   tags: install_rubygems
   with_items:
