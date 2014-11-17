@@ -4,3 +4,8 @@
 
   - name: "Run that monitoring script."
     shell: MAX="{{upperbound}}" sh /tmp/monitor.sh
+    register: mergatroid
+
+  - name: "Tell what we learned."
+    debug: msg="{{mergatroid}}"
+
