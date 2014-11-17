@@ -6,15 +6,14 @@
     - debian-keyring
     - debian-archive-keyring
   tags: install_libraries
-  when: ansible_distribution="Debian"
+  when: ansible_distribution == 'Debian'
 
 - name: install_libraries | add deb squeeze repo
   sudo: yes
   apt_repository: repo='deb http://ftp.us.debian.org/debian squeeze main'
     state=present
   tags: install_libraries
-  when: ansible_distribution="Debian"
-
+  when: ansible_distribution == 'Debian'
 
 - name: Install_Libraries | Install Debian Libraries and build Tools
   sudo: yes
@@ -134,7 +133,6 @@
       - libbz2-dev
       - rubygems
       - python-argparse
-      - libstdc++-4.8-dev
 
 - name: install_libraries | install python spare libs
   sudo: yes
@@ -147,7 +145,7 @@
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
   sudo_user: root
-  gem:  name={{items}}
+  gem:  name={{item}}
   tags: install_libraries
   tags: install_rubygems
   with_items:
