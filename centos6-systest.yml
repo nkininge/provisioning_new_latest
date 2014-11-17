@@ -62,4 +62,5 @@
      internal_hosts_file: "{{lookup('env','PWD')}}/internal-hosts-file"
      external_hosts_file: "{{lookup('env','PWD')}}/hosts-file"
   roles:
+    - common
     - centos-systest
