@@ -1,6 +1,5 @@
 - name: install_massageHostname | Install EC2 hostname
   cron: name="Install standard EC2 hostname"
         job="hostname `  curl -s http://169.254.169.254/latest/meta-data/hostname  ` "
-        special_time=reboot
+        special_time=reboot user=root
   tags: install_massageHostname
-  when: ec2_hostname
