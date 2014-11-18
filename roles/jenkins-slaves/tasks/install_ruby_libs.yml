@@ -1,0 +1,17 @@
+---
+- name: install_ruby_libs | Install Ruby Libraries and build Tools
+  sudo: yes
+  sudo_user: root
+  yum: name={{item}}  state=latest
+  tags: install_ruby_libs
+  with_items:
+  - rubygems
+
+- name: install_ruby_libs.yml | Install Ruby Libraries and Debian build Tools
+  sudo: yes
+  sudo_user: root
+  gem:  name={{item}}
+  tags: install_ruby_libs
+  with_items: 
+  - gem2deb
+  - json

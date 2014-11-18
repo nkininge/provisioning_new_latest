@@ -1,11 +1,11 @@
 ---
-  - name: Jenkins Slave Setup - Download gpg keys
+  - name: setup_user_configs | Download gpg keys
     sudo: yes
     sudo_user: jenkins
     get_url: url={{ gpgkeys_url }}
             dest={{ jenkins_home }}/jenkins-gpg-keys.tar.gz
 
-  - name: Jenkins Slave Setup - Untar gpg keys archive
+  - name: setup_user_configs | Untar gpg keys archive
     sudo: yes
     sudo_user: jenkins
     unarchive: copy=no src={{jenkins_home}}/jenkins-gpg-keys.tar.gz
@@ -17,16 +17,14 @@
     shell: "gpg --batch --yes --delete-secret-and-public-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD"
     ignore_errors: yes
 
-  - name: Jenkins Slave Setup - Import gpg pub
+  - name:setup_user_configs | Import gpg pub
     sudo: yes
     sudo_user: jenkins
     shell: "gpg --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_pub.gpg"
     ignore_errors: yes
 
-  - name: Jenkins Slave Setup - Import gpg secret
+  - name: setup_user_configs | Import gpg secret
     sudo: yes
     sudo_user: jenkins
     shell: "gpg --allow-secret-key-import --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
     ignore_errors: yes
-
-  

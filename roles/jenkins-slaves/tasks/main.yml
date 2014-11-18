@@ -1,6 +1,25 @@
 ---
+  - include: squeeze_repo_setup.yml
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'squeeze'
+
   - include: install_libraries.yml
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - include: centos6_repo_setup.yml
+    when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int == 6
+
+  - include: centos6_install_libraries.yml
+    when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int == 6
+
   - include: install_protobuf.yml
+  - include: install_node_js.yml
   - include: update_ulimit.yml
   - include: install_massageHostname.yml
+  - include: install_ruby_libs.yml
+  - include: install_python_libs.yml
+
+  - include: centos_rpm_gpg_import.yml
+    when: ansible_os_family == "RedHat"
+
   - include: replace_gpg_key.yml
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

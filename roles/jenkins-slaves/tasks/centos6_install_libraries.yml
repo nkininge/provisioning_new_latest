@@ -1,0 +1,84 @@
+---
+  - name: install_libraries | uninstall 
+    sudo: yes
+    sudo_user: root
+    yum: pkg={{item}} state=absent
+    tags: install_libraries
+    with_items:
+      - postgresql-libs
+
+  - name: install_libraries | 
+    sudo: yes
+    sudo_user: root
+    tags: install_libs
+    yum: pkg={{item}} state=latest 
+    tags: install_libraries
+    with_items:
+      - gd-devel
+      - libpng-devel
+      - libjpeg-devel
+      - cairo-devel
+      - gettext-devel
+      - intltool
+      - lua-devel
+      - pango-devel
+      - xulrunner-devel
+      - openssl-devel 
+      - intltool 
+      - cairo-devel 
+      - libxml2-devel 
+      - ruby 
+      - ruby-devel 
+      - tcl-devel
+      - gettext-devel 
+      - lua-devel 
+      - tk-devel 
+      - xulrunner-devel 
+      - python-setuptools
+      - rrdtool-python
+      - clamav
+      - python-virtualenv
+      - openssh-clients
+      - lsb 
+      - git
+      - wget 
+      - openldap-devel
+      - mysql-devel 
+      - fuse-devel 
+      - lzo-devel
+      - texlive-latex
+      - pam-devel 
+      - tetex-latex
+      - fakeroot
+      - gcc
+      - cppunit 
+      - cppunit-devel 
+      - snappy-devel
+      - http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm
+      - http://s3tools.org/repo/RHEL_6/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm
+      - pdsh
+      - xalan-j2
+      - glib2
+      - cpio
+      - cppunit-devel
+      - ant-nodeps
+      - ant
+      - libstdc++
+      - s3cmd
+      - ant-apache-bcel
+      - zlib-devel
+      - gcc-c++
+
+  -name: install_libraries | download ruby
+   get_url: src=http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz dest=/tmp/ruby-1.9.3-p484.tar.gz
+  
+  -name: install_libraries | unarchive ruby tar.gz 
+   unarchive: src=/tmp/ruby-1.9.3-p484.tar.gz dest=/tmp/ruby-1.9.3-p484 copy=no
+
+  -name: install_libraries | install ruby from src
+   shell: ./configure ; make -j12; make install; 
+   args: 
+     chdir: /tmp/ruby-1.9.3-p484
+
+  -name: install_libraries | rm /tmp/ruby-1.9.3-p484
+   shell: rm -rf /tmp/ruby-1.9.3-p484.tar.gz /tmp/ruby-1.9.3-p484
