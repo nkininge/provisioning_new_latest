@@ -1,6 +1,6 @@
 ---
 -name: centos_env_setup | download 
- get_url: src=http://s3.amazonaws.com/dev.hortonworks.com/RLENG/RPM-GPG-KEY-Jenkins dest=/tmp/RPM-GPG-KEY-Jenkins
+ get_url: src='http://s3.amazonaws.com/dev.hortonworks.com/RLENG/RPM-GPG-KEY-Jenkins' dest=/tmp/RPM-GPG-KEY-Jenkins
 
 -name: centos_env_setup | rpm --import
  sudo: yes
@@ -10,7 +10,7 @@
 -name: centos_env_setup | setup rpmmacros
  sudo: yes
  sudo_user: jenkins
- get_url: src=http://s3.amazonaws.com/dev.hortonworks.com/RLENG/rpmmacros.tar.gz dest=${{jenkins_home}}/rpmmacros.tar.gz
+ get_url: src='http://s3.amazonaws.com/dev.hortonworks.com/RLENG/rpmmacros.tar.gz' dest={{jenkins_home}}/rpmmacros.tar.gz
 
 -name: centos_env_setup | unarchive rpmmacros.tar.gz
  unarchive: src={{jenkins_home}}/rpmmacros.tar.gz dest={{jenkins_home}}/
