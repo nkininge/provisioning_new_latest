@@ -84,4 +84,4 @@
       chdir: /tmp/ruby-1.9.3-p484
 
   - name: install_libraries | rm /tmp/ruby-1.9.3-p484
-     shell: rm -rf /tmp/ruby-1.9.3*
+    shell: rm -rf /tmp/ruby-1.9.3*
