@@ -8,8 +8,8 @@
   - include: centos_env_setup.yml
     when: ansible_os_family == 'RedHat'
 
-  - include: centos6_install_libraries.yml
-    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '6'
+  - include: centos_install_libraries.yml
+    when: ansible_os_family == 'RedHat'
 
   - include: install_protobuf.yml
   - include: install_node_js.yml

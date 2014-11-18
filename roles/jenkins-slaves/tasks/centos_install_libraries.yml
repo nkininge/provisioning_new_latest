@@ -57,8 +57,6 @@
       - cppunit 
       - cppunit-devel 
       - snappy-devel
-      - 'http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm'
-      - 'http://s3tools.org/repo/RHEL_6/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm'
       - pdsh
       - xalan-j2
       - glib2
@@ -85,3 +83,7 @@
 
   - name: install_libraries | rm /tmp/ruby-1.9.3-p484
     shell: rm -rf /tmp/ruby-1.9.3*
+
+  - name: install_libraries | install alien
+    yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
+    when: ansible_lsb.major_release == '6'
