@@ -1,27 +1,27 @@
 ---
   - name: install_node_js | Download node js
     get_url: url={{node_js_url}} dest=/tmp/node-v{{node_version}}-linux-x64.tar.gz
-    tag: install_node_js
+    tags: install_node_js
 
   - name: install_node_js | rm /usr/local/bin/{npm,node} 
     shell: rm -rf /usr/local/bin/{npm,node} 
-    tag: install_node_js
+    tags: install_node_js
 
   - name: install_node_js | untar node js
     unarchive: copy=no src=/tmp/node-v{{node_version}}-linux-x64.tar.gz dest=/usr/local
-    tag: install_node_js
+    tags: install_node_js
 
   - name: install_node_js | rm /usr/local/bin/{npm,node} 
     shell: rm -rf /usr/local/bin/{npm,node}
-    tag: install_node_js
+    tags: install_node_js
 
   - name: install_node_js | symlink node and npm
     file: src={{item.src_path}}  dest={{item.dest}} state=link
     with_items:
       - { src_path: '/usr/local/node-v{{node_version}}-linux-x64/bin/npm', dest: '/usr/local/bin/npm' }
       - { src_path: '/usr/local/node-v{{node_version}}-linux-x64/bin/node', dest: '/usr/local/bin/node' }
-    tag: install_node_js
+    tags: install_node_js
 
   - name: install_node_js | brunch install
     shell: /usr/local/bin/npm install -g brunch 
-    tag: install_node_js
+    tags: install_node_js
