@@ -69,6 +69,13 @@
       - ant-apache-bcel
       - zlib-devel
       - gcc-c++
+      - lsb
+      - rpm-build
+      - redhat-rpm-config
+      - libtool
+      - fuse
+      - fuse-devel
+      - fuse-libs
 
   - name: install_libraries | download ruby
     get_url: url='http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz' dest=/tmp/ruby-1.9.3-p484.tar.gz
