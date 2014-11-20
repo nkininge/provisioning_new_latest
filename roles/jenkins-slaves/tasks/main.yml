@@ -11,6 +11,9 @@
   - include: centos_install_libraries.yml
     when: ansible_os_family == 'RedHat'
 
+  - include: centos5_install_libraries.yml
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
+
   - include: install_protobuf.yml
   - include: install_node_js.yml
   - include: update_ulimit.yml
