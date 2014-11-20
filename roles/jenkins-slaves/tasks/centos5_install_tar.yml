@@ -1,0 +1,9 @@
+---
+  - name: install_tar | Download tar
+    get_url: url={{tar_url}} dest=/tmp/tar-1.28.tar.gz
+
+  - name: install_tar | untar tar
+    unarchive: copy=no src=/tmp/tar-1.28.tar.gz dest=/tmp/
+
+  - name: install_tar | configure, make, make install 
+    shell: cd /tmp/tar-1.28 ; ./configure ; make clean ; make install
