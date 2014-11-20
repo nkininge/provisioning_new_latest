@@ -116,6 +116,7 @@
       - libbz2-dev
       - rubygems
       - python-argparse
+      - rubygems
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
