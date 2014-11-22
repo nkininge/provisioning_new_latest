@@ -146,5 +146,5 @@
   - raw: c:\temp\extract-zip.ps1  
     tags: installants
     register: file_info
-    when:  not antstat.stat.exists
+    # # # # # # # # #  # # # # # when:  not antstat.stat.exists
   - debug: var=file_info
