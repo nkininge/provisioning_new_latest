@@ -1,12 +1,4 @@
 ---
-- name: install_python_libs | install python spare libs
-  sudo: yes
-  easy_install: name={{item}}
-  tags: install_python_libs
-  with_items:
-   - pip
-   - requests
-
 - name: install-python-argparse | install python spare libs
   sudo: yes
   easy_install: name={{item}}

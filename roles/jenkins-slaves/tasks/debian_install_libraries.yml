@@ -115,7 +115,8 @@
       - libpcre3-dev
       - libbz2-dev
       - rubygems
-      - python-argpars
+      - python-argparse
+      - rubygems
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes

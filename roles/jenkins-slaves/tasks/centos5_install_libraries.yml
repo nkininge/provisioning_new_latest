@@ -1,0 +1,9 @@
+---
+  - name: install_libraries | yum install
+    sudo: yes
+    sudo_user: root
+    yum: pkg={{item}} state=latest
+    tags: install_libraries
+    with_items:
+      - python26
+    ignore_errors: yes

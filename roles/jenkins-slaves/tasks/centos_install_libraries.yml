@@ -6,6 +6,9 @@
     tags: install_libraries
     with_items:
       - postgresql-libs
+      - rrdtool-1.2.27
+      - ruby-libs-1.8.7.352
+    ignore_errors: yes
 
   - name: install_libraries | 
     sudo: yes
@@ -54,8 +57,6 @@
       - cppunit 
       - cppunit-devel 
       - snappy-devel
-      - 'http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm'
-      - 'http://s3tools.org/repo/RHEL_6/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm'
       - pdsh
       - xalan-j2
       - glib2
@@ -68,17 +69,31 @@
       - ant-apache-bcel
       - zlib-devel
       - gcc-c++
+      - lsb
+      - rpm-build
+      - redhat-rpm-config
+      - libtool
+      - fuse
+      - fuse-devel
+      - fuse-libs
+      - asciidoc
+      - xmlto
+      - expect
 
-  -name: install_libraries | download ruby
-   get_url: url='http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz' dest=/tmp/ruby-1.9.3-p484.tar.gz
+  - name: install_libraries | download ruby
+    get_url: url='http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz' dest=/tmp/ruby-1.9.3-p484.tar.gz
   
-  -name: install_libraries | unarchive ruby tar.gz 
-   unarchive: src=/tmp/ruby-1.9.3-p484.tar.gz dest=/tmp/ruby-1.9.3-p484 copy=no
+  - name: install_libraries | unarchive ruby tar.gz
+    unarchive: src=/tmp/ruby-1.9.3-p484.tar.gz dest=/tmp/ copy=no
 
-  -name: install_libraries | install ruby from src
-   shell: ./configure ; make -j12; make install; 
-   args: 
-     chdir: /tmp/ruby-1.9.3-p484
+  - name: install_libraries | install ruby from src
+    shell: ./configure ; make -j12; make install;
+    args:
+      chdir: /tmp/ruby-1.9.3-p484
 
-  -name: install_libraries | rm /tmp/ruby-1.9.3-p484
-   shell: rm -rf /tmp/ruby-1.9.3-p484.tar.gz /tmp/ruby-1.9.3-p484
+  - name: install_libraries | rm /tmp/ruby-1.9.3-p484
+    shell: rm -rf /tmp/ruby-1.9.3*
+
+  - name: install_libraries | install alien
+    yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
+    when: ansible_lsb.major_release == '6'

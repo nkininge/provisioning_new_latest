@@ -6,10 +6,16 @@
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - include: centos_env_setup.yml
-    when: ansible_os_family == "RedHat"
+    when: ansible_os_family == 'RedHat'
 
-  - include: centos6_install_libraries.yml
-    when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int == 6
+  - include: centos_install_libraries.yml
+    when: ansible_os_family == 'RedHat'
+
+  - include: centos5_install_libraries.yml
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
+
+  - include: centos5_install_tar.yml
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
 
   - include: install_protobuf.yml
   - include: install_node_js.yml
@@ -18,8 +24,8 @@
   - include: install_ruby_libs.yml
   - include: install_python_libs.yml
 
-  - include: centos_rpm_gpg_import.yml
-    when: ansible_os_family == "RedHat"
+  - include: centos_env_setup.yml
+    when: ansible_os_family == 'RedHat'
 
   - include: replace_gpg_key.yml
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
