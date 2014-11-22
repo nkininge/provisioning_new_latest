@@ -1,0 +1,150 @@
+- name: Create a set of VMs ready to run Hortonworks tests.
+  hosts: windows
+  gather_facts: true
+  vars:
+    BUILD_USER_ID:   "{{lookup('env', 'USER')}}"
+  tags: initialsetupExample
+  tasks:
+  - win_stat: path='C:\horton'
+    register: file_info
+  - debug: var=file_info
+
+  - win_stat: path='c:\horton'
+    register: hortonstats
+  - raw: mkdir c:\horton
+    when:  not hortonstats.stat.exists
+  
+  - win_stat: path='c:\temp'
+    register: tempoutput
+  - debug: var=tempoutput
+  - raw: mkdir c:\temp
+    when:  not tempoutput.stat.exists
+
+  - win_stat:  path='c:\temp\Git-1.7.11-preview20120710.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/Git-1.7.11-preview20120710.exe' dest='c:\temp\Git-1.7.11-preview20120710.exe'
+    when: not filestat.stat.exists
+
+
+  - win_stat:  path='c:\temp\apache-ant-1.7.1-bin.zip'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-ant-1.7.1-bin.zip' dest='c:\temp\apache-ant-1.7.1-bin.zip'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\apache-ant-1.8.4-bin.zip'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-ant-1.8.4-bin.zip' dest='c:\temp\apache-ant-1.8.4-bin.zip'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\apache-forrest-0.8.zip'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-forrest-0.8.zip' dest='c:\temp\apache-forrest-0.8.zip'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\coreutils-5.3.0.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/coreutils-5.3.0.exe' dest='c:\temp\coreutils-5.3.0.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\diffutils-2.8.7-1.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/diffutils-2.8.7-1.exe' dest='c:\temp\diffutils-2.8.7-1.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\dotNetFx40_Full_x86_x64_SC.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/dotNetFx40_Full_x86_x64_SC.exe' dest='c:\temp\dotNetFx40_Full_x86_x64_SC.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\jdk-6-builds-maven-settings.xml'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-6-builds-maven-settings.xml' dest='c:\temp\jdk-6-builds-maven-settings.xml'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\jdk-6u35-windows-x64.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-6u35-windows-x64.exe' dest='c:\temp\jdk-6u35-windows-x64.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\jdk-7-builds-maven-settings.xml'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-builds-maven-settings.xml' dest='c:\temp\jdk-7-builds-maven-settings.xml'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\jdk-7-windows-x64.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-windows-x64.exe' dest='c:\temp\jdk-7-windows-x64.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\jdk-7u12-ea-bin-b05-windows-x64-12_dec_2012.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7u12-ea-bin-b05-windows-x64-12_dec_2012.exe' dest='c:\temp\jdk-7u12-ea-bin-b05-windows-x64-12_dec_2012.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\openjdk7-Mahadevan.zip'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/openjdk7-Mahadevan.zip' dest='c:\temp\openjdk7-Mahadevan.zip'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\publicpreview-ms5-maven-settings.xml'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/publicpreview-ms5-maven-settings.xml' dest='c:\temp\publicpreview-ms5-maven-settings.xml'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\rubyinstaller-1.9.3-p327.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/rubyinstaller-1.9.3-p327.exe' dest='c:\temp\rubyinstaller-1.9.3-p327.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\vc_web.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/vc_web.exe' dest='c:\temp\vc_web.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\which-2.20-setup.exe'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/which-2.20-setup.exe' dest='c:\temp\which-2.20-setup.exe'
+    when: not filestat.stat.exists
+
+  - win_stat:  path='c:\temp\extract-zip.ps1'
+    register:  filestat
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/extract-zip.ps1' dest='c:\temp\extract-zip.ps1'
+    register: file_info
+    when: not filestat.stat.exists
+  - debug: var=file_info
+
+  - win_stat: path='c:\horton\git'
+    register: gitstat
+  - debug: var=gitstat
+  - raw: c:\temp\Git-1.7.11-preview20120710.exe /verysilent /log=Git-1.7.11-preview20120710.log /SAVEINF=Git-1.7.11-preview20120710.inf /NORESTART /SP- /SUPPRESSMSGBOXES /DIR=C:\horton\git
+    tags: installgit
+    register: file_info
+    when:  not gitstat.stat.exists
+  - debug: var=file_info
+
+  - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
+    register: antstat
+  - debug: var=antstat
+  - raw: c:\temp\extract-zip.ps1  
+    tags: installants
+    register: file_info
+    when:  not antstat.stat.exists
+  - debug: var=file_info
