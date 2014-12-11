@@ -10,6 +10,8 @@
      artifacts_url: http://qe-repo.s3.amazonaws.com/ansible/jenkins-artifacts.tar.gz
      id_rsa_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa
      id_rsa_pub_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa.pub
+     python_27_url: http://qe-repo.s3.amazonaws.com/ansible/Python-2.7.8.tgz
+     ez_setup_url: http://qe-repo.s3.amazonaws.com/ansible/ez_setup.py
 
   tasks:
 
@@ -44,6 +46,10 @@
        - git
        - openssh-server
        - zlib-devel
+       - bzip2-devel
+       - openssl-devel
+       - ncurses-devel
+       - qlite-devel
 
    - name: slave setup | download git
      get_url: url={{git_url}} dest=/tmp/git.tar.gz
@@ -89,3 +95,31 @@
      with_items:
        - pip
        - awscli
+
+   - name: slave setup | download python27
+     get_url: url={{python_27_url}} dest=/tmp/python-2.7.8.tgz
+     tags: openstack
+
+   - name: slave setup | install python27
+     file: path=/opt/python-2.7.8 owner=root group=root mode=0755 state=directory
+     tags: openstack
+
+   - name: slave setup | untar python27
+     unarchive: copy=no src=/tmp/python-2.7.8.tgz dest=/opt/
+     tags: openstack
+
+   - name: slave setup | download ez_setup
+     get_url: url={{ez_setup_url}} dest=/opt/python-2.7.8/ez_setup.py
+     tags: openstack
+
+   - name: slave setup | install python27
+     shell: cd /opt/Python-2.7.8 ; "./configure --prefix=/opt/python-2.7.8" ; "make && make altinstall" ; "/opt/python-2.7.8/bin/python2.7 ez_setup.py"
+     tags: openstack
+
+   - name: slave setup | install pip
+     shell: "/opt/python-2.7.8/bin/easy_install-2.7 pip"
+     tags: openstack
+
+   - name: slave setup | install python nova, neutron clients
+     shell: "/opt/python-2.7.8/bin/pip2.7 install python-novaclient" ; "/opt/python-2.7.8/bin/pip2.7 install python-neutronclient"
+     tags: openstack
