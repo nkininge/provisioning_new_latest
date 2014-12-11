@@ -12,6 +12,7 @@
      id_rsa_pub_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa.pub
      python_27_url: http://qe-repo.s3.amazonaws.com/ansible/Python-2.7.8.tgz
      ez_setup_url: http://qe-repo.s3.amazonaws.com/ansible/ez_setup.py
+     limits_url: http://qe-repo.s3.amazonaws.com/ansible/limits.conf
 
   tasks:
 
@@ -123,3 +124,6 @@
    - name: slave setup | install python nova, neutron clients
      shell: "/opt/python-2.7.8/bin/pip2.7 install python-novaclient" ; "/opt/python-2.7.8/bin/pip2.7 install python-neutronclient"
      tags: openstack
+
+   - name: slave setup | download limits.conf
+     get_url: url={{limits_url}} dest=/etc/security/limits.conf
