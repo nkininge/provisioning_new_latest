@@ -101,12 +101,12 @@
      get_url: url={{python_27_url}} dest=/tmp/python-2.7.8.tgz
      tags: openstack
 
-   - name: slave setup | install python27
-     file: path=/opt/python-2.7.8 owner=root group=root mode=0755 state=directory
-     tags: openstack
-
    - name: slave setup | untar python27
      unarchive: copy=no src=/tmp/python-2.7.8.tgz dest=/opt/
+     tags: openstack
+
+   - name: slave setup | mv Python-2.7.8 python-2.7.8
+     shell: "rm -rf /opt/python-2.7.8 ; mv /opt/Python-2.7.8 /opt/python-2.7.8"
      tags: openstack
 
    - name: slave setup | download ez_setup
@@ -114,7 +114,7 @@
      tags: openstack
 
    - name: slave setup | install python27
-     shell: cd /opt/Python-2.7.8 ; "./configure --prefix=/opt/python-2.7.8" ; "make && make altinstall" ; "/opt/python-2.7.8/bin/python2.7 ez_setup.py"
+     shell: "cd /opt/python-2.7.8 ; ./configure --prefix=/opt/python-2.7.8 ; make && make altinstall ; /opt/python-2.7.8/bin/python2.7 ez_setup.py"
      tags: openstack
 
    - name: slave setup | install pip
@@ -122,7 +122,7 @@
      tags: openstack
 
    - name: slave setup | install python nova, neutron clients
-     shell: "/opt/python-2.7.8/bin/pip2.7 install python-novaclient" ; "/opt/python-2.7.8/bin/pip2.7 install python-neutronclient"
+     shell: "/opt/python-2.7.8/bin/pip2.7 install python-novaclient ; /opt/python-2.7.8/bin/pip2.7 install python-neutronclient"
      tags: openstack
 
    - name: slave setup | download limits.conf
