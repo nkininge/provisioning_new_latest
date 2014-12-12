@@ -11,7 +11,7 @@
      id_rsa_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa
      id_rsa_pub_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa.pub
      python_27_url: http://qe-repo.s3.amazonaws.com/ansible/Python-2.7.8.tgz
-     ez_setup_url: http://qe-repo.s3.amazonaws.com/ansible/ez_setup.py
+     ez_setup_url: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
      limits_url: http://qe-repo.s3.amazonaws.com/ansible/limits.conf
 
   tasks:
@@ -39,6 +39,7 @@
        - gcc
        - curl
        - curl-devel
+       - openssl-devel
        - expat-devel
        - python-setuptools
        - pdsh
@@ -48,9 +49,7 @@
        - openssh-server
        - zlib-devel
        - bzip2-devel
-       - openssl-devel
        - ncurses-devel
-       - qlite-devel
 
    - name: slave setup | download git
      get_url: url={{git_url}} dest=/tmp/git.tar.gz
@@ -102,28 +101,25 @@
      tags: openstack
 
    - name: slave setup | untar python27
-     unarchive: copy=no src=/tmp/python-2.7.8.tgz dest=/opt/
-     tags: openstack
-
-   - name: slave setup | mv Python-2.7.8 python-2.7.8
-     shell: "rm -rf /opt/python-2.7.8 ; mv /opt/Python-2.7.8 /opt/python-2.7.8"
+     unarchive: copy=no src=/tmp/python-2.7.8.tgz dest=/tmp/
      tags: openstack
 
    - name: slave setup | download ez_setup
-     get_url: url={{ez_setup_url}} dest=/opt/python-2.7.8/ez_setup.py
+     get_url: url={{ez_setup_url}} dest=/tmp/Python-2.7.8/ez_setup.py
      tags: openstack
 
    - name: slave setup | install python27
-     shell: "cd /opt/python-2.7.8 ; ./configure --prefix=/opt/python-2.7.8 ; make && make altinstall ; /opt/python-2.7.8/bin/python2.7 ez_setup.py"
+     shell: "cd /tmp/Python-2.7.8 ; ./configure --prefix=/usr/local/python27 ; make && make altinstall ; /usr/local/python27/bin/python2.7 ez_setup.py ; cp /usr/lib64/python2.6/lib-dynload/bz2.so /usr/local/python27/lib/python2.7/lib-dynload/ "
      tags: openstack
 
    - name: slave setup | install pip
-     shell: "/opt/python-2.7.8/bin/easy_install-2.7 pip"
+     shell: "/usr/local/python27/bin/easy_install pip"
      tags: openstack
 
    - name: slave setup | install python nova, neutron clients
-     shell: "/opt/python-2.7.8/bin/pip2.7 install python-novaclient ; /opt/python-2.7.8/bin/pip2.7 install python-neutronclient"
+     shell: "/usr/local/python27/bin/pip2.7 install python-novaclient ; /usr/local/python27/bin/pip2.7 install python-neutronclient"
      tags: openstack
 
    - name: slave setup | download limits.conf
      get_url: url={{limits_url}} dest=/etc/security/limits.conf
+     tags: openstack
