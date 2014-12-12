@@ -117,7 +117,7 @@
      tags: openstack
 
    - name: slave setup | install python nova, neutron clients
-     shell: "/usr/local/python27/bin/pip2.7 install python-novaclient ; /usr/local/python27/bin/pip2.7 install python-neutronclient ; ln -s /usr/local/python27/bin/nova /usr/local/bin/nova"
+     shell: "/usr/local/python27/bin/pip2.7 install python-novaclient"
      tags: openstack
 
    - name: slave setup | download limits.conf
