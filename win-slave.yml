@@ -162,7 +162,7 @@
     when: not filestat.stat.exists
   - name: install winsdk-7.1
     tags: installwinsdk
-    raw:  c:\horton\git\bin\unzip c:\temp\winsdk7.1.zip -d c:\temp\winsdk7.1
+    raw:  c:\horton\git\bin\unzip c:\temp\winsdk7.1.zip -d c:\temp\
     when: not filestat.stat.exists
   - name: install winsdk-7.1
     tags: installwinsdk
