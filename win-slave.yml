@@ -153,6 +153,22 @@
     raw:  c:\horton\git\bin\unzip c:\temp\cygwin-1.7.zip -d c:\horton\
     when: not filestat.stat.exists
 
+  - win_stat:  path='c:\temp\winsdk-7.1'
+    tags: installwinsdk
+    register:  filestat
+  - name: retrieve winsdk7.1.zip
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/winsdk7.1.zip' dest='c:\temp\winsdk7.1.zip'
+    tags: installwinsdk
+    when: not filestat.stat.exists
+  - name: install winsdk-7.1
+    tags: installwinsdk
+    raw:  c:\horton\git\bin\unzip c:\temp\winsdk7.1.zip -d c:\temp\winsdk7.1
+    when: not filestat.stat.exists
+  - name: install winsdk-7.1
+    tags: installwinsdk
+    raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
+    when: not filestat.stat.exists
+
   - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
     register: antstat
   - debug: var=antstat
