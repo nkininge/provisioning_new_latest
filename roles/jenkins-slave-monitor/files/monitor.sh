@@ -8,8 +8,8 @@ PART1=/grid/0/jenkins/workspace
 function check_usage {
     if [ $1 -gt $MAX ] ; then
         echo "Jenkins $2 running out of $3: $1 percent used" && echo ""
+        status=1
     fi
-    status=1
 }
 
 status=0
