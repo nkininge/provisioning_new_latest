@@ -20,6 +20,7 @@
   - raw: mkdir c:\temp
     when:  not tempoutput.stat.exists
 
+
   - win_stat:  path='c:\temp\Git-1.7.11-preview20120710.exe'
     register:  filestat
   - name: retrieve file
@@ -140,11 +141,35 @@
     when:  not gitstat.stat.exists
   - debug: var=file_info
 
+  - win_stat:  path='c:\horton\cygwin-1.7'
+    tags: installcygwin
+    register:  filestat
+  - name: retrieve cygwin-1.7
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/cygwin-1.7.zip' dest='c:\temp\cygwin-1.7.zip'
+    tags: installcygwin
+    when: not filestat.stat.exists
+  - name: install cygwin-1.7
+    tags: installcygwin
+    raw:  c:\horton\git\bin\unzip c:\temp\cygwin-1.7.zip -d c:\horton\
+    when: not filestat.stat.exists
+
   - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
     register: antstat
   - debug: var=antstat
   - raw: c:\temp\extract-zip.ps1  
     tags: installants
     register: file_info
+    when:  not antstat.stat.exists
     # # # # # # # # #  # # # # # when:  not antstat.stat.exists
   - debug: var=file_info
+
+  - win_stat: path='c:\temp\jdk-7-windows-x64.exe'
+    register: javastat
+  - win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-windows-x64.exe' dest='c:\temp\jdk-7-windows-x64.exe'
+    register: file_info
+    when: not javastat.stat.exists
+  - debug: var=file_info
+  - raw: c:\temp\jdk-7-windows-x64.exe /qn /norestart /log jdk-7-windows-x64.log  INSTALLDIR=C:\horton\java\jdk_1.7
+    tags: installjava
+    when: not javastat.stat.exists
+
