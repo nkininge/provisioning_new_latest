@@ -69,12 +69,19 @@
   - name: retrieve file
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-6-builds-maven-settings.xml' dest='c:\temp\jdk-6-builds-maven-settings.xml'
     when: not filestat.stat.exists
-
-  - win_stat:  path='c:\temp\jdk-6u35-windows-x64.exe'
+  - win_stat:  path='C:\horton\java\jdk1.6.0_35'
+    tags: installjdk6
     register:  filestat
   - name: retrieve file
+    tags: installjdk6
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-6u35-windows-x64.exe' dest='c:\temp\jdk-6u35-windows-x64.exe'
     when: not filestat.stat.exists
+  - raw:  c:\temp\jdk-6u35-windows-x64.exe /qn /norestart /log jdk-6u35-windows-x64.log  INSTALLDIR=C:\horton\java\jdk1.6.0_35
+    tags: installjdk6
+    register: file_info
+    when:  not filestat.stat.exists
+  - debug: var=file_info
+    tags: installjdk6
 
   - win_stat:  path='c:\temp\jdk-7-builds-maven-settings.xml'
     register:  filestat
@@ -246,13 +253,16 @@
   - debug: var=file_info
     tags: installmaven
 
-  - win_stat: path='c:\temp\jdk-7-windows-x64.exe'
+  - win_stat: path='c:horton\java\jdk_1.7'
+    tags: installjdk7
     register: javastat
   - win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-windows-x64.exe' dest='c:\temp\jdk-7-windows-x64.exe'
+    tags: installjdk7
     register: file_info
     when: not javastat.stat.exists
   - debug: var=file_info
+    tags: installjdk7
   - raw: c:\temp\jdk-7-windows-x64.exe /qn /norestart /log jdk-7-windows-x64.log  INSTALLDIR=C:\horton\java\jdk_1.7
-    tags: installjava
+    tags: installjdk7
     when: not javastat.stat.exists
 
