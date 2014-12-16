@@ -150,10 +150,10 @@
     when: not filestat.stat.exists
   - name: install cygwin-1.7
     tags: installcygwin
-    raw:  c:\horton\git\bin\unzip c:\temp\cygwin-1.7.zip -d c:\horton\
+    raw:  c:\horton\git\bin\unzip -o c:\temp\cygwin-1.7.zip -d c:\horton\
     when: not filestat.stat.exists
 
-  - win_stat:  path='c:\temp\winsdk-7.1'
+  - win_stat:  path='c:\temp\winsdk7.1'
     tags: installwinsdk
     register:  filestat
   - name: retrieve winsdk7.1.zip
@@ -162,12 +162,15 @@
     when: not filestat.stat.exists
   - name: install winsdk-7.1
     tags: installwinsdk
-    raw:  c:\horton\git\bin\unzip c:\temp\winsdk7.1.zip -d c:\temp\
+    raw:  c:\horton\git\bin\unzip  -o c:\temp\winsdk7.1.zip -d c:\temp\
     when: not filestat.stat.exists
   - name: install winsdk-7.1
     tags: installwinsdk
     raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
+    register: mergatroid
     when: not filestat.stat.exists
+  - name: "Tell what we learned."
+    debug: msg="{{mergatroid.stdout}}"
 
   - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
     register: antstat
@@ -178,6 +181,22 @@
     when:  not antstat.stat.exists
     # # # # # # # # #  # # # # # when:  not antstat.stat.exists
   - debug: var=file_info
+
+  - win_stat: path='c:\horton\sysinternals'
+    tags: installsysinternals
+    register: sysinternalsstat
+  - debug: var=sysinternalsstat
+    tags: installsysinternals
+  - name: retrieve sysinternals.zip
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/sysinternals.zip' dest='c:\temp\sysinternals.zip'
+    tags: installsysinternals
+    # when: not sysinternalsstat.stat.exists
+  - raw:  c:\horton\git\bin\unzip -o c:\temp\sysinternals.zip -d c:\horton\
+    tags: installsysinternals
+    register: file_info
+    when:  not sysinternalsstat.stat.exists
+  - debug: var=file_info
+    tags: installsysinternals
 
   - win_stat: path='c:\temp\jdk-7-windows-x64.exe'
     register: javastat
