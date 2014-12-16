@@ -1,0 +1,117 @@
+  - name: install_libraries | install HDP-utils zypper repo 
+    sudo: yes
+    tags: install_libraries
+    zypper_repository: name="HDP-UTILS" repo="http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.17/repos/suse11"
+
+  - name: install_libraries | zypper in
+    sudo: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    tags: install_libraries
+    with_items: 
+      - snappy-1.0.5
+      - snappy-devel-1.0.5
+      - lzo-devel-2.06
+      - lzo-2.06
+
+  - name: "Installing Libraries"
+    sudo: yes
+    tags: install_libraries
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    with_items:
+      - clamav
+      - gcc-c++ 
+      - createrepo
+      - wget
+      - lsb-release
+      - curl
+      - subversion
+      - snappy-devel
+      - lzo-devel
+      - asciidoc
+      - libcppunit-devel
+      - gcc
+      - automake
+      - autoconf
+      - libconfuse-devel
+      - fuse-devel
+      - docbook-utils
+      - docbook-xsl-stylesheets
+      - xmlformat
+      - xmlto
+      - libxslt
+      - libopenssl-devel
+      - docbook
+      - openldap2-devel
+      - libmysqlclient-devel
+      - texlive-latex
+      - cmake
+      - ant
+      - ant-nodeps
+      - ant-trax
+      - python-devel
+      - python-setuptools
+      - libxml2-devel
+      - libxslt-devel
+      - krb5-devel
+      - sqlite3-devel
+      - gd-devel
+      - libpng-devel
+      - libjpeg-devel
+      - cairo-devel
+      - freetype2-devel
+      - glib2-devel
+      - intltool
+      - libart_lgpl-devel
+      - pango-devel
+      - gettext-tools
+      - ruby-devel
+      - lua-devel
+      - tcpd-devel
+      - dejagnu
+      - rsh
+      - apache2-devel
+      - pcre-devel
+      - libapr-util1-devel
+      - xorg-x11-devel
+      - fdupes
+      - tcl-devel
+      - libconfuse-devel
+      - rrdtool-devel
+      - libtool
+      - docbook5-xsl-stylesheets
+      - docbook-utils
+      - latex2html-pngicons
+      - clamav
+      - docbook-xsl-stylesheets
+      - texlive-latex-doc
+      - texlive-latex
+      - xmlformat
+
+
+  - name: install_libraries | zypper in
+    sudo: yes
+    shell: rpm -Uvh {{item}} 
+    register: shell_result
+    with_items:
+      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-1.7.0-16.1.x86_64.rpm
+      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-devel-1.7.0-16.1.x86_64.rpm
+      - ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/jnweiger/SLE_11_SP1/x86_64/fakeroot-1.9.3-5.2.x86_64.rpm
+    tags: install_libraries
+    ignore_errors: true
+
+  - name: install_libraries | download s3cmd zip
+    sudo: yes
+    tags: install_libraries
+    get_url: url="https://github.com/s3tools/s3cmd/archive/master.zip" dest=/tmp/master.zip
+
+  - name: install_libraries | unarchive s3cmd
+    sudo: yes
+    tags: install_libraries
+    unarchive: src=/tmp/master.zip dest=/tmp/ copy=no
+
+  - name: install_libraries | s3cmd setup install
+    sudo: yes
+    tags: install_libraries
+    shell: python setup.py install
+    args:
+      chdir: /tmp/s3cmd-master

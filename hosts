@@ -3,13 +3,13 @@
 [sles11sp1]
 
 [sles11sp3]
+54.174.228.250
 
 [centos5]
 
 [centos6]
 
 [ubuntu]
-192.168.25.200
 
 [debian6]
 
@@ -21,7 +21,7 @@ ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
 [sles11sp3:vars]
-ansible_ssh_private_key_file=
+ansible_ssh_private_key_file=~/.ssh/ec2-keypair
 ansible_ssh_user=root
 
 [centos6:vars]
@@ -45,3 +45,4 @@ ansible_ssh_private_key_file=~/.ssh/ec2-keypair
 [default:children]
 debian6
 ubuntu
+sles11sp3
