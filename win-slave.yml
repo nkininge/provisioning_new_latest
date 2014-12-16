@@ -214,6 +214,22 @@
   - debug: var=file_info
     tags: installperl
 
+  - win_stat: path='c:\horton\cmake2.8'
+    tags: installcmake
+    register: cmakestat
+  - debug: var=cmakestat
+    tags: installcmake
+  - name: retrieve cmake installer package
+    win_get_url:  url='http://www.cmake.org/files/v2.8/cmake-2.8.9-win32-x86.exe' dest='c:\temp\cmake-2.8.9-win32-x86.exe'
+    tags: installcmake
+    when: not cmakestat.stat.exists
+  - raw: c:\temp\cmake-2.8.9-win32-x86.exe /S /D=C:\horton\cmake2.8
+    tags: installcmake
+    register: file_info
+    when:  not cmakestat.stat.exists
+  - debug: var=file_info
+    tags: installcmake
+
   - win_stat: path='c:\horton\tools\apache-maven-3.0.4'
     tags: installmaven
     register: mavenstat
