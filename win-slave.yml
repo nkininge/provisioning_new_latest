@@ -198,6 +198,21 @@
   - debug: var=file_info
     tags: installsysinternals
 
+  - win_stat: path='c:\strawberry\perl\bin\perl.exe'
+    tags: installperl
+    register: perlstat
+  - debug: var=perlstat
+    tags: installperl
+  - name: retrieve perl.zip
+    win_get_url:  url='http://strawberryperl.com/download/5.18.4.1/strawberry-perl-5.18.4.1-64bit.msi' dest='c:\temp\strawberry-perl-5.18.4.1-64bit.msi'
+    tags: installperl
+    when: not perlstat.stat.exists
+  - raw:  msiexec  /qn /norestart /log strawberry-perl-5.18.4.1-64bit.log /i c:\temp\strawberry-perl-5.18.4.1-64bit.msi
+    tags: installperl
+    register: file_info
+    when:  not perlstat.stat.exists
+  - debug: var=file_info
+    tags: installperl
 
   - win_stat: path='c:\horton\tools\apache-maven-3.0.4'
     tags: installmaven
