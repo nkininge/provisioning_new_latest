@@ -198,6 +198,23 @@
   - debug: var=file_info
     tags: installsysinternals
 
+
+  - win_stat: path='c:\horton\tools\apache-maven-3.0.4'
+    tags: installmaven
+    register: mavenstat
+  - debug: var=mavenstat
+    tags: installmaven
+  - name: retrieve apache-maven-3.0.4.zip
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-maven-3.0.4.zip' dest='c:\temp\apache-maven-3.0.4.zip'
+    tags: installmaven
+    when: not mavenstat.stat.exists
+  - raw:  c:\horton\git\bin\unzip -o c:\temp\apache-maven-3.0.4.zip -d c:\horton\tools\
+    tags: installmaven
+    register: file_info
+    when:  not mavenstat.stat.exists
+  - debug: var=file_info
+    tags: installmaven
+
   - win_stat: path='c:\temp\jdk-7-windows-x64.exe'
     register: javastat
   - win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-windows-x64.exe' dest='c:\temp\jdk-7-windows-x64.exe'
