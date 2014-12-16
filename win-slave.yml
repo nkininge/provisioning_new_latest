@@ -177,7 +177,7 @@
     register: mergatroid
     when: not filestat.stat.exists
   - name: "Tell what we learned."
-    debug: msg="{{mergatroid.stdout}}"
+    debug: msg="{{mergatroid}}"
 
   - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
     register: antstat
