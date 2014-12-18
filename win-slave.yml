@@ -68,7 +68,8 @@
     register:  filestat
   - name: retrieve file
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-6-builds-maven-settings.xml' dest='c:\temp\jdk-6-builds-maven-settings.xml'
-    when: not filestat.stat.exists
+    # when: not filestat.stat.exists
+
   - win_stat:  path='C:\horton\java\jdk1.6.0_35'
     tags: installjdk6
     register:  filestat
@@ -160,24 +161,25 @@
     raw:  c:\horton\git\bin\unzip -o c:\temp\cygwin-1.7.zip -d c:\horton\
     when: not filestat.stat.exists
 
-  - win_stat:  path='c:\temp\winsdk7.1'
-    tags: installwinsdk
-    register:  filestat
-  - name: retrieve winsdk7.1.zip
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/winsdk7.1.zip' dest='c:\temp\winsdk7.1.zip'
-    tags: installwinsdk
-    when: not filestat.stat.exists
-  - name: install winsdk-7.1
-    tags: installwinsdk
-    raw:  c:\horton\git\bin\unzip  -o c:\temp\winsdk7.1.zip -d c:\temp\
-    when: not filestat.stat.exists
-  - name: install winsdk-7.1
-    tags: installwinsdk
-    raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
-    register: mergatroid
-    when: not filestat.stat.exists
-  - name: "Tell what we learned."
-    debug: msg="{{mergatroid}}"
+  # commenting out winsdk7.1 for the moment. Might be an ordering problem, etc. But it's saying that it cannot find some .msi files.
+  #  - win_stat:  path='c:\temp\winsdk7.1'
+  #    tags: installwinsdk
+  #    register:  filestat
+  #  - name: retrieve winsdk7.1.zip
+  #    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/winsdk7.1.zip' dest='c:\temp\winsdk7.1.zip'
+  #    tags: installwinsdk
+  #    when: not filestat.stat.exists
+  #  - name: install winsdk-7.1
+  #    tags: installwinsdk
+  #    raw:  c:\horton\git\bin\unzip  -o c:\temp\winsdk7.1.zip -d c:\temp\
+  #    when: not filestat.stat.exists
+  #  - name: install winsdk-7.1
+  #    tags: installwinsdk
+  #    raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
+  #    register: mergatroid
+  #    when: not filestat.stat.exists
+  #  - name: "Tell what we learned."
+  #    debug: msg="{{mergatroid}}"
 
   - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
     register: antstat
