@@ -275,3 +275,9 @@
   - name: Set git-config default-username.
     raw: C:\horton\Git\cmd\git config --global user.name "Hortonworks RE"
     tags: gitconfig
+  - raw: setx JAVA_HOME c:\horton\Java\jdk1.6.0_35
+    tags: setxcommands
+  - raw: setx ANT_HOME c:\horton\tools\apache-ant-1.8.3
+    tags: setxcommands
+  - raw: setx FORREST_HOME c:\horton\tools\apache-forrest-0.9
+    tags: setxcommands
