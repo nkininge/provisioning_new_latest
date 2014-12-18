@@ -12,6 +12,20 @@
       - "{{jenkins_home}}/.m2/"
       - "{{jenkins_home}}/.ssh/"
 
+  - name: install_tools | create all the gradle folders
+    sudo: yes
+    sudo_user: jenkins
+    file: path={{item}} state=directory owner=jenkins
+    with_items:
+      - "{{tools_home}}/gradle"
+    tags: install_gradle
+
+  - name: install_tools | Download gradle
+    sudo: yes
+    sudo_user: jenkins
+    tags: install_gradle
+    get_url: url=https://services.gradle.org/distributions/gradle-2.2.1-bin.zip dest={{tools_home}}/gradle/gradle.zip mode=0744
+
   - name: install_tools | Download Maven
     sudo: yes
     sudo_user: jenkins
@@ -27,6 +41,12 @@
     sudo_user: jenkins
     get_url: url={{forrest_url}} dest={{forrest_home}}/forrest.tar.gz mode=744
 
+  - name: install_tools | Untar gradle
+    sudo: yes
+    sudo_user: jenkins
+    tags: install_gradle
+    unarchive: copy=no src={{tools_home}}/gradle/gradle.zip dest={{tools_home}}/gradle
+
   - name: install_tools | Untar Maven
     sudo: yes
     sudo_user: jenkins
@@ -41,6 +61,12 @@
     sudo: yes
     sudo_user: jenkins
     unarchive: copy=no src={{forrest_home}}/forrest.tar.gz dest={{tools_home}}/forrest
+
+  - name: install_tools | symlink gradle -> latest
+    sudo: yes
+    sudo_user: jenkins
+    file: src=gradle-2.2.1 dest={{tools_home}}/gradle/latest state=link
+    tags: install_gradle
 
   - name: install_tools | symlink Maven -> latest
     sudo: yes
