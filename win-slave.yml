@@ -268,3 +268,10 @@
     tags: installjdk7
     when: not javastat.stat.exists
 
+
+  - name: Set git-config default-email.
+    raw: C:\horton\Git\cmd\git config --global user.email "releng-group@hortonworks.com"
+    tags: gitconfig
+  - name: Set git-config default-username.
+    raw: C:\horton\Git\cmd\git config --global user.name "Hortonworks RE"
+    tags: gitconfig
