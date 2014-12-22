@@ -1,5 +1,5 @@
 - hosts: default
-  gather_facts: yes
+  gather_facts: no
   vars:
     jenkins_user_uid: 1001
     slave: False
@@ -19,5 +19,5 @@
 
   roles:
     - common
-    - jenkins-slaves
+#    - jenkins-slaves
 

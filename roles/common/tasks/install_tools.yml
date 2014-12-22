@@ -24,7 +24,7 @@
     sudo: yes
     sudo_user: jenkins
     tags: install_gradle
-    get_url: url=https://services.gradle.org/distributions/gradle-2.2.1-bin.zip dest={{tools_home}}/gradle/gradle.zip mode=0744
+    get_url: url=https://services.gradle.org/distributions/gradle-1.6-all.zip dest={{tools_home}}/gradle/gradle.zip mode=0744
 
   - name: install_tools | Download Maven
     sudo: yes
@@ -62,10 +62,16 @@
     sudo_user: jenkins
     unarchive: copy=no src={{forrest_home}}/forrest.tar.gz dest={{tools_home}}/forrest
 
+  - name: install_tools | rm symlink gradle -> latest
+    sudo: yes
+    sudo_user: jenkins
+    shell: rm -rf {{tools_home}}/gradle/latest
+    tags: install_gradle
+
   - name: install_tools | symlink gradle -> latest
     sudo: yes
     sudo_user: jenkins
-    file: src=gradle-2.2.1 dest={{tools_home}}/gradle/latest state=link
+    file: src=gradle-1.6 dest={{tools_home}}/gradle/latest state=link
     tags: install_gradle
 
   - name: install_tools | symlink Maven -> latest
