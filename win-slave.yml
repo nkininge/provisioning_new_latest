@@ -281,3 +281,18 @@
     tags: setxcommands
   - raw: setx FORREST_HOME c:\horton\tools\apache-forrest-0.9
     tags: setxcommands
+
+  - name: Set Jenkins auto-boot config
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/Run-Jenkins.cmd'  dest='c:\users\administrator\Run-Jenkins.cmd' force=yes
+    tags: jenkinsconfig
+  - name: Get Jenkins auto-boot .jar files.
+    win_get_url:  url='http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/1.22/swarm-client-1.22-jar-with-dependencies.jar'   dest='c:\users\administrator\Downloads\swarm-client-1.22-jar-with-dependencies.jar' force=yes
+    tags: jenkinsconfig
+  - raw: setx JSTART_URL http://54.210.26.224:8080/
+    tags: jenkinsconfig
+  - raw: setx JSTART_USER jenkins
+    tags: jenkinsconfig
+  - raw: setx JSTART_PASSWORD booboo
+    tags: jenkinsconfig
+
+
