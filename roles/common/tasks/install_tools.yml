@@ -65,13 +65,13 @@
   - name: install_tools | rm symlink gradle -> latest
     sudo: yes
     sudo_user: jenkins
-    shell: rm -rf {{tools_home}}/gradle/latest
+    file: path={{tools_home}}/gradle/latest state=absent
     tags: install_gradle
 
   - name: install_tools | symlink gradle -> latest
     sudo: yes
     sudo_user: jenkins
-    file: src=gradle-1.6 dest={{tools_home}}/gradle/latest state=link
+    file: src=gradle-1.6 force=yes dest={{tools_home}}/gradle/latest state=link
     tags: install_gradle
 
   - name: install_tools | symlink Maven -> latest
