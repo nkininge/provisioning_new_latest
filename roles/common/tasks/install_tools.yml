@@ -74,6 +74,23 @@
     file: src=gradle-1.6 force=yes dest={{tools_home}}/gradle/latest state=link
     tags: install_gradle
 
+  - name: install_tools | capture gradle version
+    sudo: yes
+    sudo_user: jenkins
+    shell: "{{tools_home}}/gradle/latest/bin/gradle --version"
+    tags:
+      - install_gradle
+      - assert_gradle
+    register: cmd_result
+
+  - name: install_tools | assert gradle installation
+    tags:
+      - install_gradle
+      - assert_gradle
+    assert:
+      that:
+        - "'Gradle 1.6' in cmd_result.stdout"
+
   - name: install_tools | symlink Maven -> latest
     sudo: yes
     sudo_user: jenkins
