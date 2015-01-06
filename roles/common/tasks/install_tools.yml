@@ -77,7 +77,7 @@
   - name: install_tools | capture gradle version
     sudo: yes
     sudo_user: jenkins
-    shell: "{{tools_home}}/gradle/latest/bin/gradle --version"
+    shell: "JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/gradle/latest/bin/gradle --version"
     tags:
       - install_gradle
       - assert_gradle
