@@ -1,0 +1,17 @@
+---
+  - name: install_tools | create all the tools folders
+    sudo: yes
+    sudo_user: jenkins
+    file: path={{item}} state=directory owner=jenkins
+    with_items:
+      - "{{tools_home}}/ant"
+      - "{{tools_home}}/maven"
+      - "{{tools_home}}/jdk64_31"
+      - "{{tools_home}}/jdk7"
+      - "{{tools_home}}/forrest"
+      - "{{jenkins_home}}/.m2/"
+      - "{{tools_home}}/gradle"
+      - "{{jenkins_home}}/.ssh/"
+    tags:
+      - install_gradle
+      - prepare_env
