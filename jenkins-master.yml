@@ -16,8 +16,12 @@
     jenkins_prefix: "/"
     jenkins_war: /usr/share/jenkins/jenkins.war
     jenkins_plugins: true
+    gpg_file: ~/password_gpg.txt
+    nexus_file: ~/password_gpg.txt
+    security_file: ~/password_gpg.txt
+    push_password: false
 
-  
+
   roles:
     - common
     - jenkins-master
