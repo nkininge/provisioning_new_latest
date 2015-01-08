@@ -3,6 +3,7 @@
   gather_facts: true
   vars:
     BUILD_USER_ID:   "{{lookup('env', 'USER')}}"
+    id_rsa_path:   "{{lookup('env', 'ID_RSA_PATH')}}"
   tags: initialsetupExample
   tasks:
   - win_stat: path='C:\horton'
@@ -20,11 +21,17 @@
   - raw: mkdir c:\temp
     when:  not tempoutput.stat.exists
 
+# # Install git
+  # - name: chocolate
+    # tags: chocolate
+    # win_chocolatey: package=git
 
-  - win_stat:  path='c:\temp\Git-1.7.11-preview20120710.exe'
+  - win_stat:  path='c:\temp\Git-1.9.5-preview20141217.exe'
+    tags: installgit
     register:  filestat
   - name: retrieve file
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/Git-1.7.11-preview20120710.exe' dest='c:\temp\Git-1.7.11-preview20120710.exe'
+    tags: installgit
+    win_get_url:  url='https://github.com/msysgit/msysgit/releases/download/Git-1.9.5-preview20141217/Git-1.9.5-preview20141217.exe' dest='c:\temp\Git-1.9.5-preview20141217.exe'
     when: not filestat.stat.exists
 
 
@@ -34,10 +41,12 @@
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-ant-1.7.1-bin.zip' dest='c:\temp\apache-ant-1.7.1-bin.zip'
     when: not filestat.stat.exists
 
-  - win_stat:  path='c:\temp\apache-ant-1.8.4-bin.zip'
+  - win_stat:  path='c:\temp\apache-ant-1.8.3-bin.zip'
+    tags: installants
     register:  filestat
   - name: retrieve file
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-ant-1.8.4-bin.zip' dest='c:\temp\apache-ant-1.8.4-bin.zip'
+    tags: installants
+    win_get_url:  url='http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.3-bin.zip' dest='c:\temp\apache-ant-1.8.3-bin.zip'
     when: not filestat.stat.exists
 
   - win_stat:  path='c:\temp\apache-forrest-0.8.zip'
@@ -83,6 +92,17 @@
     when:  not filestat.stat.exists
   - debug: var=file_info
     tags: installjdk6
+
+  - win_stat:  path='c:\users\adminstrators\.ssh\id_rsa'
+    register:  idrsastat
+  - raw: mkdir c:\horton
+    when:  not idrsastat.stat.exists
+  - name: retrieve file
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-builds-maven-settings.xml' dest='c:\temp\jdk-7-builds-maven-settings.xml'
+    when: not idrsastat.stat.exists
+
+  - name: update github authentication
+    raw: c:\horton\git\bin\ssh.exe  -o StrictHostKeyChecking=no  git@github.com
 
   - win_stat:  path='c:\temp\jdk-7-builds-maven-settings.xml'
     register:  filestat
@@ -132,21 +152,21 @@
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/which-2.20-setup.exe' dest='c:\temp\which-2.20-setup.exe'
     when: not filestat.stat.exists
 
-  - win_stat:  path='c:\temp\extract-zip.ps1'
-    register:  filestat
   - name: retrieve file
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/extract-zip.ps1' dest='c:\temp\extract-zip.ps1'
+    tags: installants
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/extract-zip.ps1' dest='c:\temp\extract-zip.ps1' force=yes
+    tags: installants
     register: file_info
-    when: not filestat.stat.exists
   - debug: var=file_info
+    tags: installants
 
   - win_stat: path='c:\horton\git'
     register: gitstat
   - debug: var=gitstat
-  - raw: c:\temp\Git-1.7.11-preview20120710.exe /verysilent /log=Git-1.7.11-preview20120710.log /SAVEINF=Git-1.7.11-preview20120710.inf /NORESTART /SP- /SUPPRESSMSGBOXES /DIR=C:\horton\git
+  - raw: c:\temp\Git-1.9.5-preview20141217.exe /verysilent /log=Git-1.9.5-preview20141217.log /SAVEINF=Git-1.9.5-preview20141217.inf /NORESTART /SP- /SUPPRESSMSGBOXES /DIR=C:\horton\git
     tags: installgit
     register: file_info
-    when:  not gitstat.stat.exists
+    # when:  not gitstat.stat.exists
   - debug: var=file_info
 
   - win_stat:  path='c:\horton\cygwin-1.7'
@@ -162,26 +182,29 @@
     when: not filestat.stat.exists
 
   # commenting out winsdk7.1 for the moment. Might be an ordering problem, etc. But it's saying that it cannot find some .msi files.
-  #  - win_stat:  path='c:\temp\winsdk7.1'
-  #    tags: installwinsdk
-  #    register:  filestat
-  #  - name: retrieve winsdk7.1.zip
-  #    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/winsdk7.1.zip' dest='c:\temp\winsdk7.1.zip'
-  #    tags: installwinsdk
-  #    when: not filestat.stat.exists
-  #  - name: install winsdk-7.1
-  #    tags: installwinsdk
-  #    raw:  c:\horton\git\bin\unzip  -o c:\temp\winsdk7.1.zip -d c:\temp\
-  #    when: not filestat.stat.exists
-  #  - name: install winsdk-7.1
-  #    tags: installwinsdk
-  #    raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
-  #    register: mergatroid
-  #    when: not filestat.stat.exists
-  #  - name: "Tell what we learned."
-  #    debug: msg="{{mergatroid}}"
+  - win_stat:  path='c:\temp\winsdk7.1'
+    tags: installwinsdk
+    register:  filestat
+  - name: retrieve winsdk7.1.zip
+    tags: installwinsdk
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/winsdk7.1.zip' dest='c:\temp\winsdk7.1.zip'
+    tags: installwinsdk
+    when: not filestat.stat.exists
+  - name: install winsdk-7.1
+    tags: installwinsdk
+    raw:  c:\horton\git\bin\unzip  -o c:\temp\winsdk7.1.zip -d c:\temp\
+    # when: not filestat.stat.exists
+  - name: install winsdk-7.1
+    tags: installwinsdk
+    raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
+    register: mergatroid
+    # when: not filestat.stat.exists
+  - name: "Tell what we learned."
+    tags: installwinsdk
+    debug: msg="{{mergatroid}}"
 
   - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
+    tags: installants
     register: antstat
   - debug: var=antstat
   - raw: c:\temp\extract-zip.ps1  
@@ -190,6 +213,7 @@
     when:  not antstat.stat.exists
     # # # # # # # # #  # # # # # when:  not antstat.stat.exists
   - debug: var=file_info
+    tags: installants
 
   - win_stat: path='c:\horton\sysinternals'
     tags: installsysinternals
@@ -277,7 +301,8 @@
     tags: gitconfig
   - raw: setx JAVA_HOME c:\horton\Java\jdk1.6.0_35
     tags: setxcommands
-  - raw: setx ANT_HOME c:\horton\tools\apache-ant-1.8.4
+  - raw: setx ANT_HOME c:\horton\tools\apache-ant-1.8.3
+    tags: installants
     tags: setxcommands
   - raw: setx FORREST_HOME c:\horton\tools\apache-forrest-0.9
     tags: setxcommands
