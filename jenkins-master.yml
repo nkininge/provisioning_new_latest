@@ -12,12 +12,16 @@
     jenkins_java: /usr/bin/java
     jenkins_pidfile: /var/run/jenkins.pid
     jenkins_logdir: /var/log/jenkins
-    jenkins_log: "{{jenkins}logdir}}/{{jenkins_name}}.log"
+    jenkins_log: "{{jenkins_logdir}}/{{jenkins_name}}.log"
     jenkins_prefix: "/"
     jenkins_war: /usr/share/jenkins/jenkins.war
     jenkins_plugins: true
+    gpg_file: ~/password_gpg.txt
+    nexus_file: ~/password_gpg.txt
+    security_file: ~/password_gpg.txt
+    push_password: false
 
-  
+
   roles:
     - common
     - jenkins-master

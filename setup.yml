@@ -16,8 +16,7 @@
     security_file: ~/settings-security.xml
     ec2_hostname: False
 
-
   roles:
     - common
-#    - jenkins-slaves
+    - jenkins-slaves
 

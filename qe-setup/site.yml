@@ -79,10 +79,10 @@
      file: path={{jenkins_home}}/jenkins-artifacts.tar.gz state=absent
 
    - name: slave setup | download id_rsa
-     get_url: url={{id_rsa_url}} dest={{root_ssh}}/id_rsa
+     get_url: url={{id_rsa_url}} dest={{root_ssh}}/id_rsa force=yes
 
    - name: slave setup | download id_rsa.pub
-     get_url: url={{id_rsa_pub_url}} dest={{root_ssh}}/id_rsa.pub
+     get_url: url={{id_rsa_pub_url}} dest={{root_ssh}}/id_rsa.pub force=yes
 
    - name: slave setup | copy known_hosts
      shell: "ssh-keyscan -H github.com >> /root/.ssh/known_hosts"
