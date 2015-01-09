@@ -2,10 +2,12 @@
   hosts: windows
   gather_facts: true
   vars:
-    BUILD_USER_ID:   "{{lookup('env', 'USER')}}"
-    id_rsa_path:   "{{lookup('env', 'ID_RSA_PATH')}}"
+    JenkinsAPIKEY:   "{{lookup('env', 'JENKINSAPIKEY')}}"
   tags: initialsetupExample
   tasks:
+  - name: check-api-keys
+    fail:  msg="You must set $JENKINSAPIKEY=false before running."
+    when:  lookup('env', 'JENKINSAPIKEY')  == ''
   - win_stat: path='C:\horton'
     register: file_info
   - debug: var=file_info
@@ -14,6 +16,13 @@
     register: hortonstats
   - raw: mkdir c:\horton
     when:  not hortonstats.stat.exists
+
+  - win_stat: path='C:\Users\Jenkins\.m2'
+    register: m2stats
+    tags: mkm2
+  - raw: mkdir c:\Users\Jenkins\.m2
+    when:  not m2stats.stat.exists
+    tags: mkm2
   
   - win_stat: path='c:\temp'
     register: tempoutput
@@ -93,16 +102,16 @@
   - debug: var=file_info
     tags: installjdk6
 
-  - win_stat:  path='c:\users\adminstrators\.ssh\id_rsa'
+  - win_stat:  path='c:\users\jenkins\.ssh\id_rsa'
     register:  idrsastat
-  - raw: mkdir c:\horton
+  - raw: mkdir c:\users\adminstrators\.ssh
     when:  not idrsastat.stat.exists
   - name: retrieve file
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-builds-maven-settings.xml' dest='c:\temp\jdk-7-builds-maven-settings.xml'
     when: not idrsastat.stat.exists
 
-  - name: update github authentication
-    raw: c:\horton\git\bin\ssh.exe  -o StrictHostKeyChecking=no  git@github.com
+  # - name: update github authentication
+  #   raw: c:\horton\git\bin\ssh.exe  -o StrictHostKeyChecking=no  git@github.com
 
   - win_stat:  path='c:\temp\jdk-7-builds-maven-settings.xml'
     register:  filestat
@@ -181,27 +190,27 @@
     raw:  c:\horton\git\bin\unzip -o c:\temp\cygwin-1.7.zip -d c:\horton\
     when: not filestat.stat.exists
 
-  # commenting out winsdk7.1 for the moment. Might be an ordering problem, etc. But it's saying that it cannot find some .msi files.
-  - win_stat:  path='c:\temp\winsdk7.1'
-    tags: installwinsdk
-    register:  filestat
-  - name: retrieve winsdk7.1.zip
-    tags: installwinsdk
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/winsdk7.1.zip' dest='c:\temp\winsdk7.1.zip'
-    tags: installwinsdk
-    when: not filestat.stat.exists
-  - name: install winsdk-7.1
-    tags: installwinsdk
-    raw:  c:\horton\git\bin\unzip  -o c:\temp\winsdk7.1.zip -d c:\temp\
-    # when: not filestat.stat.exists
-  - name: install winsdk-7.1
-    tags: installwinsdk
-    raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
-    register: mergatroid
-    # when: not filestat.stat.exists
-  - name: "Tell what we learned."
-    tags: installwinsdk
-    debug: msg="{{mergatroid}}"
+  #  # commenting out winsdk7.1 for the moment. Might be an ordering problem, etc. But it's saying that it cannot find some .msi files.
+  #  - win_stat:  path='c:\temp\winsdk7.1'
+  #    tags: installwinsdk
+  #    register:  filestat
+  #  - name: retrieve winsdk7.1.zip
+  #    tags: installwinsdk
+  #    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/winsdk7.1.zip' dest='c:\temp\winsdk7.1.zip'
+  #    tags: installwinsdk
+  #    when: not filestat.stat.exists
+  #  - name: install winsdk-7.1
+  #    tags: installwinsdk
+  #    raw:  c:\horton\git\bin\unzip  -o c:\temp\winsdk7.1.zip -d c:\temp\
+  #    # when: not filestat.stat.exists
+  #  - name: install winsdk-7.1
+  #    tags: installwinsdk
+  #    raw:  c:\temp\winsdk7.1\Setup -q -params:ADDLOCAL=ALL
+  #    register: mergatroid
+  #    # when: not filestat.stat.exists
+  #  - name: "Tell what we learned."
+  #    tags: installwinsdk
+  #    debug: msg="{{mergatroid}}"
 
   - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
     tags: installants
@@ -214,6 +223,26 @@
     # # # # # # # # #  # # # # # when:  not antstat.stat.exists
   - debug: var=file_info
     tags: installants
+
+  - win_stat: path='c:\horton\tools\protoc-2.5.0-win32'
+    tags: installprotoc
+    register: protoc
+  - debug: var=protoc
+    tags: installprotoc
+  - name: Download protoc
+    win_get_url:  url='https://protobuf.googlecode.com/files/protoc-2.5.0-win32.zip' dest='c:\temp\protoc-2.5.0-win32.zip' force=yes
+    tags: installprotoc
+    when:  not protoc.stat.exists
+  - raw: mkdir c:\horton\tools\protoc-2.5.0-win32
+    tags: installprotoc
+    when:  not protoc.stat.exists
+  - raw:  c:\horton\git\bin\unzip -o c:\temp\protoc-2.5.0-win32.zip -d c:\horton\tools\protoc-2.5.0-win32
+    tags: installprotoc
+    register: file_info
+    when:  not protoc.stat.exists
+  - debug: var=file_info
+    when:  not protoc.stat.exists
+    tags: installprotoc
 
   - win_stat: path='c:\horton\sysinternals'
     tags: installsysinternals
@@ -279,18 +308,18 @@
   - debug: var=file_info
     tags: installmaven
 
-  - win_stat: path='c:horton\java\jdk_1.7'
+  - win_stat: path='c:horton\java\jdk1.7.0'
     tags: installjdk7
     register: javastat
   - win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-windows-x64.exe' dest='c:\temp\jdk-7-windows-x64.exe'
     tags: installjdk7
     register: file_info
-    when: not javastat.stat.exists
+    # when: not javastat.stat.exists
   - debug: var=file_info
     tags: installjdk7
-  - raw: c:\temp\jdk-7-windows-x64.exe /qn /norestart /log jdk-7-windows-x64.log  INSTALLDIR=C:\horton\java\jdk_1.7
+  - raw: c:\temp\jdk-7-windows-x64.exe /qn /norestart /log jdk-7-windows-x64.log  INSTALLDIR=C:\horton\java\jdk1.7.0
     tags: installjdk7
-    when: not javastat.stat.exists
+    # when: not javastat.stat.exists
 
 
   - name: Set git-config default-email.
@@ -308,16 +337,19 @@
     tags: setxcommands
 
   - name: Set Jenkins auto-boot config
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/Run-Jenkins.cmd'  dest='c:\users\administrator\Run-Jenkins.cmd' force=yes
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/Run-Jenkins.cmd'  dest='c:\users\jenkins\Run-Jenkins.cmd' force=yes
+    tags: jenkinsconfig
+  - name: Disable Administator auto-boot script.
+    raw:  echo > "c:\users\administrator\Run-Jenkins.cmd"
     tags: jenkinsconfig
   - name: Get Jenkins auto-boot .jar files.
-    win_get_url:  url='http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/1.22/swarm-client-1.22-jar-with-dependencies.jar'   dest='c:\users\administrator\Downloads\swarm-client-1.22-jar-with-dependencies.jar' force=yes
+    win_get_url:  url='http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/1.22/swarm-client-1.22-jar-with-dependencies.jar'   dest='c:\users\jenkins\Downloads\swarm-client-1.22-jar-with-dependencies.jar' force=yes
     tags: jenkinsconfig
-  - raw: setx JSTART_URL http://54.210.26.224:8080/
+  - raw: echo  set JSTART_URL=http://54.174.81.19:8080/ > "c:\horton\jenkins-env.cmd"
     tags: jenkinsconfig
-  - raw: setx JSTART_USER jenkins
+  - raw: echo set JSTART_USER=jabowles >> "c:\horton\jenkins-env.cmd"
     tags: jenkinsconfig
-  - raw: setx JSTART_PASSWORD booboo
+  - raw: echo set JSTART_PASSWORD={{JenkinsAPIKEY}} >> "c:\horton\jenkins-env.cmd"
     tags: jenkinsconfig
-
-
+  - raw: echo set LABEL=win-UT >> c:\horton\jenkins-env.cmd
+    tags: jenkinsconfig
