@@ -3,6 +3,7 @@
   gather_facts: true
   vars:
     JenkinsAPIKEY:   "{{lookup('env', 'JENKINSAPIKEY')}}"
+    makelevel2: true
   tags: initialsetupExample
   tasks:
   - name: check-api-keys
@@ -177,6 +178,12 @@
     register: file_info
     # when:  not gitstat.stat.exists
   - debug: var=file_info
+  - name: configure Git email
+    raw:  c:\horton\git\bin\git config --global user.email "rel-eng@hortonworks.com"
+    tags: installgit
+  - name: configure Git username
+    raw:  c:\horton\git\bin\git config --global user.name "internal rel eng account"
+    tags: installgit
 
   - win_stat:  path='c:\horton\cygwin-1.7'
     tags: installcygwin
@@ -346,10 +353,18 @@
     win_get_url:  url='http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/1.22/swarm-client-1.22-jar-with-dependencies.jar'   dest='c:\users\jenkins\Downloads\swarm-client-1.22-jar-with-dependencies.jar' force=yes
     tags: jenkinsconfig
   - raw: echo  set JSTART_URL=http://54.174.81.19:8080/ > "c:\horton\jenkins-env.cmd"
-    tags: jenkinsconfig
+    tags: jenkinsconfig jenkinsenv
   - raw: echo set JSTART_USER=jabowles >> "c:\horton\jenkins-env.cmd"
-    tags: jenkinsconfig
+    tags: jenkinsconfig jenkinsenv
   - raw: echo set JSTART_PASSWORD={{JenkinsAPIKEY}} >> "c:\horton\jenkins-env.cmd"
-    tags: jenkinsconfig
+    tags: jenkinsconfig jenkinsenv
   - raw: echo set LABEL=win-UT >> c:\horton\jenkins-env.cmd
-    tags: jenkinsconfig
+    tags: jenkinsconfig jenkinsenv
+    when: not makelevel2
+  - raw: echo set LABEL=win-builds >> c:\horton\jenkins-env.cmd
+    when: makelevel2
+    tags: jenkinsconfig jenkinsenv
+  - name: Add jenkins to Users group
+    raw: net localgroup  Administrators jenkins /add
+    when: makelevel2
+    tags: jenkinsenv
