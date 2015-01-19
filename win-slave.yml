@@ -3,7 +3,7 @@
   gather_facts: true
   vars:
     JenkinsAPIKEY:   "{{lookup('env', 'JENKINSAPIKEY')}}"
-    makelevel2: true
+    makelevel2: false
   tags: initialsetupExample
   tasks:
   - name: check-api-keys
@@ -77,12 +77,6 @@
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/diffutils-2.8.7-1.exe' dest='c:\temp\diffutils-2.8.7-1.exe'
     when: not filestat.stat.exists
 
-  - win_stat:  path='c:\temp\dotNetFx40_Full_x86_x64_SC.exe'
-    register:  filestat
-  - name: retrieve file
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/dotNetFx40_Full_x86_x64_SC.exe' dest='c:\temp\dotNetFx40_Full_x86_x64_SC.exe'
-    when: not filestat.stat.exists
-
   - win_stat:  path='c:\temp\jdk-6-builds-maven-settings.xml'
     register:  filestat
   - name: retrieve file
@@ -110,9 +104,6 @@
   - name: retrieve file
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/jdk-7-builds-maven-settings.xml' dest='c:\temp\jdk-7-builds-maven-settings.xml'
     when: not idrsastat.stat.exists
-
-  # - name: update github authentication
-  #   raw: c:\horton\git\bin\ssh.exe  -o StrictHostKeyChecking=no  git@github.com
 
   - win_stat:  path='c:\temp\jdk-7-builds-maven-settings.xml'
     register:  filestat
@@ -150,12 +141,6 @@
     win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/rubyinstaller-1.9.3-p327.exe' dest='c:\temp\rubyinstaller-1.9.3-p327.exe'
     when: not filestat.stat.exists
 
-  - win_stat:  path='c:\temp\vc_web.exe'
-    register:  filestat
-  - name: retrieve file
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/vc_web.exe' dest='c:\temp\vc_web.exe'
-    when: not filestat.stat.exists
-
   - win_stat:  path='c:\temp\which-2.20-setup.exe'
     register:  filestat
   - name: retrieve file
@@ -178,12 +163,6 @@
     register: file_info
     # when:  not gitstat.stat.exists
   - debug: var=file_info
-  - name: configure Git email
-    raw:  c:\horton\git\bin\git config --global user.email "rel-eng@hortonworks.com"
-    tags: installgit
-  - name: configure Git username
-    raw:  c:\horton\git\bin\git config --global user.name "internal rel eng account"
-    tags: installgit
 
   - win_stat:  path='c:\horton\cygwin-1.7'
     tags: installcygwin
@@ -353,17 +332,17 @@
     win_get_url:  url='http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/1.22/swarm-client-1.22-jar-with-dependencies.jar'   dest='c:\users\jenkins\Downloads\swarm-client-1.22-jar-with-dependencies.jar' force=yes
     tags: jenkinsconfig
   - raw: echo  set JSTART_URL=http://54.174.81.19:8080/ > "c:\horton\jenkins-env.cmd"
-    tags: jenkinsconfig jenkinsenv
+    tags: jenkinsenv
   - raw: echo set JSTART_USER=jabowles >> "c:\horton\jenkins-env.cmd"
-    tags: jenkinsconfig jenkinsenv
+    tags: jenkinsenv
   - raw: echo set JSTART_PASSWORD={{JenkinsAPIKEY}} >> "c:\horton\jenkins-env.cmd"
-    tags: jenkinsconfig jenkinsenv
+    tags: jenkinsenv
   - raw: echo set LABEL=win-UT >> c:\horton\jenkins-env.cmd
-    tags: jenkinsconfig jenkinsenv
+    tags: jenkinsenv
     when: not makelevel2
   - raw: echo set LABEL=win-builds >> c:\horton\jenkins-env.cmd
     when: makelevel2
-    tags: jenkinsconfig jenkinsenv
+    tags: jenkinsenv
   - name: Add jenkins to Users group
     raw: net localgroup  Administrators jenkins /add
     when: makelevel2
