@@ -13,6 +13,7 @@
      python_27_url: http://qe-repo.s3.amazonaws.com/ansible/Python-2.7.8.tgz
      ez_setup_url: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
      limits_url: http://qe-repo.s3.amazonaws.com/ansible/limits.conf
+     epel_url: http://qe-repo.s3.amazonaws.com/ansible/epel.repo
 
   tasks:
 
@@ -27,8 +28,16 @@
      file: path={{jenkins_home}} owner=root group=root mode=0755 state=directory
      tags: init
 
+   - name: slave setup | download epel.repo
+     get_url: url={{epel_url}} dest=/tmp/epel.repo
+   
+   - name: slave setup | install libs
+     yum: pkg={{item}} state=latest
+     with_items:
+       -  libselinux-python
+
    - name: slave setup | copy epel.repo
-     copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+     copy: src=/tmp/epel.repo dest=/etc/yum.repos.d/epel.repo
 
    - name: slave setup | install libs
      yum: pkg={{item}} state=latest

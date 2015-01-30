@@ -1,0 +1,13 @@
+[default]
+172.19.228.11   ansible_ssh_user=root ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.12   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.13   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.14   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.15   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.16   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.17   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.18   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.19   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.20   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.21   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
+172.19.228.22   ansible_ssh_user=root     ansible_ssh_pass=3ng1N33r1ng!!
