@@ -1,0 +1,21 @@
+---
+- name: Ansible-playbook install
+  sudo: yes
+  sudo_user: root
+  apt:  pkg=python-software-properties state=latest
+  tags: ansible
+
+
+- name: Ansible Install - Add Repo
+  sudo: yes
+  sudo_user: root
+  apt_repository:
+     repo: 'ppa:rquillo/ansible'
+     update_cache: yes
+  tags: ansible
+
+- name: Ansible Install - Installing Jenkins
+  sudo: yes
+  sudo_user: root
+  apt: pkg=ansible state=latest
+  tags: ansible
