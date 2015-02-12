@@ -45,10 +45,10 @@
     when: not filestat.stat.exists
 
 
-  - win_stat:  path='c:\temp\apache-ant-1.7.1-bin.zip'
+  - win_stat:  path='c:\temp\apache-ant-1.7.1-bin.zip-forced'
     register:  filestat
   - name: retrieve file
-    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-ant-1.7.1-bin.zip' dest='c:\temp\apache-ant-1.7.1-bin.zip'
+    win_get_url:  url='http://s3.amazonaws.com/dev.hortonworks.com/tools/Win-Build-Slave-Setup/apache-ant-1.7.1-bin.zip' dest='c:\temp\apache-ant-1.7.1-bin.zip' force-yes
     when: not filestat.stat.exists
 
   - win_stat:  path='c:\temp\apache-ant-1.8.3-bin.zip'
@@ -198,7 +198,7 @@
   #    tags: installwinsdk
   #    debug: msg="{{mergatroid}}"
 
-  - win_stat: path='c:\horton\tools\apache-ant-1.7.1'
+  - win_stat: path='c:\horton\tools\apache-ant-1.7.1-fixed'
     tags: installants
     register: antstat
   - debug: var=antstat
