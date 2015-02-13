@@ -1,0 +1,10 @@
+- hosts: slaves
+  gather_facts: no
+  vars:
+    jenkins_user: jenkins
+    jenkins_workspace: /grid/0/jenkins/workspace/
+  tasks:
+    - name: "remove jenkins slave workspace."
+      sudo: yes
+      sudo_user: jenkins
+      file: path={{jenkins_workspace}} state=absent
