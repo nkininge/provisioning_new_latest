@@ -1,0 +1,10 @@
+---
+  - include: install_sensu_server.yml
+    tags: sensu_server
+    when:  "{{sensu_server}}"
+  # - include: install_sensu_api.yml
+    # when:  "{{sensu_api}}"
+    # tags: sensu_api
+  # - include: install_sensu_client.yml
+    # when:  "{{sensu_client}}"
+    # tags: sensu_client

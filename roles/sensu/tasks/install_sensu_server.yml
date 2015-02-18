@@ -1,0 +1,81 @@
+---
+  - name: Generate Sensu SSL certificate
+    tags: sensu_server
+    get_url: url=http://sensuapp.org/docs/0.12/tools/ssl_certs.tar dest=/tmp/ssl_certs.tar
+  - name: Generate Sensu SSL certificate - 2
+    tags: sensu_server
+    command: tar xvf ssl_certs.tar
+    args:
+        chdir: /tmp
+  - name: Generate Sensu SSL certificate - 3
+    tags: sensu_server
+    command: sh ssl_certs.sh generate
+    args:
+        chdir: /tmp/ssl_certs
+    register: mergatroid
+  - name: Install Sensu Support RPMs (erlang-nox).
+    sudo: yes
+    apt:  name=erlang-nox
+  - name: Install Sensu Support RPMs (rabbitmq)
+    sudo: yes
+    apt:  name=rabbitmq-server
+  - name: init RabbitMQ server
+    sudo: yes
+    command:  update-rc.d rabbitmq-server defaults
+  - name: Start RabbitMQ server
+    sudo: yes
+    service:  name=rabbitmq-server state=started
+  - name: Remove SSL certificate work for now, to keep clean.
+    sudo: yes
+    file: path=/etc/rabbitmq/ssl state=directory
+  - name: Copy in Sensu SSL certificates
+    sudo: yes
+    command:  creates=/etc/rabbitmq/ssl/{{item}}  cp /tmp/ssl_certs/server/{{item}}   /etc/rabbitmq/ssl/{{item}}
+    with_items:
+      - cert.pem
+      - key.pem
+  - name: Copy in Sensu SSL certificates - 2
+    sudo: yes
+    command:  creates=/etc/rabbitmq/ssl/{{item}}  cp /tmp/ssl_certs/sensu_ca/{{item}}   /etc/rabbitmq/ssl/{{item}}
+    with_items:
+      - cacert.pem
+  - name: Configure Sensu SSL directory in /etc/
+    sudo: yes
+    copy:  dest=/etc/rabbitmq/rabbitmq.config src=rabbitmq.config
+  - name: Restart RabbitMQ server
+    sudo: yes
+    service:  name=rabbitmq-server state=restarted
+  - name: see if /sensu exists.
+    sudo: yes
+    shell: rabbitmqctl list_vhosts | grep /sensu
+    register: sensuexists
+  - name: Create credentials - an add_vhost command.
+    sudo: yes
+    command: rabbitmqctl add_vhost /sensu
+    when: not ( "{{sensuexists.stdout}}" == "/sensu" )
+  - name: See if user=sensu exists.
+    sudo: yes
+    shell: rabbitmqctl list_users | grep sensu | cut -f1
+    register: sensuuserexists
+  - name: Create credentials - a new rabbitMQ user.
+    sudo: yes
+    command:  rabbitmqctl add_user sensu xpassword
+    when: not ( "{{sensuuserexists.stdout}}" == "sensu" )
+  - name: Create credentials - give new user permissions.
+    sudo: yes
+    command:  rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"
+  - name: Install redis
+    sudo: yes
+    apt:  name=redis-server
+  - name: Install sensu-repo signing key.
+    sudo: yes
+    apt_key: url=http://repos.sensuapp.org/apt/pubkey.gpg   state=present
+  - name: Install sensu-repo repository entry.
+    sudo: yes
+    apt_repository: repo='deb  http://repos.sensuapp.org/apt sensu main' state=present
+  - name: Install sensu itself
+    sudo: yes
+    apt:  name=sensu
+  - name: Install uchiwa dashboard
+    command:  echo  something
+

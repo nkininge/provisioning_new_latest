@@ -1,0 +1,8 @@
+- hosts: sensu-server
+  vars:
+    sensu_server: true
+    sensu_api: false
+    sensu_client: false
+
+  roles:
+    - sensu
