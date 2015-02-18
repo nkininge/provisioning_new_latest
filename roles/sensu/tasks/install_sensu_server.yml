@@ -77,5 +77,12 @@
     sudo: yes
     apt:  name=sensu
   - name: Install uchiwa dashboard
-    command:  echo  something
+    sudo: yes
+    apt:  name=uchiwa
+  - name: Start uchiwa dashboard
+    sudo: yes
+    command:  update-rc.d uchiwa defaults
+  - name: Start uchiwa dashboard
+    sudo: yes
+    service:  name=uchiwa state=started
 
