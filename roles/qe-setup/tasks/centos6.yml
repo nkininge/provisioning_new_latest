@@ -1,0 +1,24 @@
+   - name: slave setup | download epel.repo
+     get_url: url={{epel_url}} dest=/etc/yum.repos.d/epel.repo
+   
+   - name: slave setup | install libs
+     yum: pkg={{item}} state=latest
+     tags: install_libraries
+     with_items:
+       -  libselinux-python
+       - java-1.7.0-openjdk
+       - wget
+       - gcc
+       - curl
+       - curl-devel
+       - openssl-devel
+       - expat-devel
+       - python-setuptools
+       - pdsh
+       - perl
+       - perl-URI
+       - git
+       - openssh-server
+       - zlib-devel
+       - bzip2-devel
+       - ncurses-devel
