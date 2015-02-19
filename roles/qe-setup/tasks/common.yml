@@ -1,0 +1,86 @@
+---   
+   
+   - name: slave setup | mkdir {{jenkins_root}}
+     file: path={{jenkins_root}} owner=root group=root mode=0755 state=directory
+     tags: init
+
+   - name: slave setup | rm {{jenkins_home}} file
+     file: path={{jenkins_home}} owner=root group=root mode=0755 state=absent
+     tags: init
+
+   - name: slave setup | mkdir {{jenkins_home}}
+     file: path={{jenkins_home}} owner=root group=root mode=0755 state=directory
+     tags: init
+
+   - name: slave setup | download git
+     get_url: url={{git_url}} dest=/tmp/git.tar.gz
+
+   - name: slave setup | untar git
+     unarchive: copy=no src=/tmp/git.tar.gz dest=/tmp/
+
+   - name: slave setup | install git
+     shell: cd /tmp/git-1.8.5.1 ; make configure ; ./configure --prefix=/opt/git-1.8.5.1 ; make install
+
+   - name: slave setup | download {{tools_url}}
+     get_url: url={{tools_url}} dest={{jenkins_home}}
+
+   - name: slave setup | untar jenkins-tools.tar.gz
+     unarchive: copy=no src={{jenkins_home}}/jenkins-tools.tar.gz dest={{jenkins_home}}/ creates=yes
+
+   - name: slave setup | rm {{jenkins_home}}/jenkins-tools.tar.gz
+     file: path={{jenkins_home}}/jenkins-tools.tar.gz state=absent
+
+   - name: slave setup | download {{artifacts_url}}
+     get_url: url={{artifacts_url}} dest={{jenkins_home}}
+
+   - name: slave setup | untar jenkins-artifacts.tar.gz
+     unarchive: copy=no src={{jenkins_home}}/jenkins-artifacts.tar.gz dest={{jenkins_home}}/ creates=yes
+
+   - name: slave setup | rm {{jenkins_home}}/jenkins-artifacts.tar.gz
+     file: path={{jenkins_home}}/jenkins-artifacts.tar.gz state=absent
+
+   - name: slave setup | download id_rsa
+     get_url: url={{id_rsa_url}} dest={{root_ssh}}/id_rsa force=yes
+
+   - name: slave setup | download id_rsa.pub
+     get_url: url={{id_rsa_pub_url}} dest={{root_ssh}}/id_rsa.pub force=yes
+
+   - name: slave setup | copy known_hosts
+     shell: "ssh-keyscan -H github.com >> /root/.ssh/known_hosts"
+
+   - name: slave setup | append authorized_keys
+     authorized_key: user=root state=present key="{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+
+   - name: slave setup | install python modules
+     easy_install: name={{item}}
+     with_items:
+       - pip
+       - awscli
+
+   - name: slave setup | download python27
+     get_url: url={{python_27_url}} dest=/tmp/python-2.7.8.tgz
+     tags: openstack
+
+   - name: slave setup | untar python27
+     unarchive: copy=no src=/tmp/python-2.7.8.tgz dest=/tmp/
+     tags: openstack
+
+   - name: slave setup | download ez_setup
+     get_url: url={{ez_setup_url}} dest=/tmp/Python-2.7.8/ez_setup.py
+     tags: openstack
+
+   - name: slave setup | install python27
+     shell: "cd /tmp/Python-2.7.8 ; ./configure --prefix=/usr/local/python27 ; make && make altinstall ; /usr/local/python27/bin/python2.7 ez_setup.py ; cp /usr/lib64/python2.6/lib-dynload/bz2.so /usr/local/python27/lib/python2.7/lib-dynload/ "
+     tags: openstack
+
+   - name: slave setup | install pip
+     shell: "/usr/local/python27/bin/easy_install pip"
+     tags: openstack
+
+   - name: slave setup | install python nova, neutron clients
+     shell: "/usr/local/python27/bin/pip2.7 install python-novaclient"
+     tags: openstack
+
+   - name: slave setup | download limits.conf
+     get_url: url={{limits_url}} dest=/etc/security/limits.conf
+     tags: openstack

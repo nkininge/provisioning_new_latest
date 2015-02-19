@@ -1,0 +1,5 @@
+- hosts: default
+  gather_facts: yes
+
+  roles: 
+    - qe-setup
