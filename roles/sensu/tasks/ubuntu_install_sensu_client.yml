@@ -1,0 +1,44 @@
+---
+  - name: make sensu conf.d dir
+    sudo: yes
+    file: path=/etc/sensu/conf.d state=directory
+  - name: Install sensu-repo signing key.
+    sudo: yes
+    apt_key: url=http://repos.sensuapp.org/apt/pubkey.gpg   state=present
+  - name: Install sensu-repo repository entry.
+    sudo: yes
+    apt_repository: repo='deb  http://repos.sensuapp.org/apt sensu main' state=present
+  - name: Install sensu itself
+    sudo: yes
+    apt:  name=sensu
+  - name: Copy in Sensu Rabbitmq configs
+    sudo: yes
+    tags: rabbitmq
+    template:  src=conf.d/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}}
+    with_items:
+      - rabbitmq.json
+      - client.json
+  - name: Make SSL certificate work for now, to keep clean.
+    sudo: yes
+    tags: ssl_certs
+    file: path=/etc/sensu/ssl state=directory
+  - name: Copy in Sensu SSL certificates to /etc/sensu/ssl also.
+    sudo: yes
+    tags: ssl_certs
+    copy:  src=ssl_certs/client/{{item}}   dest=/etc/sensu/ssl/{{item}}
+    with_items:
+      - cert.pem
+      - key.pem
+  - name: configure services
+    sudo: yes
+    tags: sensu_services
+    shell:  update-rc.d "{{item}}" defaults
+    with_items:
+      - sensu-client
+  - name: start services
+    sudo: yes
+    tags: sensu_services
+    service:  name="{{item}}" state=started
+    with_items:
+      - sensu-client
+

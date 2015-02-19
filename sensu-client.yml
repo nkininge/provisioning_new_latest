@@ -1,0 +1,9 @@
+- hosts: ubuntu
+  vars:
+    sensu_server: false
+    sensu_client: true
+    sensu_master_host: 52.1.39.151
+    sensu_password: xpassword
+
+  roles:
+    - sensu
