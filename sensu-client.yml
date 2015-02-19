@@ -4,6 +4,7 @@
     sensu_client: true
     sensu_master_host: 52.1.39.151
     sensu_password: xpassword
+    defaultsubscription: jenkins-slaves
 
   roles:
     - sensu

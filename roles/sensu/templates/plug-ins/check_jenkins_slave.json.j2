@@ -2,7 +2,7 @@
   "checks": {
     "jenkins_slave_check": {
       "handlers": ["default"],
-      "command": "/etc/sensu/plugins/check-procs.rb -p slave.jar -C 1 ",
+      "command": "ruby1.9.1 /etc/sensu/plugins/check-procs.rb -p slave.jar -C 1 ",
       "interval": 60,
       "subscribers": [ "jenkins-slaves" ]
     }

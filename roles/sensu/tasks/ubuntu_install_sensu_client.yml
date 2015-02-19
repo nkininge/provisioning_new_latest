@@ -29,6 +29,14 @@
     with_items:
       - cert.pem
       - key.pem
+  - name: install sensy plug-in for Ruby
+    sudo: yes
+    tags: install_checkscripts
+    gem:  name=sensu-plugin
+  - name: install sensu plug-in for Ruby1.9.1
+    sudo: yes
+    tags: install_checkscripts
+    shell:  /usr/bin/gem1.9.1 install sensu-plugin
   - name: copy in scripts for sensu master.
     sudo: yes
     tags: install_checkscripts
