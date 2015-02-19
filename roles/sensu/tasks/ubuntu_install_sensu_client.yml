@@ -29,10 +29,22 @@
     with_items:
       - cert.pem
       - key.pem
+  - name: copy in scripts for sensu master.
+    sudo: yes
+    tags: install_checkscripts
+    copy:  src=plug-ins/{{item}}   dest=/etc/sensu/plugins/{{item}}  mode=0755
+    with_items:
+      - check-procs.rb
   - name: configure services
     sudo: yes
     tags: sensu_services
     shell:  update-rc.d "{{item}}" defaults
+    with_items:
+      - sensu-client
+  - name: make sure services are stopped before starting.
+    sudo: yes
+    tags: sensu_services
+    service:  name="{{item}}" state=stopped
     with_items:
       - sensu-client
   - name: start services

@@ -1,7 +1,7 @@
 ---
   - include: install_sensu_server.yml
     tags: sensu_server
-    when:  "{{sensu_server}}"
+    when:  sensu_server
 
   - include: XXX_install_sensu_client.yml
     tags: sensu_client

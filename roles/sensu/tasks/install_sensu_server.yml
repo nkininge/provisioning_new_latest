@@ -110,10 +110,32 @@
       - client.json
       - redis.json
       - api.json
+  - name: copy in alert/trigger scripts.
+    sudo: yes
+    tags: install_checkscripts
+    file:  path=/etc/sensu/conf.d/{{item}} state=absent
+    with_items:
+      - check_cron.json
+      - check_jenkins_slave.json
+  - name: copy in alert/trigger scripts.
+    sudo: yes
+    tags: install_checkscripts
+    template:  src=plug-ins/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}} force=yes
+    with_items:
+      - check_cron.json
+      - check_jenkins_slave.json
   - name: configure services
     sudo: yes
     tags: sensu_services
     shell:  update-rc.d "{{item}}" defaults 
+    with_items:
+      - sensu-server 
+      - sensu-api
+      - sensu-client
+  - name: make sure services are stopped before starting...
+    sudo: yes
+    tags: sensu_services
+    service:  name="{{item}}" state=stopped
     with_items:
       - sensu-server 
       - sensu-api
