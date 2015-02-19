@@ -25,13 +25,25 @@
   - name: Start RabbitMQ server
     sudo: yes
     service:  name=rabbitmq-server state=started
-  - name: Remove SSL certificate work for now, to keep clean.
+  - name: Make SSL certificate work for now, to keep clean.
+    tags: ssl_certs
     sudo: yes
     file: path=/etc/rabbitmq/ssl state=directory
+  - name: Make SSL certificate work for now, to keep clean.
+    sudo: yes
+    tags: ssl_certs
+    file: path=/etc/sensu/ssl state=directory
   - name: Copy in Sensu SSL certificates
     sudo: yes
     tags: ssl_certs
     copy:  src=ssl_certs/server/{{item}}   dest=/etc/rabbitmq/ssl/{{item}}
+    with_items:
+      - cert.pem
+      - key.pem
+  - name: Copy in Sensu SSL certificates to /etc/sensu/ssl also.
+    sudo: yes
+    tags: ssl_certs
+    copy:  src=ssl_certs/client/{{item}}   dest=/etc/sensu/ssl/{{item}}
     with_items:
       - cert.pem
       - key.pem
@@ -87,6 +99,22 @@
       - client.json
       - redis.json
       - api.json
+  - name: configure services
+    sudo: yes
+    tags: sensu_services
+    shell:  update-rc.d "{{item}}" defaults 
+    with_items:
+      - sensu-server 
+      - sensu-api
+      - sensu-client
+  - name: start services
+    sudo: yes
+    tags: sensu_services
+    service:  name="{{item}}" state=started
+    with_items:
+      - sensu-server 
+      - sensu-api
+      - sensu-client
   - name: Install uchiwa dashboard
     sudo: yes
     apt:  name=uchiwa
