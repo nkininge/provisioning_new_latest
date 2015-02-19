@@ -71,10 +71,18 @@
     sudo: yes
     shell: rabbitmqctl list_users | grep sensu | cut -f1
     register: sensuuserexists
+  - name: See if user=admin exists.
+    sudo: yes
+    shell: rabbitmqctl list_users | grep admin | cut -f1
+    register: adminuserexists
   - name: Create credentials - a new rabbitMQ user.
     sudo: yes
     command:  rabbitmqctl add_user sensu xpassword
     when: not ( "{{sensuuserexists.stdout}}" == "sensu" )
+  - name: Create credentials - a new rabbitMQ user (admin).
+    sudo: yes
+    command:  rabbitmqctl add_user admin "{{admin_password}}"
+    when: not ( "{{adminuserexists.stdout}}" == "admin" )
   - name: Create credentials - give new user permissions.
     sudo: yes
     command:  rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"
@@ -118,6 +126,10 @@
   - name: Install uchiwa dashboard
     sudo: yes
     apt:  name=uchiwa
+  - name: configure uchiwa dashboard
+    sudo: yes
+    tags: uchiwa-dashboard
+    template:  src=uchiwa.json.j2 dest=/etc/sensu/uchiwa.json
   - name: Start uchiwa dashboard
     sudo: yes
     command:  update-rc.d uchiwa defaults
