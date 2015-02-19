@@ -1,0 +1,20 @@
+---
+  - name: make sensu conf.d dir
+    sudo: yes
+    file: path=/etc/sensu/conf.d state=directory
+  - name: Install sensu-repo signing key.
+    sudo: yes
+    apt_key: url=http://repos.sensuapp.org/apt/pubkey.gpg   state=present
+  - name: Install sensu-repo repository entry.
+    sudo: yes
+    apt_repository: repo='deb  http://repos.sensuapp.org/apt sensu main' state=present
+  - name: Install sensu itself
+    sudo: yes
+    apt:  name=sensu
+  - name: Copy in Sensu Rabbitmq configs
+    sudo: yes
+    tags: rabbitmq
+    template:  src=conf.d/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}}
+    with_items:
+      - rabbitmq.json
+      - client.json

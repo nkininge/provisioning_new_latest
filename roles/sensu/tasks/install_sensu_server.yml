@@ -78,6 +78,15 @@
   - name: Install sensu itself
     sudo: yes
     apt:  name=sensu
+  - name: Copy in Sensu Rabbitmq configs
+    sudo: yes
+    tags: rabbitmq
+    template:  src=conf.d/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}}
+    with_items:
+      - rabbitmq.json
+      - client.json
+      - redis.json
+      - api.json
   - name: Install uchiwa dashboard
     sudo: yes
     apt:  name=uchiwa
@@ -87,4 +96,6 @@
   - name: Start uchiwa dashboard
     sudo: yes
     service:  name=uchiwa state=started
-
+  - name: make sensu conf.d dir
+    sudo: yes
+    file: path=/etc/sensu/conf.d state=directory
