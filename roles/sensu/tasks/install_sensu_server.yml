@@ -31,14 +31,14 @@
   - name: Copy in Sensu SSL certificates
     sudo: yes
     tags: ssl_certs
-    copy:  src=ssl_certs/server/{{item}}   /etc/rabbitmq/ssl/{{item}}
+    copy:  src=ssl_certs/server/{{item}}   dest=/etc/rabbitmq/ssl/{{item}}
     with_items:
       - cert.pem
       - key.pem
   - name: Copy in Sensu SSL certificates - 2
     sudo: yes
     tags: ssl_certs
-    copy:  src=ssl_certs/server/_ca{{item}}   /etc/rabbitmq/ssl/{{item}}
+    copy:  src=ssl_certs/sensu_ca/{{item}}   dest=/etc/rabbitmq/ssl/{{item}}
     with_items:
       - cacert.pem
   - name: Configure Sensu SSL directory in /etc/
