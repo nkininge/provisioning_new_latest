@@ -1,18 +1,18 @@
 ---
-  - name: Generate Sensu SSL certificate
-    tags: sensu_server
-    get_url: url=http://sensuapp.org/docs/0.12/tools/ssl_certs.tar dest=/tmp/ssl_certs.tar
-  - name: Generate Sensu SSL certificate - 2
-    tags: sensu_server
-    command: tar xvf ssl_certs.tar
-    args:
-        chdir: /tmp
-  - name: Generate Sensu SSL certificate - 3
-    tags: sensu_server
-    command: sh ssl_certs.sh generate
-    args:
-        chdir: /tmp/ssl_certs
-    register: mergatroid
+  # - name: Generate Sensu SSL certificate
+  #   tags: sensu_server
+  #   get_url: url=http://sensuapp.org/docs/0.12/tools/ssl_certs.tar dest=/tmp/ssl_certs.tar
+  # - name: Generate Sensu SSL certificate - 2
+  #   tags: sensu_server
+  #   command: tar xvf ssl_certs.tar
+  #   args:
+  #       chdir: /tmp
+  # - name: Generate Sensu SSL certificate - 3
+  #   tags: sensu_server
+  #   command: sh ssl_certs.sh generate
+  #   args:
+  #       chdir: /tmp/ssl_certs
+  #   register: mergatroid
   - name: Install Sensu Support RPMs (erlang-nox).
     sudo: yes
     apt:  name=erlang-nox
@@ -30,13 +30,15 @@
     file: path=/etc/rabbitmq/ssl state=directory
   - name: Copy in Sensu SSL certificates
     sudo: yes
-    command:  creates=/etc/rabbitmq/ssl/{{item}}  cp /tmp/ssl_certs/server/{{item}}   /etc/rabbitmq/ssl/{{item}}
+    tags: ssl_certs
+    copy:  src=ssl_certs/server/{{item}}   /etc/rabbitmq/ssl/{{item}}
     with_items:
       - cert.pem
       - key.pem
   - name: Copy in Sensu SSL certificates - 2
     sudo: yes
-    command:  creates=/etc/rabbitmq/ssl/{{item}}  cp /tmp/ssl_certs/sensu_ca/{{item}}   /etc/rabbitmq/ssl/{{item}}
+    tags: ssl_certs
+    copy:  src=ssl_certs/server/_ca{{item}}   /etc/rabbitmq/ssl/{{item}}
     with_items:
       - cacert.pem
   - name: Configure Sensu SSL directory in /etc/
