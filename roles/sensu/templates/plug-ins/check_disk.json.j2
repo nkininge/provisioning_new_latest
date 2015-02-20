@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "disk-check": {
+      "handlers": ["default"],
+      "command": "ruby1.9.1 /etc/sensu/plugins/system/check-disk.rb",
+      "interval": 60,
+      "subscribers": [ "all" ]
+    }
+  }
+}

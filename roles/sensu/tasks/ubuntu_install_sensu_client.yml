@@ -1,4 +1,8 @@
 ---
+  - name: install Ruby 1.9.1
+    sudo: yes
+    apt:  name=ruby1.9.1-dev
+    tags: install_checkscripts
   - name: make sensu conf.d dir
     sudo: yes
     file: path=/etc/sensu/conf.d state=directory
@@ -29,20 +33,21 @@
     with_items:
       - cert.pem
       - key.pem
-  - name: install sensy plug-in for Ruby
-    sudo: yes
-    tags: install_checkscripts
-    gem:  name=sensu-plugin
   - name: install sensu plug-in for Ruby1.9.1
     sudo: yes
     tags: install_checkscripts
-    shell:  /usr/bin/gem1.9.1 install sensu-plugin
+    shell: gem1.9.1 install sensu-plugin
+  - name: make sure plugins-dir is there.
+    tags: install_checkscripts
+    sudo: yes
+    file: path=/etc/sensu/plugins/system  state=directory
   - name: copy in scripts for sensu master.
     sudo: yes
     tags: install_checkscripts
     copy:  src=plug-ins/{{item}}   dest=/etc/sensu/plugins/{{item}}  mode=0755
     with_items:
       - check-procs.rb
+      - system/check-disk.rb
   - name: configure services
     sudo: yes
     tags: sensu_services

@@ -13,6 +13,10 @@
   #   args:
   #       chdir: /tmp/ssl_certs
   #   register: mergatroid
+  - name: install Ruby 1.9.1
+    sudo: yes
+    apt:  name=ruby1.9.1-dev
+    tags: install_checkscripts
   - name: Install Sensu Support RPMs (erlang-nox).
     sudo: yes
     apt:  name=erlang-nox
@@ -117,6 +121,7 @@
     with_items:
       - check_cron.json
       - check_jenkins_slave.json
+      - check_disk.json
   - name: copy in alert/trigger scripts.
     sudo: yes
     tags: install_checkscripts
@@ -124,6 +129,7 @@
     with_items:
       - check_cron.json
       - check_jenkins_slave.json
+      - check_disk.json
   - name: configure services
     sudo: yes
     tags: sensu_services
