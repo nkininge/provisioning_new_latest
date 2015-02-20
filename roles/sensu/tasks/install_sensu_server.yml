@@ -13,10 +13,22 @@
   #   args:
   #       chdir: /tmp/ssl_certs
   #   register: mergatroid
-  - name: install Ruby 1.9.1
+  - name: install Ruby 2.0 (wget)
     sudo: yes
-    apt:  name=ruby1.9.1-dev
+    command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (tar)
     tags: install_checkscripts
+    sudo: yes
+    command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (configure)
+    sudo: yes
+    command:  ./configure chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (make)
+    sudo: yes
+    command:  make chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (make install)
+    sudo: yes
+    command:  make install chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: Install Sensu Support RPMs (erlang-nox).
     sudo: yes
     apt:  name=erlang-nox

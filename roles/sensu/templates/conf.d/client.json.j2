@@ -1,7 +1,7 @@
 {
   "client": {
-    "name": "{{ansible_fqdn}}",
+    "name": "{{ansible_distribution}}{{ansible_distribution_major_version}}-{{ansible_fqdn}}",
     "address": "{{ansible_default_ipv4.address}}",
-    "subscriptions": [ "{{defaultsubscription}}" , "all" ]
+    "subscriptions": [ "{{defaultsubscription}}" , "all", "{{ansible_distribution}}" ]
   }
 }

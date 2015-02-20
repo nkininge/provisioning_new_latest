@@ -1,20 +1,43 @@
 ---
-  - name: install Ruby 1.9.1
+  - name: install repos first
     sudo: yes
-    apt:  name=ruby1.9.1-dev
+    copy: src=centos/sensu.repo dest=/etc/yum.repos.d/sensu.repo mode=0644
+    when: ansible_os_family == 'RedHat'
+  - name: install Ruby 2.0 (wget)
+    sudo: yes
+    command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (tar)
     tags: install_checkscripts
+    sudo: yes
+    command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (configure)
+    sudo: yes
+    command:  ./configure chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (make)
+    sudo: yes
+    command:  make chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
+  - name: install Ruby 2.0 (make install)
+    sudo: yes
+    command:  make install chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: make sensu conf.d dir
     sudo: yes
     file: path=/etc/sensu/conf.d state=directory
   - name: Install sensu-repo signing key.
     sudo: yes
     apt_key: url=http://repos.sensuapp.org/apt/pubkey.gpg   state=present
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: Install sensu-repo repository entry.
     sudo: yes
     apt_repository: repo='deb  http://repos.sensuapp.org/apt sensu main' state=present
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: Install sensu itself
     sudo: yes
     apt:  name=sensu
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - name: Install sensu itself
+    sudo: yes
+    yum:  name=sensu
+    when: ansible_os_family == 'RedHat'
   - name: Copy in Sensu Rabbitmq configs
     sudo: yes
     tags: rabbitmq
@@ -33,10 +56,10 @@
     with_items:
       - cert.pem
       - key.pem
-  - name: install sensu plug-in for Ruby1.9.1
+  - name: install sensu plug-in for Ruby2.0
     sudo: yes
     tags: install_checkscripts
-    shell: gem1.9.1 install sensu-plugin
+    shell: /usr/local/bin/gem install sensu-plugin
   - name: make sure plugins-dir is there.
     tags: install_checkscripts
     sudo: yes
@@ -55,6 +78,14 @@
     shell:  update-rc.d "{{item}}" defaults
     with_items:
       - sensu-client
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - name: configure services
+    sudo: yes
+    tags: sensu_services
+    shell:  chkconfig "{{item}}"  on
+    with_items:
+      - sensu-client
+    when: ansible_os_family == 'RedHat'
   - name: make sure services are stopped before starting.
     sudo: yes
     tags: sensu_services
