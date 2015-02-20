@@ -122,6 +122,7 @@
       - check_cron.json
       - check_jenkins_slave.json
       - check_disk.json
+      - disk-usage-metrics.json
   - name: copy in alert/trigger scripts.
     sudo: yes
     tags: install_checkscripts
@@ -130,6 +131,7 @@
       - check_cron.json
       - check_jenkins_slave.json
       - check_disk.json
+      - disk-usage-metrics.json
   - name: configure services
     sudo: yes
     tags: sensu_services

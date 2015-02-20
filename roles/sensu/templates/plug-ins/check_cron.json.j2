@@ -2,7 +2,7 @@
   "checks": {
     "cron_check": {
       "handlers": ["default"],
-      "command": "ruby1.9.1 /etc/sensu/plugins/check-procs.rb -p crond -C 1 ",
+      "command": "ruby1.9.1 /etc/sensu/plugins/check-procs.rb -p cron -C 1 ",
       "interval": 60,
       "subscribers": [ "all" ]
     }

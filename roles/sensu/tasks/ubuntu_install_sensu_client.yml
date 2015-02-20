@@ -48,6 +48,7 @@
     with_items:
       - check-procs.rb
       - system/check-disk.rb
+      - system/disk-usage-metrics.rb
   - name: configure services
     sudo: yes
     tags: sensu_services
