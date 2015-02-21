@@ -11,5 +11,5 @@
       file: path={{jenkins_workspace}} state=absent
     - name: "remove tmp space"
       sudo: no
-      sudo_user: root
+      sudo_user: jenkins
       file: path={{root_tmp}} state=absent
