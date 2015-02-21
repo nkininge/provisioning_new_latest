@@ -9,7 +9,9 @@
       sudo: yes
       sudo_user: jenkins
       file: path={{jenkins_workspace}} state=absent
+      ignore_errors: yes
     - name: "remove tmp space"
       sudo: yes
       sudo_user: jenkins
       shell: rm -rf /var/tmp/*
+      ignore_errors: yes
