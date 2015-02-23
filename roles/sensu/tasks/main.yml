@@ -3,7 +3,7 @@
     tags: sensu_server
     when:  sensu_server
 
-  - include: XXX_install_sensu_client.yml
+  - include: generic_install_sensu_client.yml
     tags: sensu_client
     when: sensu_client and ansible_distribution == 'Debian' and ansible_distribution_release == 'squeeze'
 
