@@ -1,4 +1,4 @@
-- hosts: ubuntu
+- hosts: centos5-slaves
   vars:
     sensu_server: false
     sensu_client: true

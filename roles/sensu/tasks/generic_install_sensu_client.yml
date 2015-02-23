@@ -3,22 +3,29 @@
     sudo: yes
     copy: src=centos/sensu.repo dest=/etc/yum.repos.d/sensu.repo mode=0644
     when: ansible_os_family == 'RedHat'
+  - stat: path=/usr/local/bin/ruby
+    register: rubyst
   - name: install Ruby 2.0 (wget)
     sudo: yes
-    command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
+    command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt
+    when: not rubyst.stat.exists
   - name: install Ruby 2.0 (tar)
     tags: install_checkscripts
     sudo: yes
-    command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
+    command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt
+    when: not  rubyst.stat.exists
   - name: install Ruby 2.0 (configure)
     sudo: yes
-    command:  ./configure chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
+    command:  ./configure chdir=/opt/ruby-2.0.0-p598
+    when: not  rubyst.stat.exists
   - name: install Ruby 2.0 (make)
     sudo: yes
-    command:  make chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
+    command:  make chdir=/opt/ruby-2.0.0-p598
+    when: not  rubyst.stat.exists
   - name: install Ruby 2.0 (make install)
     sudo: yes
-    command:  make install chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
+    command:  make install chdir=/opt/ruby-2.0.0-p598
+    when: not  rubyst.stat.exists
   - name: make sensu conf.d dir
     sudo: yes
     file: path=/etc/sensu/conf.d state=directory
@@ -36,7 +43,11 @@
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: Install sensu itself
     sudo: yes
-    yum:  name=sensu
+    command: /usr/local/bin/gem install sensu sensu-em
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Install sensu itself
+    sudo: yes
+    shell:  yum install -y sensu
     when: ansible_os_family == 'RedHat'
   - name: Copy in Sensu Rabbitmq configs
     sudo: yes
