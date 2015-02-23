@@ -3,8 +3,15 @@
   vars:
     jenkins_user: jenkins
     jenkins_workspace: /grid/0/jenkins/workspace/
+    root_tmp: /var/tmp/
   tasks:
     - name: "remove jenkins slave workspace."
       sudo: yes
       sudo_user: jenkins
       file: path={{jenkins_workspace}} state=absent
+      ignore_errors: yes
+    - name: "remove tmp space"
+      sudo: yes
+      sudo_user: jenkins
+      shell: rm -rf /var/tmp/*
+      ignore_errors: yes
