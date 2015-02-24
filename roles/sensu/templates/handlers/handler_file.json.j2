@@ -3,6 +3,18 @@
     "default": {
       "type": "pipe",
       "command": "/etc/sensu/handlers/file.rb"
+    },
+    "slack": {
+      "type": "pipe",
+      "command": "/etc/sensu/handlers/slack.rb"
     }
-  }
+ }, 
+	  "slack": {
+	    "webhook_url": "{{slack_webhook_url}}",
+	    "channel": "#sensu-notifications",
+	    "message_prefix": "",
+	    "surround": "",
+	    "bot_name": ""
+	  }
 }
+
