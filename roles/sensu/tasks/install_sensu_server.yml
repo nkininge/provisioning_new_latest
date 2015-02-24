@@ -117,6 +117,9 @@
   - name: make sensu conf.d dir
     sudo: yes
     file: path=/etc/sensu/conf.d state=directory
+  - name: make sensu handlers dir
+    sudo: yes
+    file: path=/etc/sensu/handlers state=directory
   - name: Copy in Sensu Rabbitmq configs and redis configs and API configs.
     sudo: yes
     tags: rabbitmq
@@ -126,7 +129,7 @@
       - client.json
       - redis.json
       - api.json
-  - name: copy in alert/trigger scripts.
+  - name: delete existing copies of alert/trigger scripts.
     sudo: yes
     tags: install_checkscripts
     file:  path=/etc/sensu/conf.d/{{item}} state=absent
@@ -144,6 +147,18 @@
       - check_jenkins_slave.json
       - check_disk.json
       - disk-usage-metrics.json
+  - name: copy in handlers.
+    sudo: yes
+    tags: install_checkscripts
+    template:  src=handlers/{{item}}.j2   dest=/etc/sensu/handlers/{{item}} force=yes mode=0755
+    with_items:
+      - file.rb
+  - name: copy in handler definition.
+    sudo: yes
+    tags: install_checkscripts
+    template:  src=handlers/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}} force=yes  mode=0644
+    with_items:
+      - handler_file.json
   - name: configure services
     sudo: yes
     tags: sensu_services
