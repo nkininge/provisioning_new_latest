@@ -1,6 +1,7 @@
 ---
 jenkins_user_uid: 1000
-jenkins_home: /grid/0/jenkins
+home_base_dir: /grid/0
+jenkins_home: "{{home_base_dir}}/jenkins"
 tools_home: "{{jenkins_home}}/tools"
 maven_home: "{{tools_home}}/maven"
 ant_home: "{{tools_home}}/ant" 

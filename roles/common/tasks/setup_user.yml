@@ -8,6 +8,12 @@
       - "{{jenkins_group}}"
       - docker
 
+  - name: setup_user | create {{jenkins_home}} base dir
+    sudo: yes
+    sudo_user: root
+    tags: setup_user
+    file: path="{{home_base_dir}}" state=directory 
+
   - name: setup_user | Add user
     sudo: yes
     sudo_user: root
