@@ -96,4 +96,4 @@
 
   - name: install_libraries | install alien
     yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
-    when: ansible_lsb.major_release == '6'
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '6'
