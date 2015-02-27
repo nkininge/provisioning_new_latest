@@ -1,5 +1,5 @@
 ---
-  - name: install_tools | create all the tools folders
+  - name: prepare_env | create all the tools folders
     sudo: yes
     sudo_user: jenkins
     file: path={{item}} state=directory owner=jenkins
@@ -15,3 +15,17 @@
     tags:
       - install_gradle
       - prepare_env
+
+  - name: prepare_env | install tools necessary for ansible exec
+    apt: name={{item}} state=present
+    with_items:
+    - zip
+    - unzip
+    when: ansible_os_family == "Debian"
+
+  - name: prepare_env | install tools necessary for ansible exec
+    yum: name={{item}} state=present
+    with_items:
+    - zip
+    - unzip
+    when: ansible_os_family == "Redhat"
