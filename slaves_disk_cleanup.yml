@@ -14,4 +14,4 @@
       sudo: yes
       sudo_user: jenkins
       shell: rm -rf /var/tmp/*
-      ignore_errors: yes
+      ignore_errors: True
