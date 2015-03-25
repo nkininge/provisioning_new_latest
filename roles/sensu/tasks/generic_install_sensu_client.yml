@@ -90,6 +90,29 @@
     with_items:
       - sensu-client
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - name: Make Log Dir if Necessary
+    file: path=/var/log/sensu state=directory
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+    tags: install_sensu_crontab
+
+  - name: Run Sensu client Code in cron reboot
+    cron: name="Run Sensu client Code"
+          job="/usr/local/bin/sensu-client -d /etc/sensu/conf.d -b -l /var/log/sensu/sensy-client.log" 
+          special_time=reboot user=root
+    tags: install_sensu_crontab
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+
+  - name: Copy in Sensu init.d files
+    sudo: yes
+    tags: copyinitscripts
+    copy:  src=init.d/{{item}}.j2   dest=/etc/init.d/{{item}}
+    with_items:
+      - sensu-api
+      - sensu-client
+      - sensu-server
+      - sensu-service
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+
   - name: configure services
     sudo: yes
     tags: sensu_services
@@ -111,14 +134,3 @@
     with_items:
       - sensu-client
     when: not (ansible_distribution == 'Suse')
-
-  - name: Make Log Dir if Necessary
-    file: path=/var/log/sensu state=directory
-    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
-    tags: install_sensu_crontab
-  - name: Run Sensu client Code in cron reboot
-    cron: name="Run Sensu client Code"
-          job="/usr/local/bin/sensu-client -d /etc/sensu/conf.d -b -l /var/log/sensu/sensy-client.log" 
-          special_time=reboot user=root
-    tags: install_sensu_crontab
-    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
