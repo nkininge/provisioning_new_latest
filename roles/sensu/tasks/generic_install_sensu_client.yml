@@ -98,19 +98,29 @@
   - name: Run Sensu client Code in cron reboot
     cron: name="Run Sensu client Code"
           job="/usr/local/bin/sensu-client -d /etc/sensu/conf.d -b -l /var/log/sensu/sensy-client.log" 
-          special_time=reboot user=root
-    tags: install_sensu_crontab
+          special_time=reboot user=root state=absent
+    tags: copyinitscripts
     when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
 
   - name: Copy in Sensu init.d files
     sudo: yes
     tags: copyinitscripts
-    copy:  src=init.d/{{item}}.j2   dest=/etc/init.d/{{item}}
+    copy:  src=init.d/{{item}}   dest=/etc/init.d/{{item}}  mode=0755
     with_items:
       - sensu-api
       - sensu-client
       - sensu-server
       - sensu-service
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Add user if necessary
+    sudo: yes
+    tags: copyinitscripts
+    user:  name=sensu
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Make run-dir writeable as necessary.
+    sudo: yes
+    tags: copyinitscripts
+    file: path=/var/run/sensu  owner=sensu mode=0755  state=directory
     when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
 
   - name: configure services

@@ -146,9 +146,16 @@ if [ "$system" = "suse" ]; then
 fi
 # TODO: support other platforms in the future: gentoo, arch, slackware, etc
 
-cd /opt/sensu
 
-exec=/opt/sensu/bin/$service
+# /usr/local/bin/sensu-client -d /etc/sensu/conf.d -b -l /var/log/sensu/sensy-client.log
+
+if [ -x "/usr/local/bin/$service" ]
+then
+	exec=/usr/local/bin/$service
+else
+	cd /opt/sensu
+	exec=/opt/sensu/bin/$service
+fi
 
 pidfile=$PID_DIR/$service.pid
 logfile=$LOG_DIR/$service.log
