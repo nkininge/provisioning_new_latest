@@ -56,6 +56,10 @@
     with_items:
       - rabbitmq.json
       - client.json
+  - name: Copy in Notice-Change scripts
+    sudo: yes
+    tags: copyinitscripts
+    copy:  src=restart-upon-change.sh     dest=/etc/sensu/restart-upon-change.sh   mode=0755
   - name: Make SSL certificate work for now, to keep clean.
     sudo: yes
     tags: ssl_certs
@@ -90,10 +94,6 @@
     with_items:
       - sensu-client
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  - name: Make Log Dir if Necessary
-    file: path=/var/log/sensu state=directory
-    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
-    tags: install_sensu_crontab
 
   - name: Run Sensu client Code in cron reboot
     cron: name="Run Sensu client Code"
@@ -101,6 +101,7 @@
           special_time=reboot user=root state=absent
     tags: copyinitscripts
     when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+
 
   - name: Copy in Sensu init.d files
     sudo: yes
@@ -159,3 +160,10 @@
     with_items:
       - sensu-client
     # when: not (ansible_distribution == 'Suse')
+
+  - name: Run Sensu check-for-restart every so often.
+    cron: name="Run Sensu restart-client Code"
+          job="sh /etc/sensu/restart-upon-change.sh " 
+          minute="*/20" user=root state=present
+    tags: copyinitscripts
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
