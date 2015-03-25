@@ -112,6 +112,13 @@
       - sensu-server
       - sensu-service
     when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Copy in Sensu init.d files
+    sudo: yes
+    tags: copyinitscripts
+    file:  state=link   src=/etc/init.d/{{item}}   dest=/etc/init.d/rc3.d/S90{{item}}  mode=0755
+    with_items:
+      - sensu-client
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
   - name: Add user if necessary
     sudo: yes
     tags: copyinitscripts
@@ -120,7 +127,15 @@
   - name: Make run-dir writeable as necessary.
     sudo: yes
     tags: copyinitscripts
-    file: path=/var/run/sensu  owner=sensu mode=0755  state=directory
+    file: path={{item}}  owner=sensu mode=0755  state=directory
+    with_items:
+      - /var/run/sensu
+      - /var/log/sensu
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Make log-file writeable as necessary
+    sudo: yes
+    tags: copyinitscripts
+    file: path=/var/log/sensu/sensu-client.log  owner=sensu mode=0644  state=absent
     when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
 
   - name: configure services
@@ -136,11 +151,11 @@
     service:  name="{{item}}" state=stopped
     with_items:
       - sensu-client
-    when: not (ansible_distribution == 'Suse')
+    # when: not (ansible_distribution == 'Suse')
   - name: start services
     sudo: yes
     tags: sensu_services
     service:  name="{{item}}" state=started
     with_items:
       - sensu-client
-    when: not (ansible_distribution == 'Suse')
+    # when: not (ansible_distribution == 'Suse')
