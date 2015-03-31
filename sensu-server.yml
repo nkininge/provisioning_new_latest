@@ -3,6 +3,7 @@
     sensu_server: true
     sensu_client: true
     sensu_master_host: 172.22.69.206
+    datacentername: "Openstack"
     sensu_password: xpassword
     admin_password: secret
     slack_webhook_url: https://hooks.slack.com/services/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
