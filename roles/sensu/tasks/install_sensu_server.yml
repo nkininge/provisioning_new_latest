@@ -77,7 +77,7 @@
     service:  name=rabbitmq-server state=restarted
   - name: see if /sensu exists.
     sudo: yes
-    shell: rabbitmqctl list_vhosts | grep /sensu
+    shell: rabbitmqctl list_vhosts | (grep /sensu ; exit 0)
     register: sensuexists
   - name: Create credentials - an add_vhost command.
     sudo: yes
@@ -85,16 +85,18 @@
     when: not ( "{{sensuexists.stdout}}" == "/sensu" )
   - name: See if user=sensu exists.
     sudo: yes
-    shell: rabbitmqctl list_users | grep sensu | cut -f1
+    shell: rabbitmqctl list_users | (grep '^sensu' ; exit 0) | cut -f1
     register: sensuuserexists
   - name: See if user=admin exists.
     sudo: yes
-    shell: rabbitmqctl list_users | grep admin | cut -f1
+    shell: rabbitmqctl list_users | (egrep '^admin';exit 0) | cut -f1
     register: adminuserexists
   - name: Create credentials - a new rabbitMQ user.
     sudo: yes
     command:  rabbitmqctl add_user sensu xpassword
     when: not ( "{{sensuuserexists.stdout}}" == "sensu" )
+  - name: find admin user
+    debug: "{{adminuserexists.stdout}}"
   - name: Create credentials - a new rabbitMQ user (admin).
     sudo: yes
     command:  rabbitmqctl add_user admin "{{admin_password}}"
