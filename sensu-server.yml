@@ -2,7 +2,7 @@
   vars:
     sensu_server: true
     sensu_client: true
-    sensu_master_host: 172.22.69.206
+    sensu_master_host: 172.22.68.66
     datacentername: "Openstack"
     sensu_password: xpassword
     admin_password: secret
