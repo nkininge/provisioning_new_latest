@@ -13,4 +13,4 @@
   get_url: url='http://s3.amazonaws.com/dev.hortonworks.com/RLENG/rpmmacros.tar.gz' dest={{jenkins_home}}/
 
 - name: centos_env_setup | unarchive rpmmacros.tar.gz
-  unarchive: src={{jenkins_home}}/rpmmacros.tar.gz dest={{jenkins_home}}/
+  unarchive: copy=no src={{jenkins_home}}/rpmmacros.tar.gz dest={{jenkins_home}}/

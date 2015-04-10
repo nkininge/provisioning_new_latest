@@ -13,7 +13,22 @@
   #   args:
   #       chdir: /tmp/ssl_certs
   #   register: mergatroid
+  - name: Install compiler, etc.
+    tags:  install_compilers
+    sudo: yes
+    apt:  name={{item}}
+    with_items:
+      - gcc
+      - make
+      - openssl
+      - build-essential
+      - zlib1g-dev
+      - libreadline-dev
+      - libssl-dev
+      - libcurl4-openssl-dev
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: install Ruby 2.0 (wget)
+    tags: install_checkscripts
     sudo: yes
     command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (tar)
@@ -21,15 +36,19 @@
     sudo: yes
     command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (configure)
+    tags: install_checkscripts
     sudo: yes
     command:  ./configure chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (make)
+    tags: install_checkscripts
     sudo: yes
     command:  make chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (make install)
+    tags: install_checkscripts
     sudo: yes
     command:  make install chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: Install Sensu Support RPMs (erlang-nox).
+    tags: install_checkscripts
     sudo: yes
     apt:  name=erlang-nox
   - name: Install Sensu Support RPMs (rabbitmq)
@@ -77,7 +96,7 @@
     service:  name=rabbitmq-server state=restarted
   - name: see if /sensu exists.
     sudo: yes
-    shell: rabbitmqctl list_vhosts | grep /sensu
+    shell: rabbitmqctl list_vhosts | (grep /sensu ; exit 0)
     register: sensuexists
   - name: Create credentials - an add_vhost command.
     sudo: yes
@@ -85,16 +104,18 @@
     when: not ( "{{sensuexists.stdout}}" == "/sensu" )
   - name: See if user=sensu exists.
     sudo: yes
-    shell: rabbitmqctl list_users | grep sensu | cut -f1
+    shell: rabbitmqctl list_users | (grep '^sensu' ; exit 0) | cut -f1
     register: sensuuserexists
   - name: See if user=admin exists.
     sudo: yes
-    shell: rabbitmqctl list_users | grep admin | cut -f1
+    shell: rabbitmqctl list_users | (egrep '^admin';exit 0) | cut -f1
     register: adminuserexists
   - name: Create credentials - a new rabbitMQ user.
     sudo: yes
     command:  rabbitmqctl add_user sensu xpassword
     when: not ( "{{sensuuserexists.stdout}}" == "sensu" )
+  - name: find admin user
+    debug: "{{adminuserexists.stdout}}"
   - name: Create credentials - a new rabbitMQ user (admin).
     sudo: yes
     command:  rabbitmqctl add_user admin "{{admin_password}}"
@@ -115,14 +136,16 @@
     sudo: yes
     apt:  name=sensu
   - name: make sensu conf.d dir
+    tags: install_checkscripts
     sudo: yes
     file: path=/etc/sensu/conf.d state=directory
   - name: make sensu handlers dir
+    tags: install_checkscripts
     sudo: yes
     file: path=/etc/sensu/handlers state=directory
   - name: Copy in Sensu Rabbitmq configs and redis configs and API configs.
+    tags: install_checkscripts
     sudo: yes
-    tags: rabbitmq
     template:  src=conf.d/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}}
     with_items:
       - rabbitmq.json

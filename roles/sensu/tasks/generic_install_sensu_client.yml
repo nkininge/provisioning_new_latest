@@ -1,11 +1,27 @@
 ---
+  - name: Install compiler, etc.
+    tags:  install_compilers
+    sudo: yes
+    apt:  name={{item}}
+    with_items:
+      - gcc
+      - make
+      - openssl
+      - build-essential
+      - zlib1g-dev
+      - libreadline-dev
+      - libssl-dev
+      - libcurl4-openssl-dev
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: install repos first
+    tags: install_checkscripts
     sudo: yes
     copy: src=centos/sensu.repo dest=/etc/yum.repos.d/sensu.repo mode=0644
     when: ansible_os_family == 'RedHat'
   - stat: path=/usr/local/bin/ruby
     register: rubyst
   - name: install Ruby 2.0 (wget)
+    tags: install_checkscripts
     sudo: yes
     command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt
     when: not rubyst.stat.exists
@@ -15,18 +31,22 @@
     command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt
     when: not  rubyst.stat.exists
   - name: install Ruby 2.0 (configure)
+    tags: install_checkscripts
     sudo: yes
     command:  ./configure chdir=/opt/ruby-2.0.0-p598
     when: not  rubyst.stat.exists
   - name: install Ruby 2.0 (make)
+    tags: install_checkscripts
     sudo: yes
     command:  make chdir=/opt/ruby-2.0.0-p598
     when: not  rubyst.stat.exists
   - name: install Ruby 2.0 (make install)
+    tags: install_checkscripts
     sudo: yes
     command:  make install chdir=/opt/ruby-2.0.0-p598
     when: not  rubyst.stat.exists
   - name: make sensu conf.d dir
+    tags: install_checkscripts
     sudo: yes
     file: path=/etc/sensu/conf.d state=directory
   - name: Install sensu-repo signing key.
@@ -56,6 +76,10 @@
     with_items:
       - rabbitmq.json
       - client.json
+  - name: Copy in Notice-Change scripts
+    sudo: yes
+    tags: copyinitscripts
+    copy:  src=restart-upon-change.sh     dest=/etc/sensu/restart-upon-change.sh   mode=0755
   - name: Make SSL certificate work for now, to keep clean.
     sudo: yes
     tags: ssl_certs
@@ -90,6 +114,57 @@
     with_items:
       - sensu-client
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: Run Sensu client Code in cron reboot
+    cron: name="Run Sensu client Code"
+          job="/usr/local/bin/sensu-client -d /etc/sensu/conf.d -b -l /var/log/sensu/sensy-client.log" 
+          special_time=reboot user=root state=absent
+    tags: copyinitscripts
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+
+
+  - name: Copy in Sensu init.d files
+    sudo: yes
+    tags: copyinitscripts
+    copy:  src=init.d/{{item}}   dest=/etc/init.d/{{item}}  mode=0755
+    with_items:
+      - sensu-api
+      - sensu-client
+      - sensu-server
+      - sensu-service
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Copy in Sensu init.d files
+    sudo: yes
+    tags: copyinitscripts
+    file:  state=link   src=/etc/init.d/{{item}}   dest=/etc/init.d/rc3.d/S90{{item}}  mode=0755
+    with_items:
+      - sensu-client
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Add user if necessary
+    sudo: yes
+    tags: copyinitscripts
+    user:  name=sensu  home=/opt/sensu generate_ssh_key=yes
+  - name: Add user ssh-keys as necessary
+    sudo: yes
+    tags: copyinitscripts
+    copy: src=ssh_git_deploy/{{item}} dest=/opt/sensu/.ssh/{{item}}  force=yes owner=sensu mode=0600
+    with_items:
+      - id_rsa
+      - id_rsa.pub
+  - name: Make run-dir writeable as necessary.
+    sudo: yes
+    tags: copyinitscripts
+    file: path={{item}}  owner=sensu mode=0755  state=directory
+    with_items:
+      - /var/run/sensu
+      - /var/log/sensu
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Make log-file writeable as necessary
+    sudo: yes
+    tags: copyinitscripts
+    file: path=/var/log/sensu/sensu-client.log  owner=sensu mode=0644  state=absent
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+
   - name: configure services
     sudo: yes
     tags: sensu_services
@@ -103,22 +178,46 @@
     service:  name="{{item}}" state=stopped
     with_items:
       - sensu-client
-    when: not (ansible_distribution == 'Suse')
+    # when: not (ansible_distribution == 'Suse')
   - name: start services
     sudo: yes
     tags: sensu_services
     service:  name="{{item}}" state=started
     with_items:
       - sensu-client
-    when: not (ansible_distribution == 'Suse')
+    # when: not (ansible_distribution == 'Suse')
 
-  - name: Make Log Dir if Necessary
-    file: path=/var/log/sensu state=directory
-    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
-    tags: install_sensu_crontab
-  - name: Run Sensu client Code in cron reboot
-    cron: name="Run Sensu client Code"
-          job="/usr/local/bin/sensu-client -d /etc/sensu/conf.d -b -l /var/log/sensu/sensy-client.log" 
-          special_time=reboot user=root
-    tags: install_sensu_crontab
-    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Setup up git repository retrievals.
+    file: path={{item}} owner=root state=directory 
+    with_items:
+       - /opt
+    tags: gitsetup
+    sudo: yes
+  - name: Setup up git repository retrievals.
+    file: path={{item}} owner=sensu state=directory 
+    with_items:
+       - /opt/sensu
+       - /opt/sensu/git-repos
+    tags: gitsetup
+    sudo: yes
+  - name: Setup up git repository retrievals.
+    git:  accept_hostkey=yes  repo="git@github.com:hortonworks/local-sensu-scripts.git" update=yes  ssh_opts="-o StrictHostKeyChecking=no"  dest="/opt/sensu/git-repos/local-sensu-scripts" 
+    sudo: yes
+    sudo_user: sensu
+    tags: gitsetup
+  - name: Make symlinks as needed.
+    file: path="/etc/sensu/plugins/imports" owner=sensu state=link   src="/opt/sensu/git-repos/local-sensu-scripts/sensu-root/plugins"
+    tags: gitsetup
+    sudo: yes
+  - name: Run Sensu check-for-restart every so often.
+    cron: name="Run Sensu restart-client Code"
+          job="sh /etc/sensu/restart-upon-change.sh " 
+          minute="*/20" user=root state=present
+    tags: gitsetup
+    sudo: yes
+  - name: Run Sensu re-pull scripts every so often.
+    cron: name="Run Sensu restart-client Code"
+          job='su sensu -c "cd /etc/sensu/plugins/imports && git pull" '
+          minute="*/20" user=root state=present
+    tags: gitsetup
+    sudo: yes

@@ -79,6 +79,8 @@
       - asciidoc
       - xmlto
       - expect
+      - cmake
+      - graphviz
 
   - name: install_libraries | download ruby
     get_url: url='http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz' dest=/tmp/ruby-1.9.3-p484.tar.gz
@@ -96,4 +98,4 @@
 
   - name: install_libraries | install alien
     yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
-    when: ansible_lsb.major_release == '6'
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '6'
