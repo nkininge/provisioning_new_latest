@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "auto-update": {
+      "handlers": ["default"],
+      "command": "cd $HOME/git-repos/local-sensu-scripts && git fetch",
+      "interval": 3600,
+      "subscribers": [ "auto-updates" ]
+    }
+  }
+}

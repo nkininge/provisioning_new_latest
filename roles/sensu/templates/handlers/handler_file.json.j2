@@ -2,11 +2,11 @@
   "handlers": {
     "default": {
       "type": "pipe",
-      "command": "/etc/sensu/handlers/file.rb"
+      "command": "/usr/local/bin/ruby /etc/sensu/handlers/file.rb"
     },
     "slack": {
       "type": "pipe",
-      "command": "/etc/sensu/handlers/slack.rb"
+      "command": "/usr/local/bin/ruby /etc/sensu/handlers/slack.rb"
     }
  }, 
 	  "slack": {

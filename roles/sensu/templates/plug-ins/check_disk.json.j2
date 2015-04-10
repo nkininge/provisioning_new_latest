@@ -3,8 +3,8 @@
     "disk-check": {
       "handlers": ["slack"],
       "command": "/usr/local/bin/ruby  /etc/sensu/plugins/system/check-disk.rb -x rootfs,tmpfs",
-      "interval": 60,
-      "subscribers": [ "all" ]
+      "interval": 240,
+      "subscribers": [ "Suse" ]
     }
   }
 }

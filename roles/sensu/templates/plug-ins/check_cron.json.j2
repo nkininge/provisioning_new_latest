@@ -3,7 +3,7 @@
     "cron_check": {
       "handlers": ["default"],
       "command": "/usr/local/bin/ruby  /etc/sensu/plugins/check-procs.rb -p cron -C 1 ",
-      "interval": 60,
+      "interval": 1800,
       "subscribers": [ "all" ]
     }
   }

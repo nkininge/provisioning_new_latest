@@ -138,15 +138,18 @@
       - check_jenkins_slave.json
       - check_disk.json
       - disk-usage-metrics.json
+      - auto-updates.json
+      - check_disk-from-imports.json
   - name: copy in alert/trigger scripts.
     sudo: yes
     tags: install_checkscripts
     template:  src=plug-ins/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}} force=yes
     with_items:
-      - check_cron.json
       - check_jenkins_slave.json
-      - check_disk.json
       - disk-usage-metrics.json
+      - auto-updates.json
+      - check_disk.json
+      - check_disk-from-imports.json
   - name: copy in handlers.
     sudo: yes
     tags: install_checkscripts
