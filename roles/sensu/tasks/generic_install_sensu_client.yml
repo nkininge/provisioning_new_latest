@@ -182,7 +182,13 @@
     # when: not (ansible_distribution == 'Suse')
 
   - name: Setup up git repository retrievals.
-    file: path="/opt/sensu" owner=jenkins state=directory 
+    file: path={{item}} owner=root state=directory 
+    with_items:
+       - /opt
+    tags: gitsetup
+    sudo: yes
+  - name: Setup up git repository retrievals.
+    file: path={{item}} owner=jenkins state=directory 
     with_items:
        - /opt/sensu
        - /opt/sensu/git-repos
