@@ -143,8 +143,14 @@
   - name: Add user if necessary
     sudo: yes
     tags: copyinitscripts
-    user:  name=sensu
-    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+    user:  name=sensu  home=/opt/sensu generate_ssh_key=yes
+  - name: Add user ssh-keys as necessary
+    sudo: yes
+    tags: copyinitscripts
+    copy: src=ssh_git_deploy/{{item}} dest=/opt/sensu/.ssh/{{item}}  force=yes owner=sensu mode=0600
+    with_items:
+      - id_rsa
+      - id_rsa.pub
   - name: Make run-dir writeable as necessary.
     sudo: yes
     tags: copyinitscripts
@@ -188,19 +194,19 @@
     tags: gitsetup
     sudo: yes
   - name: Setup up git repository retrievals.
-    file: path={{item}} owner=jenkins state=directory 
+    file: path={{item}} owner=sensu state=directory 
     with_items:
        - /opt/sensu
        - /opt/sensu/git-repos
     tags: gitsetup
     sudo: yes
   - name: Setup up git repository retrievals.
-    git:  accept_hostkey=yes  repo="git@github.com:hortonworks/local-sensu-scripts.git" update=yes  ssh_opts="-o StrictHostKeyChecking=no"  dest="/opt/sensu/git-repos/local-sensu-scripts"
+    git:  accept_hostkey=yes  repo="git@github.com:hortonworks/local-sensu-scripts.git" update=yes  ssh_opts="-o StrictHostKeyChecking=no"  dest="/opt/sensu/git-repos/local-sensu-scripts" 
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: sensu
     tags: gitsetup
   - name: Make symlinks as needed.
-    file: path="/etc/sensu/plugins/imports" owner=jenkins state=link   src="/opt/sensu/git-repos/local-sensu-scripts/sensu-root/plugins"
+    file: path="/etc/sensu/plugins/imports" owner=sensu state=link   src="/opt/sensu/git-repos/local-sensu-scripts/sensu-root/plugins"
     tags: gitsetup
     sudo: yes
   - name: Run Sensu check-for-restart every so often.
@@ -211,7 +217,7 @@
     sudo: yes
   - name: Run Sensu re-pull scripts every so often.
     cron: name="Run Sensu restart-client Code"
-          job='su jenkins -c "cd /etc/sensu/plugins/imports && git pull" '
+          job='su sensu -c "cd /etc/sensu/plugins/imports && git pull" '
           minute="*/20" user=root state=present
     tags: gitsetup
     sudo: yes
