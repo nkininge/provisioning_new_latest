@@ -32,7 +32,6 @@
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 require 'jenkins_api_client'
-
 class JenkinsJobChecker < Sensu::Plugin::Check::CLI
   option :server_api_url,
          description: 'hostname running Jenkins API',
@@ -64,8 +63,10 @@ class JenkinsJobChecker < Sensu::Plugin::Check::CLI
 
   def jenkins_api_client
     @jenkins_api_client ||= JenkinsApi::Client.new(
-        server_ip: config[:server_api_url],
-        log_level: config[:client_log_level].to_i
+        server_ip: '54.86.163.166',
+        username: 'jabowles',
+        password: '7a114bffb8f2019b44e537b290520527',
+	log_level: config[:client_log_level].to_i
     )
   end
 

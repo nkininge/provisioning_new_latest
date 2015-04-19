@@ -163,6 +163,8 @@
       - disk-usage-metrics.json
       - auto-updates.json
       - check_disk-from-imports.json
+      - check-dal-build-status.json
+      - check-dal-unittest-status.json
   - name: copy in alert/trigger scripts.
     sudo: yes
     tags: install_checkscripts
@@ -173,6 +175,8 @@
       - auto-updates.json
       - check_disk.json
       - check_disk-from-imports.json
+      - check-dal-build-status.json
+      - check-dal-unittest-status.json
   - name: copy in handlers.
     sudo: yes
     tags: install_checkscripts

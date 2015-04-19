@@ -98,7 +98,10 @@
   - name: make sure plugins-dir is there.
     tags: install_checkscripts
     sudo: yes
-    file: path=/etc/sensu/plugins/system  state=directory
+    file: path=/etc/sensu/plugins/{{item}}  state=directory
+    with_items:
+      - system
+      - jenkins
   - name: copy in scripts for sensu master.
     sudo: yes
     tags: install_checkscripts
@@ -107,6 +110,7 @@
       - check-procs.rb
       - system/check-disk.rb
       - system/disk-usage-metrics.rb
+      - jenkins/check-jenkins-job-status.rb
   - name: configure services
     sudo: yes
     tags: sensu_services
