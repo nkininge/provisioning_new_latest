@@ -6,6 +6,7 @@
     with_items:
       - gcc
       - make
+      - git
       - openssl
       - build-essential
       - zlib1g-dev
@@ -147,7 +148,7 @@
   - name: Add user if necessary
     sudo: yes
     tags: copyinitscripts
-    user:  name=sensu  home=/opt/sensu generate_ssh_key=yes
+    user:  name=sensu  home=/opt/sensu generate_ssh_key=yes createhome=yes
   - name: Add user ssh-keys as necessary
     sudo: yes
     tags: copyinitscripts
@@ -217,7 +218,7 @@
     cron: name="Run Sensu restart-client Code"
           job="sh /etc/sensu/restart-upon-change.sh " 
           minute="*/20" user=root state=present
-    tags: gitsetup
+    tags: cronsetup
     sudo: yes
   - name: Run Sensu re-pull scripts every so often.
     cron: name="Run Sensu restart-client Code"
