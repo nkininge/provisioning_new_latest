@@ -1,6 +1,4 @@
 ---
   - include: common.yml
-  - include: ubuntu.yml
-    when: ansible_distribution == 'Ubuntu'
   - include: centos6.yml
     when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '6'

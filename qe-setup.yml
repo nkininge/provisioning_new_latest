@@ -1,5 +1,18 @@
 - hosts: default
   gather_facts: yes
+  vars:
+   jenkins_home: /home/jenkins
+   jenkins_root: /grid/0/jenkins
+   root_ssh: /root/.ssh
+   git_url: https://github.com/git/git/archive/v1.8.5.1.tar.gz
+   tools_url: http://s3.amazonaws.com/qe-repo/ansible/jenkins-tools.tar.gz
+   artifacts_url: http://qe-repo.s3.amazonaws.com/ansible/jenkins-artifacts.tar.gz
+   id_rsa_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa
+   id_rsa_pub_url: http://s3.amazonaws.com/qe-repo/ansible/id_rsa.pub
+   python_27_url: http://qe-repo.s3.amazonaws.com/ansible/Python-2.7.8.tgz
+   ez_setup_url: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+   limits_url: http://qe-repo.s3.amazonaws.com/ansible/limits.conf
+   epel_url: http://qe-repo.s3.amazonaws.com/ansible/epel.repo
 
   roles: 
     - qe-setup

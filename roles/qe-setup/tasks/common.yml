@@ -1,7 +1,6 @@
----   
-   
+---
    - name: slave setup | mkdir {{jenkins_root}}
-     file: path={{jenkins_root}} owner=root group=root mode=0755 state=directory
+     file: path={{ jenkins_root }} owner=root group=root mode=0755 state=directory
      tags: init
 
    - name: slave setup | rm {{jenkins_home}} file
@@ -12,6 +11,33 @@
      file: path={{jenkins_home}} owner=root group=root mode=0755 state=directory
      tags: init
 
+   - name: slave_setup | apt get update
+     apt: update_cache=yes
+
+   - name: slave setup | install libs
+     when: ansible_distribution == 'Ubuntu'
+     apt: name={{item}} state=latest
+     tags: install_libraries
+     with_items:
+       - wget
+       - openjdk-7-jdk
+       - gcc
+       - make
+       - curl
+       - python-setuptools
+       - python-dev
+       - pdsh
+       - perl
+       - git
+       - openssh-server
+       - ntp
+       - libssl-dev
+       - autoconf
+       - gettext
+
+#   - name: slave_setup | configure ntpd
+#     shell:  ntpdate pool.ntp.org ; service ntpd start
+
    - name: slave setup | download git
      get_url: url={{git_url}} dest=/tmp/git.tar.gz
 
@@ -19,7 +45,7 @@
      unarchive: copy=no src=/tmp/git.tar.gz dest=/tmp/
 
    - name: slave setup | install git
-     shell: cd /tmp/git-1.8.5.1 ; make configure ; ./configure --prefix=/opt/git-1.8.5.1 ; make install
+     shell: cd /tmp/git-1.8.5.1 ; make configure ; ./configure --prefix=/opt/git-1.8.5.1 ; sudo   make install
 
    - name: slave setup | download {{tools_url}}
      get_url: url={{tools_url}} dest={{jenkins_home}}
@@ -58,29 +84,44 @@
        - awscli
 
    - name: slave setup | download python27
+     when: ansible_distribution != 'Ubuntu'
      get_url: url={{python_27_url}} dest=/tmp/python-2.7.8.tgz
      tags: openstack
 
    - name: slave setup | untar python27
+     when: ansible_distribution != 'Ubuntu'
      unarchive: copy=no src=/tmp/python-2.7.8.tgz dest=/tmp/
      tags: openstack
 
    - name: slave setup | download ez_setup
+     when: ansible_distribution != 'Ubuntu'
      get_url: url={{ez_setup_url}} dest=/tmp/Python-2.7.8/ez_setup.py
      tags: openstack
 
    - name: slave setup | install python27
+     when: ansible_distribution != 'Ubuntu'
      shell: "cd /tmp/Python-2.7.8 ; ./configure --prefix=/usr/local/python27 ; make && make altinstall ; /usr/local/python27/bin/python2.7 ez_setup.py ; cp /usr/lib64/python2.6/lib-dynload/bz2.so /usr/local/python27/lib/python2.7/lib-dynload/ "
-     tags: openstack
-
-   - name: slave setup | install pip
-     shell: "/usr/local/python27/bin/easy_install pip"
-     tags: openstack
-
-   - name: slave setup | install python nova, neutron clients
-     shell: "/usr/local/python27/bin/pip2.7 install python-novaclient"
      tags: openstack
 
    - name: slave setup | download limits.conf
      get_url: url={{limits_url}} dest=/etc/security/limits.conf
+     tags: openstack
+
+   - name: slave_setup | install ConcurrentLogHandler
+     tags: openstack
+     when: ansible_distribution == 'Ubuntu'
+     action: pip name={{item}} state=present
+     with_items:
+       - configparser
+       - ConcurrentLogHandler
+       - jinja2
+
+   - name: slave_setup | install python-novaclient
+     when: ansible_distribution == 'Ubuntu'
+     pip: name=python-novaclient version=2.20.0
+     tags: openstack
+
+   - name: slave_setup | install python-glanceclient
+     when: ansible_distribution == 'Ubuntu'
+     pip: name=python-glanceclient
      tags: openstack
