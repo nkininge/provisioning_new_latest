@@ -37,7 +37,8 @@ class JenkinsJobChecker < Sensu::Plugin::Check::CLI
          description: 'hostname running Jenkins API',
          short: '-u JENKINS-API-HOST',
          long: '--url JENKINS-API-HOST',
-         required: true
+         default: '54.86.163.166',
+         required: false
 
   option :job_list,
          description: 'Name of a job/pattern to query. Wrap with quotes. E.g. \'^GCC\'',
@@ -51,6 +52,19 @@ class JenkinsJobChecker < Sensu::Plugin::Check::CLI
          long: '--verbose CLIENT-LOG-LEVEL',
          default: 3
 
+  option :username,
+         description: 'Jenkins User Name',
+         long: '--user USERNAME',
+         required: false,
+         default: 'jabowles'
+
+  option :password,
+         description: 'Jenkins Password',
+         short: '-p PASSWORD',
+         long: '--pass PASSWORD',
+         default: '7a114bffb8f2019b44e537b290520527',
+         required: false
+
   def run
     if failed_jobs.any?
       critical "Jobs reporting failure: #{failed_jobs_names}"
@@ -62,10 +76,11 @@ class JenkinsJobChecker < Sensu::Plugin::Check::CLI
   private
 
   def jenkins_api_client
+    url =  config[:server_api_url]
     @jenkins_api_client ||= JenkinsApi::Client.new(
-        server_ip: '54.86.163.166',
-        username: 'jabowles',
-        password: '7a114bffb8f2019b44e537b290520527',
+        server_ip: config[:server_api_url],
+        username: config[:username],
+        password: config[:password],
 	log_level: config[:client_log_level].to_i
     )
   end
