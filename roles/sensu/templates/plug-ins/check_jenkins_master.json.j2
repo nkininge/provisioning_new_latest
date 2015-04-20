@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "jenkins_master_check": {
+      "handlers": ["slack", "mailer"],
+      "command": "/usr/local/bin/ruby  /etc/sensu/plugins/check-procs.rb -p  jenkins.war -C 1 ",
+      "interval": 60,
+      "subscribers": [ "jenkins-master" ]
+    }
+  }
+}
