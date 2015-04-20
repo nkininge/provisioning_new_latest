@@ -164,6 +164,7 @@
       - auto-updates.json
       - check_disk-from-imports.json
       - check-dal-build-status.json
+      - check-2.2-maint-build-status.json
       - check-dal-unittest-status.json
   - name: copy in alert/trigger scripts.
     sudo: yes
@@ -176,6 +177,7 @@
       - check_disk.json
       - check_disk-from-imports.json
       - check-dal-build-status.json
+      - check-2.2-maint-build-status.json
       - check-dal-unittest-status.json
   - name: copy in handlers.
     sudo: yes
