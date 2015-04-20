@@ -34,6 +34,7 @@
        - libssl-dev
        - autoconf
        - gettext
+       - qemu-utils
 
 #   - name: slave_setup | configure ntpd
 #     shell:  ntpdate pool.ntp.org ; service ntpd start
@@ -124,4 +125,9 @@
    - name: slave_setup | install python-glanceclient
      when: ansible_distribution == 'Ubuntu'
      pip: name=python-glanceclient
+     tags: openstack
+
+   - name: slave_setup | install ansible
+     when: ansible_distribution == 'Ubuntu'
+     pip: name=ansible
      tags: openstack
