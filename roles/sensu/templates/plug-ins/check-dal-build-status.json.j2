@@ -2,7 +2,7 @@
   "checks": {
     "check-dal-build-status": {
       "handlers": ["slack"],
-      "command": "/usr/local/bin/ruby  /etc/sensu/plugins/jenkins/check-jenkins-job-status.rb  -j '^HDP-dal-' -u 54.86.163.166" , 
+      "command": "/usr/local/bin/ruby  /etc/sensu/plugins/imports/jenkins/check-jenkins-job-status.rb  -j '^HDP-dal-' -u 54.86.163.166" , 
       "interval": 60,
       "subscribers": [ "jenkins-master" ]
     }
