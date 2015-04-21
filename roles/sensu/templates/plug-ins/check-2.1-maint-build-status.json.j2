@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "check-2.1-maint-build-status": {
+      "handlers": ["slack"],
+      "command": "/usr/local/bin/ruby  /etc/sensu/plugins/jenkins/check-jenkins-job-status.rb  -j '^HDP-2.1-maint-(centos5|centos6|debian6|sles11-sp1|ubuntu12|suse11)$' -u 54.86.163.166" , 
+      "interval": 60,
+      "subscribers": [ "jenkins-master" ]
+        }
+  }
+}
+

@@ -167,6 +167,7 @@
       - check-2.2-maint-build-status.json
       - check-dal-unittest-status.json
       - check-maven-nexus-ping.json
+      - check-2.1-maint-build-status.json
   - name: copy in alert/trigger scripts.
     sudo: yes
     tags: install_checkscripts
@@ -181,6 +182,7 @@
       - check-2.2-maint-build-status.json
       - check-dal-unittest-status.json
       - check-maven-nexus-ping.json
+      - check-2.1-maint-build-status.json
   - name: copy in handlers.
     sudo: yes
     tags: install_checkscripts
