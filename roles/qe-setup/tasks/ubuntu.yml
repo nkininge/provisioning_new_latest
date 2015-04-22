@@ -2,7 +2,7 @@
      apt: name={{item}} state=latest
      tags: install_libraries
      with_items:
-       -  libselinux-python
+       - libselinux-python
        - java-1.7.0-openjdk
        - wget
        - gcc
@@ -11,6 +11,7 @@
        - openssl-devel
        - expat-devel
        - python-setuptools
+       - python-dev
        - pdsh
        - perl
        - perl-URI
