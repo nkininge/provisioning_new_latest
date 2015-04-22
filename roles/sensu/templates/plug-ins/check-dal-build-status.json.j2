@@ -4,7 +4,7 @@
       "handlers": ["slack"],
       "command": "/usr/local/bin/ruby  /etc/sensu/plugins/imports/jenkins/check-jenkins-job-status.rb  -j '^HDP-dal-(centos5|centos6|debian6|sles11-sp1|ubuntu12|suse11)$' -u 54.86.163.166" , 
       "interval": 60,
-      "subscribers": [ "jenkins-master" ]
+      "subscribers": [ "jenkins-master-services" ]
 	}
   }
 }
