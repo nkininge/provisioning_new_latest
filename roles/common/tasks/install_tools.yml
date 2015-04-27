@@ -72,6 +72,14 @@
     command:  make  altinstall chdir={{tools_home}}/python3/Python-3.4.3
     when: not python3stat.stat.exists
 
+  - name: install_tools | Remove symlink for python3
+    file: path=/usr/local/bin/python3.4 state=absent
+
+  - name: install_tools | Symlink python3
+    sudo: yes
+    tags: install_python3
+    file:  src=/usr/local/bin/python3.4  dest=/usr/local/bin/python3  mode=0755 state=link force=yes
+
   - name: install_tools | Untar Maven
     sudo: yes
     sudo_user: jenkins
