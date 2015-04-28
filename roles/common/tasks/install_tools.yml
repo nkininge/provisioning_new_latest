@@ -23,6 +23,11 @@
     get_url: url=https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz  dest={{tools_home}}/python3/Python-3.4.3.tgz  mode=0644 force=yes
     when: not python3stat.stat.exists
 
+  - name: install_tools | mkdirs for Maven
+    tags: install_maven
+    file: path={{tools_home}}/maven state=directory mode=0755
+    sudo: yes
+    sudo_user: jenkins
   - name: install_tools | Download Maven
     sudo: yes
     sudo_user: jenkins
