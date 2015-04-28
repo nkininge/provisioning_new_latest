@@ -26,7 +26,13 @@
   - name: install_tools | Download Maven
     sudo: yes
     sudo_user: jenkins
-    get_url: url={{maven_url}} dest={{tools_home}}/maven/maven.tar.gz mode=0744
+    get_url: url={{maven_url}} dest={{tools_home}}/maven/maven.tar.gz mode=0644
+
+  - name: install_tools | Download Maven for Ambari
+    sudo: yes
+    tags: install_maven
+    sudo_user: jenkins
+    get_url: url={{maven_ambari_url}} dest={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz mode=0644 force=no
 
   - name: install_tools | Download Ant
     sudo: yes
@@ -85,6 +91,12 @@
     sudo_user: jenkins
     unarchive: copy=no src={{tools_home}}/maven/maven.tar.gz dest={{tools_home}}/maven
 
+  - name: install_tools | Untar Maven for Ambari
+    sudo: yes
+    sudo_user: jenkins
+    tags: install_maven
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz dest={{tools_home}}/maven
+
   - name: install_tools | Untar Ant
     sudo: yes
     sudo_user: jenkins
@@ -138,3 +150,9 @@
     sudo: yes
     sudo_user: jenkins
     file: src=apache-forrest-{{forrest_version}} dest={{forrest_home}}/latest state=link
+
+  - name: install_tools | Remove .tar.gz artifact from Maven install.
+    sudo: yes
+    tags: install_maven
+    sudo_user: jenkins
+    file: path={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz state=absent
