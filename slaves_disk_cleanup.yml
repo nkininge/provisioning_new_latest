@@ -14,5 +14,5 @@
     - name: "remove tmp space"
       sudo: yes
       sudo_user: jenkins
-      shell: find /var/tmp -user jenkins -a rm -rf "{}" ";"
+      shell: find /var/tmp -user jenkins -exec rm -rf "{}" ";"
       ignore_errors: yes
