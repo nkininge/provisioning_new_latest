@@ -98,6 +98,12 @@
      when: ansible_distribution != 'Ubuntu'
      get_url: url={{ez_setup_url}} dest=/tmp/Python-2.7.8/ez_setup.py
      tags: openstack
+   
+   - name: slave setup | install libs
+     yum: pkg={{item}} state=latest
+     tags: openstack
+     with_items:
+       - openssl-devel
 
    - name: slave setup | install python27
      when: ansible_distribution != 'Ubuntu'
