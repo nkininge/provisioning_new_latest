@@ -4,9 +4,9 @@
     zypper: pkg={{item}} disable_gpg_check=yes state=latest 
     tags: install_libraries
     with_items:
-      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-1.7.0-16.1.x86_64.rpm
-      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-devel-1.7.0-16.1.x86_64.rpm
-      - http://rpmfind.net/linux/opensuse/factory/repo/oss/suse/noarch/asciidoc-8.6.8-8.1.noarch.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-1.7.0-16.1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-devel-1.7.0-16.1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/asciidoc-8.6.8-8.1.noarch.rpm
 
   - name: install_libraries | easy_install python modules
     sudo: yes

@@ -3,8 +3,8 @@
     tags: install_libraries
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
-      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-1.7.0-16.1.x86_64.rpm
-      - http://ftp.twaren.net/Linux/OpenSuSE/repositories/M17N/SLE_11_SP3/x86_64/googletest-devel-1.7.0-16.1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-1.7.0-16.1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-devel-1.7.0-16.1.x86_64.rpm
       - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-1.0.5-1.x86_64.rpm
       - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-devel-1.0.5-1.x86_64.rpm
       - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-2.06-1.x86_64.rpm

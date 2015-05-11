@@ -9,4 +9,6 @@
     unarchive: copy=no src=/tmp/protobuf.tar.gz dest=/tmp/
 
   - name: install_protobuf | configure/make/make install
+    sudo: yes
+    sudo_user: root
     shell: cd /tmp/protobuf-2.5.0 ; ./configure --prefix=/opt ; make clean ; make install

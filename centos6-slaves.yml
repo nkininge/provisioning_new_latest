@@ -1,5 +1,5 @@
 - hosts: centos6
-  gather_facts: no
+  gather_facts: yes
   vars:
     jenkins_user_uid: 1001
     slave: False
@@ -8,6 +8,8 @@
     jenkins_configuration: /etc/default/jenkins
     jenkins_run_standalone: yes
     jenkins_name: jenkins
+    push_password: false
 
   roles:
+    - common
     - centos6-slaves

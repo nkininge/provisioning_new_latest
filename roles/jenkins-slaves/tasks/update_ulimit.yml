@@ -1,3 +1,5 @@
 - name: update_ulimit | Update pam.d
+  sudo: yes
+  sudo_user: root
   replace: dest=/etc/pam.d/su regexp='^# session    required   pam_limits.so' replace='session    required   pam_limits.so'
   tags: update_ulimit

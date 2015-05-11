@@ -1,5 +1,5 @@
 - hosts: sles11sp3
-  gather_facts: no
+  gather_facts: yes
   vars:
     jenkins_user_uid: 1001
     slave: False
