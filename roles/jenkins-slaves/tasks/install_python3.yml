@@ -1,0 +1,57 @@
+--- 
+- stat: path=/usr/local/bin/python3.4
+  tags: install_python3
+  register: python3stat
+
+- name: install_tools | Mkdir python3
+  sudo: yes
+  sudo_user: root
+  tags: install_python3
+  file: path={{tools_home}}/python3 state=directory
+  when: not python3stat.stat.exists
+
+- name: install_tools | Download python3
+  sudo: yes
+  sudo_user: root
+  tags: install_python3
+  get_url: url=https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz  dest={{tools_home}}/python3/Python-3.4.3.tgz  mode=0644 force=yes
+  when: not python3stat.stat.exists
+
+- name: install_tools | Untar python3
+  sudo: yes
+  sudo_user: root
+  tags: install_python3
+  unarchive: copy=no src={{tools_home}}/python3/Python-3.4.3.tgz  dest={{tools_home}}/python3
+  when: not python3stat.stat.exists
+
+- name: install_tools | Configure python3
+  sudo: yes
+  sudo_user: root
+  tags: install_python3
+  command:  ./configure chdir={{tools_home}}/python3/Python-3.4.3
+  when: not python3stat.stat.exists
+
+- name: install_tools | Compile python3
+  sudo: yes
+  sudo_user: root
+  tags: install_python3
+  command:  make chdir={{tools_home}}/python3/Python-3.4.3
+  when: not python3stat.stat.exists
+
+- name: install_tools | Install python3
+  sudo: yes
+  sudo_user: root
+  tags: install_python3
+  command:  make  altinstall chdir={{tools_home}}/python3/Python-3.4.3
+  when: not python3stat.stat.exists
+
+- name: install_tools | Remove symlink for python3
+  sudo: yes
+  sudo_user: root
+  file: path=/usr/local/bin/python3.4 state=absent
+
+- name: install_tools | Symlink python3
+  sudo: yes
+  sudo_user: root
+  tags: install_python3
+  file:  src=/usr/local/bin/python3.4  dest=/usr/local/bin/python3  mode=0755 state=link force=yes

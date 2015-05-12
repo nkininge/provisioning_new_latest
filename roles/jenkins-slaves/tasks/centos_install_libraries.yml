@@ -9,6 +9,23 @@
       - rrdtool-1.2.27
       - ruby-libs-1.8.7.352
     ignore_errors: yes
+  
+  - name: get epel-repo rpm RHEL6
+    sudo: yes
+    sudo_user: root
+    get_url: dest=/tmp/epel-release.rpm  url=http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-6-8.noarch.rpm
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release|int == 6
+ 
+  - name: get epel-repo rpm RHEL5
+    sudo: yes
+    sudo_user: root
+    get_url: dest=/tmp/epel-release.rpm  url=http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-5-4.noarch.rpm
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release|int == 5
+
+  - name: install epel-repo rpm
+    sudo: yes
+    sudo_user: root
+    yum: pkg=/tmp/epel-release.rpm state=installed
 
   - name: install_libraries | 
     sudo: yes
@@ -89,6 +106,8 @@
     unarchive: src=/tmp/ruby-1.9.3-p484.tar.gz dest=/tmp/ copy=no
 
   - name: install_libraries | install ruby from src
+    sudo: yes
+    sudo_user: root
     shell: ./configure ; make -j12; make install;
     args:
       chdir: /tmp/ruby-1.9.3-p484
@@ -97,5 +116,7 @@
     shell: rm -rf /tmp/ruby-1.9.3*
 
   - name: install_libraries | install alien
+    sudo: yes
+    sudo_user: root
     yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
     when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '6'

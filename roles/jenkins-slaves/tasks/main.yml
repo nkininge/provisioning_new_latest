@@ -38,3 +38,6 @@
 
   - include: replace_gpg_key.yml
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - include: install_python3.yml
+    tags: try

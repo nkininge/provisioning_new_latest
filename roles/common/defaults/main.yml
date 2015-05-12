@@ -1,5 +1,5 @@
 ---
-jenkins_user_uid: 1000
+jenkins_user_uid: 1001
 home_base_dir: /grid/0
 jenkins_home: "{{home_base_dir}}/jenkins"
 tools_home: "{{jenkins_home}}/tools"
