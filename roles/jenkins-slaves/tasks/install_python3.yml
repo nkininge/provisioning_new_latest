@@ -48,10 +48,10 @@
 - name: install_tools | Remove symlink for python3
   sudo: yes
   sudo_user: root
-  file: path=/usr/local/bin/python3.4 state=absent
+  file: path=/usr/local/bin/python3 state=absent
 
 - name: install_tools | Symlink python3
   sudo: yes
   sudo_user: root
   tags: install_python3
-  file:  src=/usr/local/bin/python3.4  dest=/usr/local/bin/python3  mode=0755 state=link force=yes
+  file:  src={{tools_home}}/python3/Python-3.4.3/python  dest=/usr/local/bin/python3  mode=0755 state=link force=yes
