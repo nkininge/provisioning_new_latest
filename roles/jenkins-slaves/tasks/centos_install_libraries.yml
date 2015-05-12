@@ -113,6 +113,8 @@
       chdir: /tmp/ruby-1.9.3-p484
 
   - name: install_libraries | rm /tmp/ruby-1.9.3-p484
+    sudo: yes
+    sudo_user: root
     shell: rm -rf /tmp/ruby-1.9.3*
 
   - name: install_libraries | install alien
