@@ -1,9 +1,32 @@
 ---
 - name: install-python-argparse | install python spare libs
   sudo: yes
+  sudo_user: root
+  when: ansible_os_family == 'RedHat' and ansible_lsb.major_release != '5'
   easy_install: name={{item}}
   tags: install_python_libs
   with_items: 
+  - pip
+  - argparse
+  - requests
+
+- name: install-python-argparse | install python spare libs
+  sudo: yes
+  sudo_user: root
+  when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
+  easy_install: name={{item}}
+  tags: install_python_libs
+  with_items:
+  - pip
+  - argparse
+
+- name: install-python-argparse | install python spare libs
+  sudo: yes
+  sudo_user: root
+  when: ansible_os_family != 'RedHat'
+  easy_install: name={{item}}
+  tags: install_python_libs
+  with_items:
   - pip
   - argparse
   - requests

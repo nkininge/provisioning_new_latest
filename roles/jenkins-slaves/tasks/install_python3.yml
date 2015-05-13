@@ -14,7 +14,7 @@
   sudo: yes
   sudo_user: root
   tags: install_python3
-  get_url: url=https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz  dest={{tools_home}}/python3/Python-3.4.3.tgz  mode=0644 force=yes
+  get_url: url=http://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz  dest={{tools_home}}/python3/Python-3.4.3.tgz  mode=0644 force=yes
   when: not python3stat.stat.exists
 
 - name: install_tools | Untar python3

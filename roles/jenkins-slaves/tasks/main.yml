@@ -23,6 +23,9 @@
   - include: centos5_install_libraries.yml
     when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
 
+  - include: centos6_install_libraries.yml
+    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release != '5'
+
   - include: centos5_install_tar.yml
     when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
 
@@ -40,4 +43,3 @@
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - include: install_python3.yml
-    tags: try
