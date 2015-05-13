@@ -8,4 +8,4 @@
   - name: install_tar | configure, make, make install 
     sudo: yes
     sudo_user: root
-    shell: cd /tmp/tar-1.28 ; FORCE_UNSAFE_CONFIGURE=1 ; ./configure ; make && make install
+    shell: cd /tmp/tar-1.28 ; export FORCE_UNSAFE_CONFIGURE=1 ; ./configure ; make && make install
