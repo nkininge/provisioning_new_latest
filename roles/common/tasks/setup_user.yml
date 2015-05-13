@@ -1,4 +1,8 @@
 ---
+  - name: setup_user | install sudo for debian
+    apt: pkg=sudo update_cache=yes state=latest force=yes
+    when: ansible_distribution == 'Debian'
+
   - name: setup_user | Add group
     sudo: yes
     sudo_user: root
@@ -6,7 +10,6 @@
     group: name="{{item}}" state=present
     with_items:
       - "{{jenkins_group}}"
-      - docker
 
   - name: setup_user | create {{jenkins_home}} base dir
     sudo: yes
