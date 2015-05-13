@@ -1,3 +1,0 @@
----
-  - include: install_libraries.yml
-  - include: replace_gpg_key.yml
