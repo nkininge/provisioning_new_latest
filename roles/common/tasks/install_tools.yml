@@ -3,7 +3,8 @@
     sudo: yes
     sudo_user: jenkins
     tags: install_gradle
-    get_url: url=http://services.gradle.org/distributions/gradle-1.6-all.zip dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes
+    get_url: url=https://services.gradle.org/distributions/gradle-2.3-bin.zip 
+      dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes
 
   - name: install_tools | mkdirs for Maven
     tags: install_maven
@@ -67,7 +68,7 @@
   - name: install_tools | symlink gradle -> latest
     sudo: yes
     sudo_user: jenkins
-    file: src=gradle-1.6 force=yes dest={{tools_home}}/gradle/latest state=link
+    file: src=gradle-2.3 force=yes dest={{tools_home}}/gradle/latest state=link
     tags: install_gradle
 
   - name: install_tools | capture gradle version
@@ -85,7 +86,7 @@
       - assert_gradle
     assert:
       that:
-        - "'Gradle 1.6' in cmd_result.stdout"
+        - "'Gradle 2.3' in cmd_result.stdout"
 
   - name: install_tools | symlink Maven -> latest
     sudo: yes
