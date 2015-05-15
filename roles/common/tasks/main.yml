@@ -6,7 +6,7 @@
 - name: centos5_repo_setup | install epel release
   sudo: yes
   sudo_user: root
-  when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
   yum: name={{item}} state=present
   with_items:
   - 'http://dev.hortonworks.com.s3.amazonaws.com/RLENG/epel-release-5-4.noarch.rpm'
@@ -14,7 +14,7 @@
 - name: centos5 | yum install python-devel
   sudo: yes
   sudo_user: root
-  when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '5'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
   yum: name={{item}} state=present
   with_items:
   - python-devel
