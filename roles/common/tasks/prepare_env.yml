@@ -26,6 +26,8 @@
     when: ansible_os_family == "Debian"
 
   - name: prepare_env | install tools necessary for ansible exec
+    sudo: yes
+    sudo_user: root
     yum: name={{item}} state=present
     with_items:
     - zip
