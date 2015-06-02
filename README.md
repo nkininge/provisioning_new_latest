@@ -31,3 +31,6 @@ cd provisioning
 
 4) To provision jenkins master
 
+TO SET UP A JENKINS SLAVE:
+
+1) Start with setup.yml.
