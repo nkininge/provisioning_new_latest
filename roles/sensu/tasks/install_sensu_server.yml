@@ -13,6 +13,11 @@
   #   args:
   #       chdir: /tmp/ssl_certs
   #   register: mergatroid
+  - name: Update apt-cache
+    tags:  updatecache
+    sudo: yes
+    apt:  update_cache=yes
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: Install compiler, etc.
     tags:  install_compilers
     sudo: yes
