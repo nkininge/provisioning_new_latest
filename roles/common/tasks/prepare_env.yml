@@ -19,7 +19,7 @@
   - name: prepare_env | install tools necessary for ansible exec
     sudo: yes
     sudo_user: root
-    apt: name={{item}} state=present
+    apt: name={{item}} state=present update_cache=yes
     with_items:
     - zip
     - unzip
