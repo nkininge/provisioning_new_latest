@@ -23,11 +23,14 @@
       - gcc43-c++
       - git
 
-  - name: Symlink gcc-c++ | suse11sp3
+  - name: install gcc-c++ | suse11sp3
     sudo: yes
     sudo_user: root
     when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
-    file: src=/usr/bin/g++-4.3 dest=/usr/bin/g++ state=link
+    shell: rpm -Uvh {{item}}
+    register: shell_result
+    with_items:
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/gcc-c++-4.3-62.12.x86_64.rpm
 
   - name: Installing Libraries | sles11sp1
     sudo: yes
