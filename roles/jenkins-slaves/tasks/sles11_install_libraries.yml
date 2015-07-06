@@ -13,13 +13,34 @@
       - lzo-devel-2.06
       - lzo-2.06
 
+  - name: Installing Libraries | suse11sp3
+    sudo: yes
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    with_items:
+      - gcc43
+      - gcc43-c++
+      - git
+
+  - name: Symlink gcc-c++ | suse11sp3
+    sudo: yes
+    sudo_user: root
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+    file: src=/usr/bin/g++-4.3 dest=/usr/bin/g++ state=link
+
+  - name: Installing Libraries | sles11sp1
+    sudo: yes
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
+    zypper: pkg=gcc-c++ disable_gpg_check=yes state=latest
+
   - name: "Installing Libraries"
     sudo: yes
     tags: install_libraries
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
       - clamav
-      - gcc-c++ 
       - createrepo
       - wget
       - lsb-release
@@ -102,7 +123,7 @@
   - name: install_libraries | download s3cmd zip
     sudo: yes
     tags: install_libraries
-    get_url: url="https://github.com/s3tools/s3cmd/archive/master.zip" dest=/tmp/master.zip
+    get_url: url="http://github.com/s3tools/s3cmd/archive/master.zip" dest=/tmp/master.zip
 
   - name: install_libraries | unarchive s3cmd
     sudo: yes
