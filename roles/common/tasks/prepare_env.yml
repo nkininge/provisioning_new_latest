@@ -23,6 +23,7 @@
     with_items:
     - zip
     - unzip
+    - lsb
     when: ansible_os_family == "Debian"
 
   - name: prepare_env | install tools necessary for ansible exec - centos
