@@ -22,9 +22,6 @@
   - include: centos_env_setup.yml
     when: ansible_os_family == 'RedHat'
 
-  - include: centos5_install_tar.yml
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
-
   - include: centos_install_libraries.yml
     tags: install_libraries
     when: ansible_os_family == 'RedHat'
@@ -69,3 +66,6 @@
   - include: replace_gpg_key.yml
     tags: replace_gpg_key
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - include: centos5_install_tar.yml
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
