@@ -1,8 +1,8 @@
 ---
   - name: prepare_env | create all the tools folders
     sudo: yes
-    sudo_user: jenkins
-    file: path={{item}} state=directory owner=jenkins
+    sudo_user: "{{ dev_user }}"
+    file: path={{item}} state=directory owner="{{ dev_user }}"
     with_items:
       - "{{tools_home}}/ant"
       - "{{tools_home}}/maven"

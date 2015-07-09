@@ -1,56 +1,56 @@
 ---
   - name: "Download Jdk6" 
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     get_url: url={{jdk6_url}} dest={{jdk6_home}}/jdk6.tar.gz mode=744
 
   - name: "Download Jdk7" 
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     get_url: url={{jdk7_url}} dest={{jdk7_home}}/jdk7.gz mode=744
 
   - name: "Install Jdk7"
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     unarchive: copy=no src={{jdk7_home}}/jdk7.gz dest={{jdk7_home}}
 
   - name: "Symlink jdk7 -> latest"
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     file: src=jdk1.7.0_21 dest={{jdk7_home}}/latest state=link 
     
   - name: "Install Jdk6"
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     unarchive: copy=no src={{jdk6_home}}/jdk6.tar.gz dest={{jdk6_home}}
 
   - name: "Symlink jdk6 -> latest"
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     file: src=jdk1.6.0_31 dest={{jdk6_home}}/latest state=link 
 
   - name: Install JCE Policy files for JDK7 | Download tar
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/RLENG/UnlimitedJCEPolicyJDK7.zip" dest={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip mode=744
 
   - name: "unzip JCE Policy files"
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     unarchive: copy=no src={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip dest={{jdk7_home}}
 
   - name: Create lib/security for jdk7
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     file: path={{ jdk7_home }}/jdk1.7.0_21/lib/security state=directory
 
   - name: "Install Jdk7"
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     unarchive: copy=no src={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip dest={{jdk7_home}}/
 
   - name: "copy JCE Policy files for JDK7"
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: "{{ dev_user }}"
     shell: cp -r {{jdk7_home}}/UnlimitedJCEPolicy/*.jar {{jdk7_home}}/jdk1.7.0_21/lib/security/
    
