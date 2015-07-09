@@ -33,6 +33,7 @@
   - include: install_massageHostname.yml
   - include: install_ruby_libs.yml
   - include: install_python_libs.yml
+  - include: install_python27.yml
   - include: install_python3.yml
 
   - include: centos_env_setup.yml

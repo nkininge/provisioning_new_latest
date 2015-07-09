@@ -8,31 +8,44 @@
       - postgresql-libs
       - rrdtool-1.2.27
       - ruby-libs-1.8.7.352
+      - epel-release
     ignore_errors: yes
   
+  - name: centos7_repo_setup | install epel release
+    sudo: yes
+    sudo_user: root
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+    shell: rpm -Uvh {{item}}
+    with_items:
+      - 'http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-7-5.noarch.rpm'
+
   - name: get epel-repo rpm RHEL6
     sudo: yes
     sudo_user: root
-    get_url: dest=/tmp/epel-release.rpm  url=http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-6-8.noarch.rpm
+    shell: rpm -Uvh {{item}}
     when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+    with_items:
+      - http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-6-8.noarch.rpm
  
-  - name: get epel-repo rpm RHEL5
+  - name: install_libraries | centos5 manual rpm install | epel && asciidoc
     sudo: yes
     sudo_user: root
-    get_url: dest=/tmp/epel-release.rpm  url=http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-5-4.noarch.rpm
     when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+    shell: rpm -Uvh {{item}}
+    with_items:
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/epel-release-5-4.noarch.rpm
 
-  - name: install epel-repo rpm
+  - name: install_libraries | download s3tools repo file
     sudo: yes
     sudo_user: root
-    yum: pkg=/tmp/epel-release.rpm state=installed
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/s3tools.repo dest=/etc/yum.repos.d/s3tools.repo
 
-  - name: install_libraries | 
+  - name: install_libraries | centos
     sudo: yes
     sudo_user: root
     tags: install_libs
     yum: pkg={{item}} state=latest 
-    tags: install_libraries
     with_items:
       - gd-devel
       - libpng-devel
@@ -51,7 +64,6 @@
       - ruby-devel 
       - tcl-devel
       - gettext-devel 
-      - lua-devel 
       - tk-devel 
       - xulrunner-devel 
       - python-setuptools
@@ -81,25 +93,29 @@
       - ant-nodeps
       - ant
       - libstdc++
-      - s3cmd
       - ant-apache-bcel
       - zlib-devel
       - gcc-c++
-      - lsb
       - rpm-build
       - redhat-rpm-config
       - libtool
       - fuse
       - fuse-devel
       - fuse-libs
-      - asciidoc
       - xmlto
       - expect
       - cmake
       - graphviz
+      - s3cmd
 
   - name: install_libraries | install alien
     sudo: yes
     sudo_user: root
     yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+  - name: install_libraries | install asciidoc - centos5
+    sudo: yes
+    sudo_user: root
+    shell: rpm -Uvh http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/centos5/asciidoc-8.6.9-1.el5.rf.noarch.rpm
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5

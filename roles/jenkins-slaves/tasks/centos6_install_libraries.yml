@@ -1,8 +1,9 @@
 ---
-  - name: install_libraries | yum install
+  - name: install_libraries | yum install | centos6 only
     sudo: yes
     sudo_user: root
     yum: pkg={{item}} state=latest
     tags: install_libraries
     with_items:
       - texlive-latex
+      - asciidoc

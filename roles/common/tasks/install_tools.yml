@@ -3,7 +3,7 @@
     sudo: yes
     sudo_user: jenkins
     tags: install_gradle
-    get_url: url=https://services.gradle.org/distributions/gradle-2.3-bin.zip 
+    get_url: url=http://services.gradle.org/distributions/gradle-2.3-bin.zip
       dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes
 
   - name: install_tools | mkdirs for Maven

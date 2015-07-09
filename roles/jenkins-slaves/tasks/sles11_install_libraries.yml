@@ -1,7 +1,7 @@
   - name: install_libraries | install HDP-utils zypper repo 
     sudo: yes
     tags: install_libraries
-    zypper_repository: name="HDP-UTILS" repo="http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.17/repos/suse11"
+    zypper_repository: name="HDP-UTILS" repo="http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.17/repos/suse11" state=present
 
   - name: install_libraries | zypper in
     sudo: yes
