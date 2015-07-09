@@ -1,20 +1,16 @@
 ---
 - name: install_libraries | uninstall nvidia zypper repo
   sudo: yes
-  tags: install_libraries
   zypper_repository: name="nVidia-Driver-SLE11-SP3" repo="http://download.nvidia.com/novell/sle11sp3" state=absent
 
 - name: install_libraries | install nvidia zypper repo
   sudo: yes
-  tags: install_libraries
   zypper_repository: name="nVidia-Driver-SLE11-SP3" repo="ftp://download.nvidia.com/novell/sle11sp3/" state=present
 
 - name: sles11sp3_setup_env | install cd1
   sudo: yes
-  tags: install_libraries
   zypper_repository: name="cd1" repo="http://romolo.cmb.usc.edu/installs/SLES-11-SP3-SDK/CD1/" state=present
 
 - name: sles11sp3_setup_env | install cd2
   sudo: yes
-  tags: install_libraries
   zypper_repository: name="cd1" repo="http://romolo.cmb.usc.edu/installs/SLES-11-SP3-SDK/CD2/" state=present

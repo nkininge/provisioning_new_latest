@@ -3,7 +3,6 @@
     sudo: yes
     sudo_user: root
     copy: src=limits.conf dest=/etc/security/limits.conf
-    tags:  updatelimits
 
   - name: "Copy env file"
     sudo: yes

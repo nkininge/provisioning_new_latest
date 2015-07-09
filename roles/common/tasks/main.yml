@@ -1,18 +1,29 @@
 ---
 - include: setup_user.yml
-- include: prepare_env.yml
-- include: install_jdk.yml
+  tags: setup_user
 
+- include: prepare_env.yml
+  tags: prepare_env
+
+- include: install_jdk.yml
+  tags: install_jdk
 
 - name: centos5 | yum install python-devel
   sudo: yes
   sudo_user: root
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
+  tags: install_libraries
   yum: name={{item}} state=present
   with_items:
-  - python-devel
+    - python-devel
 
 - include: install_tools.yml
+  tags: install_tools
+
 - include: setup_user_configs.yml
+  tags: setup_user_configs
+
 - include: update_configs.yml
+  tags: update_configs
+
 - include: mvn-gpg-nexus-password.yml

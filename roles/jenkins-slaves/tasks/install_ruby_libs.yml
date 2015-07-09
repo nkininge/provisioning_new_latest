@@ -3,7 +3,6 @@
   sudo: yes
   sudo_user: root
   gem:  name={{item}} executable=/usr/local/bin/gem
-  tags: install_ruby_libs
   with_items: 
   - gem2deb
   - json

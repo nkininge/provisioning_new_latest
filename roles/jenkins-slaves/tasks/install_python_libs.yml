@@ -4,7 +4,6 @@
   sudo_user: root
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5'
   easy_install: name={{item}}
-  tags: install_python_libs
   with_items: 
   - pip
   - argparse
@@ -15,7 +14,6 @@
   sudo_user: root
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
   easy_install: name={{item}}
-  tags: install_python_libs
   with_items:
   - pip
   - argparse
@@ -25,7 +23,6 @@
   sudo_user: root
   when: ansible_os_family != 'RedHat'
   easy_install: name={{item}}
-  tags: install_python_libs
   with_items:
   - pip
   - argparse

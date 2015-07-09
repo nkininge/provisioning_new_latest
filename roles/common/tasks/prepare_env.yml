@@ -12,9 +12,6 @@
       - "{{jenkins_home}}/.m2/"
       - "{{tools_home}}/gradle"
       - "{{jenkins_home}}/.ssh/"
-    tags:
-      - install_gradle
-      - prepare_env
 
   - name: prepare_env | install tools necessary for ansible exec - debian
     sudo: yes

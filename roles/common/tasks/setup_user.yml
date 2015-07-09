@@ -10,7 +10,6 @@
   - name: setup_user | Add group
     sudo: yes
     sudo_user: root
-    tags: setup_user
     group: name="{{item}}" state=present
     with_items:
       - "{{jenkins_group}}"
@@ -18,51 +17,42 @@
   - name: setup_user | create {{jenkins_home}} base dir
     sudo: yes
     sudo_user: root
-    tags: setup_user
     file: path="{{home_base_dir}}" state=directory 
 
   - name: setup_user | Add user
     sudo: yes
     sudo_user: root
-    tags: setup_user
     user: name="jenkins" home={{jenkins_home}} uid={{ jenkins_user_uid }}
       group={{jenkins_group}} comment="Jenkins Slave" shell="/bin/bash"
 
   - name: setup_user | ssh keys - Download
     sudo: yes
     sudo_user: jenkins
-    tags: setup_user
     get_url: url={{ ssh_url }} dest={{jenkins_home}}/hortonworksre.tar.gz
 
   - name: setup_user | ssh keys - untar
     sudo: yes
     sudo_user: jenkins
-    tags: setup_user
     unarchive: copy=no src={{jenkins_home}}/hortonworksre.tar.gz dest={{jenkins_home}}/
 
   - name: setup_user | create ssh directory
     sudo: yes
     sudo_user: jenkins
-    sudo_user: jenkins
-    tags: setup_user
     file: path={{jenkins_home}}/.ssh state=directory mode=700
    
   - name: setup_user | ssh keys - id_rsa
     sudo: yes
     sudo_user: jenkins
-    tags: setup_user
     command: cp {{jenkins_home}}/hortonworksre/id_rsa {{jenkins_home}}/.ssh/id_rsa
 
   - name: setup_user | ssh keys - id_rsa.pub
     sudo: yes
     sudo_user: jenkins
-    tags: setup_user
     command: cp {{jenkins_home}}/hortonworksre/id_rsa.pub {{jenkins_home}}/.ssh/id_rsa.pub
 
   - name: setup_user | ssh keys - authorized_keys
     sudo: yes
     sudo_user: jenkins
-    tags: setup_user
     command: cp {{jenkins_home}}/hortonworksre/authorized_keys {{jenkins_home}}/.ssh/authorized_keys
              removes={{jenkins_home}}/hortonworksre/
 
@@ -70,7 +60,6 @@
     sudo: yes
     sudo_user: jenkins
     file: path={{jenkins_home}}/.ssh/{{item.name}} mode={{item.attr}} state=file
-    tags: setup_user
     with_items:
      - {name: id_rsa, attr: 600}
      - {name: id_rsa.pub,  attr: 644}

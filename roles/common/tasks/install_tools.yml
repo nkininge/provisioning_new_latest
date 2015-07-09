@@ -2,15 +2,14 @@
   - name: install_tools | Download gradle
     sudo: yes
     sudo_user: jenkins
-    tags: install_gradle
     get_url: url=http://services.gradle.org/distributions/gradle-2.3-bin.zip
       dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes
 
   - name: install_tools | mkdirs for Maven
-    tags: install_maven
     file: path={{tools_home}}/maven state=directory mode=0755
     sudo: yes
     sudo_user: jenkins
+
   - name: install_tools | Download Maven
     sudo: yes
     sudo_user: jenkins
@@ -18,7 +17,6 @@
 
   - name: install_tools | Download Maven for Ambari
     sudo: yes
-    tags: install_maven
     sudo_user: jenkins
     get_url: url={{maven_ambari_url}} dest={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz mode=0644 force=no
 
@@ -35,7 +33,6 @@
   - name: install_tools | Untar gradle
     sudo: yes
     sudo_user: jenkins
-    tags: install_gradle
     unarchive: copy=no src={{tools_home}}/gradle/gradle.zip dest={{tools_home}}/gradle
 
   - name: install_tools | Untar Maven
@@ -46,7 +43,6 @@
   - name: install_tools | Untar Maven for Ambari
     sudo: yes
     sudo_user: jenkins
-    tags: install_maven
     unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz dest={{tools_home}}/maven
 
   - name: install_tools | Untar Ant
@@ -63,27 +59,19 @@
     sudo: yes
     sudo_user: jenkins
     file: path={{tools_home}}/gradle/latest state=absent
-    tags: install_gradle
 
   - name: install_tools | symlink gradle -> latest
     sudo: yes
     sudo_user: jenkins
     file: src=gradle-2.3 force=yes dest={{tools_home}}/gradle/latest state=link
-    tags: install_gradle
 
   - name: install_tools | capture gradle version
     sudo: yes
     sudo_user: jenkins
     shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/gradle/latest/bin/gradle --version"
-    tags:
-      - install_gradle
-      - assert_gradle
     register: cmd_result
 
   - name: install_tools | assert gradle installation
-    tags:
-      - install_gradle
-      - assert_gradle
     assert:
       that:
         - "'Gradle 2.3' in cmd_result.stdout"
@@ -105,6 +93,5 @@
 
   - name: install_tools | Remove .tar.gz artifact from Maven install.
     sudo: yes
-    tags: install_maven
     sudo_user: jenkins
     file: path={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz state=absent

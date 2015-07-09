@@ -3,7 +3,6 @@
     sudo: yes
     sudo_user: root
     yum: pkg={{item}} state=absent
-    tags: install_libraries
     with_items:
       - postgresql-libs
       - rrdtool-1.2.27
@@ -44,7 +43,6 @@
   - name: install_libraries | centos
     sudo: yes
     sudo_user: root
-    tags: install_libs
     yum: pkg={{item}} state=latest 
     with_items:
       - gd-devel

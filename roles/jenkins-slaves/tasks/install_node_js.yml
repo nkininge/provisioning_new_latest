@@ -1,21 +1,17 @@
 ---
   - name: install_node_js | Download node js
     get_url: url={{node_js_url}} dest=/tmp/node-v{{node_version}}-linux-x64.tar.gz
-    tags: install_node_js
 
   - name: install_node_js | rm /usr/local/bin/{npm,node} 
     shell: rm -rf /usr/local/bin/{npm,node} 
-    tags: install_node_js
 
   - name: install_node_js | untar node js
     sudo: yes
     sudo_user: root
     unarchive: copy=no src=/tmp/node-v{{node_version}}-linux-x64.tar.gz dest=/usr/local
-    tags: install_node_js
 
   - name: install_node_js | rm /usr/local/bin/{npm,node} 
     shell: rm -rf /usr/local/bin/{npm,node}
-    tags: install_node_js
 
   - name: install_node_js | symlink node and npm
     sudo: yes
@@ -24,10 +20,8 @@
     with_items:
       - { src_path: '/usr/local/node-v{{node_version}}-linux-x64/bin/npm', dest: '/usr/local/bin/npm' }
       - { src_path: '/usr/local/node-v{{node_version}}-linux-x64/bin/node', dest: '/usr/local/bin/node' }
-    tags: install_node_js
 
   - name: install_node_js | brunch install
     sudo: yes
     sudo_user: root
     shell: /usr/local/bin/npm install -g brunch 
-    tags: install_node_js

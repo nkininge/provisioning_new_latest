@@ -5,10 +5,8 @@
   with_items:
     - debian-keyring
     - debian-archive-keyring
-  tags: debian_repo_setup
 
 - name: install_libraries | add deb squeeze repo
   sudo: yes
   apt_repository: repo='deb http://ftp.us.debian.org/debian squeeze main'
     state=present
-  tags: debian_repo_setup
