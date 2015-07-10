@@ -3,7 +3,9 @@
   vars:
     build_user_uid: 1001
     slave: False
+    project: "{{ project_name }}"
     build_user: "{{ username }}"
+    secret_profile_file: "{{ project }}_secrets.yml"
     build_group: users
     jenkins_configuration: /etc/default/jenkins
     jenkins_run_standalone: yes

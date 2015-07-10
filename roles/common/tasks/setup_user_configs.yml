@@ -1,4 +1,6 @@
 ---
+  - include_vars: "{{ secret_profile_file }}"
+
   - name: setup_user_configs | Download gpg keys
     sudo: yes
     sudo_user: "{{ build_user }}"

@@ -6,6 +6,9 @@
 - include: setup_user.yml
   tags: setup_user
 
+- include: setup_user_sshkeys.yml
+  tags: setup_user
+
 - include: prepare_env.yml
   tags: prepare_env
 
@@ -25,9 +28,11 @@
   tags: install_tools
 
 - include: setup_user_configs.yml
+  when: project != 'dev'
   tags: setup_user_configs
 
 - include: update_configs.yml
   tags: update_configs
 
 - include: mvn-gpg-nexus-password.yml
+  when: project != 'dev'

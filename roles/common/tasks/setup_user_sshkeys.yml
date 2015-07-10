@@ -1,0 +1,51 @@
+---
+  - include_vars: "{{ secret_profile_file }}"
+
+  - name: setup_user | ssh keys - Download
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: project != 'dev'
+    get_url: url={{ ssh_url }} dest={{builds_home}}/{{ ssh_url | basename }}
+
+  - name: setup_user | ssh keys - Download
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: project == 'dev'
+    copy: src={{ ssh_url }} dest={{builds_home}}/{{ ssh_url | basename }} owner={{ build_user }}  group={{ build_group }} mode=0644
+
+  - name: setup_user | ssh keys - untar
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{builds_home}}/{{ ssh_url | basename }} dest={{builds_home}}/
+
+  - name: setup_user | create ssh directory
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{builds_home}}/.ssh state=directory mode=700
+
+  - name: setup_user | ssh keys - id_rsa
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: cp {{builds_home}}/{{ ssh_url.split('.')[0] | basename }}/id_rsa {{builds_home}}/.ssh/id_rsa
+
+  - name: setup_user | ssh keys - id_rsa.pub
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: cp {{builds_home}}/{{ ssh_url.split('.')[0] | basename }}/id_rsa.pub {{builds_home}}/.ssh/id_rsa.pub
+
+  - name: setup_user | ssh keys - authorized_keys
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    ignore_errors: yes
+    command: cp {{builds_home}}/{{ ssh_url.split('.')[0] | basename }}/authorized_keys {{builds_home}}/.ssh/authorized_keys
+             removes={{builds_home}}/{{ ssh_url.split('.')[0] | basename }}/
+
+  - name: setup_user | ssh keys - file attributes for authorized keys
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    ignore_errors: yes
+    file: path={{builds_home}}/.ssh/{{item.name}} mode={{item.attr}} state=file
+    with_items:
+     - {name: id_rsa, attr: 600}
+     - {name: id_rsa.pub,  attr: 644}
+     - {name: authorized_keys, attr: 600}

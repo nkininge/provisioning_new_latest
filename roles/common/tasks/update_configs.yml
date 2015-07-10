@@ -1,4 +1,6 @@
 ---
+  - include_vars: "{{ secret_profile_file }}"
+
   - name: "Update limits.conf"
     sudo: yes
     sudo_user: root
@@ -18,9 +20,11 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{s3cfg_url}} dest={{builds_home}}/.s3cfg mode=744 
+    ignore_errors: yes
 
   - name: "setup ./m2 settings.xml"
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{settings_url}} dest={{builds_home}}/.m2/settings.xml mode=744
+    ignore_errors: yes
 
