@@ -1,6 +1,6 @@
 ---
   - name: install_node_js | Download node js
-    get_url: url={{node_js_url}} dest=/tmp/node-v{{node_version}}-linux-x64.tar.gz
+    get_url: url={{node_js_url}} dest=/tmp/{{ node_js_url | basename }}
 
   - name: install_node_js | rm /usr/local/bin/{npm,node} 
     shell: rm -rf /usr/local/bin/{npm,node} 
@@ -8,7 +8,7 @@
   - name: install_node_js | untar node js
     sudo: yes
     sudo_user: root
-    unarchive: copy=no src=/tmp/node-v{{node_version}}-linux-x64.tar.gz dest=/usr/local
+    unarchive: copy=no src=/tmp/{{ node_js_url | basename }} dest=/usr/local
 
   - name: install_node_js | rm /usr/local/bin/{npm,node} 
     shell: rm -rf /usr/local/bin/{npm,node}

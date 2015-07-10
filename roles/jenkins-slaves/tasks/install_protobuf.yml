@@ -1,12 +1,12 @@
 ---
   - name: install_protobuf | Download protobuf
-    get_url: url={{protobuf_url}} dest=/tmp/protobuf.tar.gz     
+    get_url: url={{protobuf_url}} dest=/tmp/{{ protobuf_url | basename }}
 
   - name: install_protobuf | rm protobuf
     shell: rm -rf /usr/local/bin/protoc
 
   - name: install_protobuf | untar Protobuf
-    unarchive: copy=no src=/tmp/protobuf.tar.gz dest=/tmp/
+    unarchive: copy=no src=/tmp/{{ protobuf_url | basename }} dest=/tmp/
 
   - name: install_protobuf | configure/make/make install
     sudo: yes

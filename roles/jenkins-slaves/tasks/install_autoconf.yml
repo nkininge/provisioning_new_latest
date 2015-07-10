@@ -1,9 +1,9 @@
 ---
   - name: install_autoconf | Download autoconf
-    get_url: url={{autoconf_url}} dest=/tmp/autoconf.tar.gz
+    get_url: url={{autoconf_url}} dest=/tmp/{{ autoconf_url | basename }}
 
   - name: install_autoconf | untar autoconf
-    unarchive: copy=no src=/tmp/autoconf.tar.gz dest=/tmp/
+    unarchive: copy=no src=/tmp/{{ autoconf_url | basename }} dest=/tmp/
 
   - name: install_autoconf | protobuf configure/make/make install
     shell: cd /tmp/autoconf-2.63 ; ./configure ; make clean ; make install

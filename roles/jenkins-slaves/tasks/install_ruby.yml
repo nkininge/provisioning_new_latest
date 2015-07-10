@@ -1,9 +1,9 @@
 ---
 - name: install_libraries | download ruby
-  get_url: url='http://s3.amazonaws.com/dev.hortonworks.com/RLENG/ruby-1.9.3-p484.tar.gz' dest=/tmp/ruby-1.9.3-p484.tar.gz
+  get_url: url="{{ruby_url}}" dest=/tmp/{{ ruby_url | basename }}
 
 - name: install_libraries | unarchive ruby tar.gz
-  unarchive: src=/tmp/ruby-1.9.3-p484.tar.gz dest=/tmp/ copy=no
+  unarchive: src=/tmp/{{ ruby_url | basename }} dest=/tmp/ copy=no
 
 - name: install_libraries | install ruby from src
   sudo: yes

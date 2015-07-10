@@ -1,9 +1,9 @@
 ---
   - name: install_tar | Download tar
-    get_url: url={{tar_url}} dest=/tmp/tar-1.28.tar.gz
+    get_url: url={{tar_url}} dest=/tmp/{{ tar_url | basename }}
 
   - name: install_tar | untar tar
-    unarchive: copy=no src=/tmp/tar-1.28.tar.gz dest=/tmp/
+    unarchive: copy=no src=/tmp/{{ tar_url | basename }} dest=/tmp/
 
   - name: install_tar | configure, make, make install 
     sudo: yes

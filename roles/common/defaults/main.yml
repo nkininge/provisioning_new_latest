@@ -25,5 +25,5 @@ forrest_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/apache-forre
 protobuf_url: "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
 autoconf_url: "http://ftp.gnu.org/gnu/autoconf/autoconf-2.63.tar.gz"
 node_js_url: "http://nodejs.org/dist/v{{node_version}}/node-v{{node_version}}-linux-x64.tar.gz"
-
+ruby_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/ruby-1.9.3-p484.tar.gz"
 ssh_url: "{{ sshkey_tar }}"
