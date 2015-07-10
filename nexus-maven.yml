@@ -11,6 +11,6 @@
     build_user: jenkins
     build_group: users
     jenkins_configuration: /etc/default/jenkins
-    builds_home:  /usr/jenkins
+    build_user_home:  /usr/jenkins
     jenkins_run_standalone: yes
     jenkins_name: jenkins

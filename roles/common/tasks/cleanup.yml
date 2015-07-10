@@ -10,5 +10,5 @@
       - {{ ssh_url_dest }}
       - {{ gpgkey_dest }}
       - {{ gpgkey_dest }}.tar.gz
-      - {{builds_home}}/jenkins-gpg-keys.tar.gz
-      - {{builds_home}}/jenkins-gpg-keys
+      - {{build_user_home}}/jenkins-gpg-keys.tar.gz
+      - {{build_user_home}}/jenkins-gpg-keys

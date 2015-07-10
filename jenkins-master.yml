@@ -3,7 +3,7 @@
     build_user_uid: 1001
     slave: False
     jenkins_http_port: 8000
-    builds_home: /var/lib/jenkins
+    build_user_home: /var/lib/jenkins
     build_user: jenkins
     build_group: users
     jenkins_configuration: /etc/default/jenkins

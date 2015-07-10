@@ -14,7 +14,7 @@
     with_items:
       - "{{build_group}}"
 
-  - name: setup_user | create {{builds_home}} base dir
+  - name: setup_user | create {{build_user_home}} base dir
     sudo: yes
     sudo_user: root
     file: path="{{home_base_dir}}" state=directory 
@@ -22,5 +22,5 @@
   - name: setup_user | Add user
     sudo: yes
     sudo_user: root
-    user: name="{{ build_user }}" home={{builds_home}} uid="{{ build_user_uid }}"
+    user: name="{{ build_user }}" home={{build_user_home}} uid="{{ build_user_uid }}"
       group={{build_group}} shell="/bin/bash"

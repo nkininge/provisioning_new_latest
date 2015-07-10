@@ -14,20 +14,20 @@
   - name: "rm s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: rm -rf {{builds_home}}/.s3cfg
+    shell: rm -rf {{build_user_home}}/.s3cfg
     tags: s3cmd_config
 
   - name: "setup s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{builds_home}}/.s3cfg mode=744 
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 
     ignore_errors: yes
     tags: s3cmd_config
 
   - name: "setup ./m2 settings.xml"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{settings_url}} dest={{builds_home}}/.m2/settings.xml mode=744
+    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml mode=744
     ignore_errors: yes
     tags: nexus_settings
 

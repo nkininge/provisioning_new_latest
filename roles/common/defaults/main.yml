@@ -1,7 +1,7 @@
 ---
 home_base_dir: /grid/0
-builds_home: "{{home_base_dir}}/{{ build_user }}"
-tools_home: "{{builds_home}}/tools"
+build_user_home: "{{home_base_dir}}/{{ build_user }}"
+tools_home: "{{build_user_home}}/tools"
 maven_home: "{{tools_home}}/maven"
 ant_home: "{{tools_home}}/ant" 
 jdk6_home: "{{tools_home}}/jdk64_31"

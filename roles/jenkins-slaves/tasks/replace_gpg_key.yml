@@ -5,24 +5,24 @@
   - name: Replace gpg key | Pre clean up
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: rm -rf {{ builds_home }}/jenkins-gpg-keys{,.tar.gz,.tar.gz.gpg}
+    shell: rm -rf {{ build_user_home }}/jenkins-gpg-keys{,.tar.gz,.tar.gz.gpg}
  
   - name: Replace gpg key | Download gpg keys
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{ gpgkeys_url }}.gpg
-             dest={{ builds_home }}/jenkins-gpg-keys.tar.gz.gpg
+             dest={{ build_user_home }}/jenkins-gpg-keys.tar.gz.gpg
  
   - name: Replace gpg key | Extract gpg keys
     sudo: yes
     sudo_user: "{{ build_user }}"
-    script: extract_gpg_tarball.exp {{ builds_home }} {{ gpg_tarball_pass }}
+    script: extract_gpg_tarball.exp {{ build_user_home }} {{ gpg_tarball_pass }}
  
   - name: Replace gpg key | Untar gpg keys archive
     sudo: yes
     sudo_user: "{{ build_user }}"
-    unarchive: copy=no src={{builds_home}}/jenkins-gpg-keys.tar.gz
-        dest={{builds_home}}/
+    unarchive: copy=no src={{build_user_home}}/jenkins-gpg-keys.tar.gz
+        dest={{build_user_home}}/
 
   - name: Replace gpg key | delete gpg secret key
     sudo: yes
@@ -33,10 +33,10 @@
   - name: Jenkins Slave Setup - Import gpg secret
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "gpg --allow-secret-key-import --import {{builds_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
+    shell: "gpg --allow-secret-key-import --import {{build_user_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
     ignore_errors: yes
 
   - name: Replace gpg key | Post clean up
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: rm -rf {{ builds_home }}/jenkins-gpg-keys{,.tar.gz,.tar.gz.gpg}
+    shell: rm -rf {{ build_user_home }}/jenkins-gpg-keys{,.tar.gz,.tar.gz.gpg}
