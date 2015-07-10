@@ -1,7 +1,7 @@
 ---
   - name: cleanup | rm downloads 
     sudo: yes
-    sudo_user: jenkins
+    sudo_user: {{ build_user }}
     file: path={{item}} state=absent
     with_items:
       - {{ant_home}}/ant.tar.gz
@@ -10,5 +10,5 @@
       - {{ ssh_url_dest }}
       - {{ gpgkey_dest }}
       - {{ gpgkey_dest }}.tar.gz
-      - {{jenkins_home}}/jenkins-gpg-keys.tar.gz
-      - {{jenkins_home}}/jenkins-gpg-keys
+      - {{builds_home}}/jenkins-gpg-keys.tar.gz
+      - {{builds_home}}/jenkins-gpg-keys

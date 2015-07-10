@@ -1,30 +1,30 @@
 ---
   - name: setup_user_configs | Download gpg keys
     sudo: yes
-    sudo_user: "{{ dev_user }}"
+    sudo_user: "{{ build_user }}"
     get_url: url={{ gpgkeys_url }}
-            dest={{ jenkins_home }}/jenkins-gpg-keys.tar.gz
+            dest={{ builds_home }}/jenkins-gpg-keys.tar.gz
 
   - name: setup_user_configs | Untar gpg keys archive
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    unarchive: copy=no src={{jenkins_home}}/jenkins-gpg-keys.tar.gz
-        dest={{jenkins_home}}/
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{builds_home}}/jenkins-gpg-keys.tar.gz
+        dest={{builds_home}}/
 
   - name: setup_user_configs | delete gpg secret and key
     sudo: yes
-    sudo_user: "{{ dev_user }}"
+    sudo_user: "{{ build_user }}"
     shell: "gpg --batch --yes --delete-secret-and-public-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD"
     ignore_errors: yes
 
   - name: setup_user_configs | Import gpg pub
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    shell: "gpg --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_pub.gpg"
+    sudo_user: "{{ build_user }}"
+    shell: "gpg --import {{builds_home}}/jenkins-gpg-keys/jenkins_pub.gpg"
     ignore_errors: yes
 
   - name: setup_user_configs | Import gpg secret
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    shell: "gpg --allow-secret-key-import --import {{jenkins_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
+    sudo_user: "{{ build_user }}"
+    shell: "gpg --allow-secret-key-import --import {{builds_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
     ignore_errors: yes

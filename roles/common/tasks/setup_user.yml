@@ -12,9 +12,9 @@
     sudo_user: root
     group: name="{{item}}" state=present
     with_items:
-      - "{{jenkins_group}}"
+      - "{{build_group}}"
 
-  - name: setup_user | create {{jenkins_home}} base dir
+  - name: setup_user | create {{builds_home}} base dir
     sudo: yes
     sudo_user: root
     file: path="{{home_base_dir}}" state=directory 
@@ -22,44 +22,44 @@
   - name: setup_user | Add user
     sudo: yes
     sudo_user: root
-    user: name="{{ dev_user }}" home={{jenkins_home}} uid="{{ jenkins_user_uid }}"
-      group={{jenkins_group}} shell="/bin/bash"
+    user: name="{{ build_user }}" home={{builds_home}} uid="{{ build_user_uid }}"
+      group={{build_group}} shell="/bin/bash"
 
   - name: setup_user | ssh keys - Download
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    get_url: url={{ ssh_url }} dest={{jenkins_home}}/hortonworksre.tar.gz
+    sudo_user: "{{ build_user }}"
+    get_url: url={{ ssh_url }} dest={{builds_home}}/hortonworksre.tar.gz
 
   - name: setup_user | ssh keys - untar
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    unarchive: copy=no src={{jenkins_home}}/hortonworksre.tar.gz dest={{jenkins_home}}/
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{builds_home}}/hortonworksre.tar.gz dest={{builds_home}}/
 
   - name: setup_user | create ssh directory
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    file: path={{jenkins_home}}/.ssh state=directory mode=700
+    sudo_user: "{{ build_user }}"
+    file: path={{builds_home}}/.ssh state=directory mode=700
    
   - name: setup_user | ssh keys - id_rsa
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    command: cp {{jenkins_home}}/hortonworksre/id_rsa {{jenkins_home}}/.ssh/id_rsa
+    sudo_user: "{{ build_user }}"
+    command: cp {{builds_home}}/hortonworksre/id_rsa {{builds_home}}/.ssh/id_rsa
 
   - name: setup_user | ssh keys - id_rsa.pub
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    command: cp {{jenkins_home}}/hortonworksre/id_rsa.pub {{jenkins_home}}/.ssh/id_rsa.pub
+    sudo_user: "{{ build_user }}"
+    command: cp {{builds_home}}/hortonworksre/id_rsa.pub {{builds_home}}/.ssh/id_rsa.pub
 
   - name: setup_user | ssh keys - authorized_keys
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    command: cp {{jenkins_home}}/hortonworksre/authorized_keys {{jenkins_home}}/.ssh/authorized_keys
-             removes={{jenkins_home}}/hortonworksre/
+    sudo_user: "{{ build_user }}"
+    command: cp {{builds_home}}/hortonworksre/authorized_keys {{builds_home}}/.ssh/authorized_keys
+             removes={{builds_home}}/hortonworksre/
 
   - name: setup_user | ssh keys - file attributes for authorized keys
     sudo: yes
-    sudo_user: "{{ dev_user }}"
-    file: path={{jenkins_home}}/.ssh/{{item.name}} mode={{item.attr}} state=file
+    sudo_user: "{{ build_user }}"
+    file: path={{builds_home}}/.ssh/{{item.name}} mode={{item.attr}} state=file
     with_items:
      - {name: id_rsa, attr: 600}
      - {name: id_rsa.pub,  attr: 644}

@@ -1,7 +1,7 @@
 ---
-- name: check if dev_user is set
-  fail: msg='Bailing out. this play requires username, Please pass in the form  -e "dev_user=xyz"'
-  when: dev_user is not defined
+- name: check if build_user is set
+  fail: msg='Bailing out. this play requires username, Please pass in the form  -e "build_user=xyz"'
+  when: build_user is not defined
 
 - include: setup_user.yml
   tags: setup_user

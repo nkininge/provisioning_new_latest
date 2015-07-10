@@ -1,7 +1,7 @@
 ---
 home_base_dir: /grid/0
-jenkins_home: "{{home_base_dir}}/{{ dev_user }}"
-tools_home: "{{jenkins_home}}/tools"
+builds_home: "{{home_base_dir}}/{{ build_user }}"
+tools_home: "{{builds_home}}/tools"
 maven_home: "{{tools_home}}/maven"
 ant_home: "{{tools_home}}/ant" 
 jdk6_home: "{{tools_home}}/jdk64_31"
@@ -29,7 +29,7 @@ s3cfg_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/s3cfg"
 ssh_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/hortonworksre.tar.gz"
 gpgkeys_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/jenkins-gpg-keys.tar.gz"
 settings_url: "http://s3.amazonaws.com/dev.hortonworks.com/jenkins_bk/54.243.248.12/settings.xml"
-ssh_url_dest: "{{jenkins_home}}/hortonworksre.tar.gz"
-gpgkey_dest: "{{jenkins_home}}/jenkins-gpg-keys"
+ssh_url_dest: "{{builds_home}}/hortonworksre.tar.gz"
+gpgkey_dest: "{{builds_home}}/jenkins-gpg-keys"
 
 

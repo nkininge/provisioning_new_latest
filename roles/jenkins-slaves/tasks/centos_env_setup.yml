@@ -9,10 +9,10 @@
 
 - name: centos_env_setup | setup rpmmacros
   sudo: yes
-  sudo_user: "{{ dev_user }}"
-  get_url: url='http://s3.amazonaws.com/dev.hortonworks.com/RLENG/rpmmacros.tar.gz' dest={{jenkins_home}}/
+  sudo_user: "{{ build_user }}"
+  get_url: url='http://s3.amazonaws.com/dev.hortonworks.com/RLENG/rpmmacros.tar.gz' dest={{builds_home}}/
 
 - name: centos_env_setup | unarchive rpmmacros.tar.gz
   sudo: yes
-  sudo_user: "{{ dev_user }}"
-  unarchive: copy=no src={{jenkins_home}}/rpmmacros.tar.gz dest={{jenkins_home}}/
+  sudo_user: "{{ build_user }}"
+  unarchive: copy=no src={{builds_home}}/rpmmacros.tar.gz dest={{builds_home}}/

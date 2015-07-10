@@ -1,10 +1,10 @@
 - hosts: default
   gather_facts: yes
   vars:
-    jenkins_user_uid: 1001
+    build_user_uid: 1001
     slave: False
-    dev_user: "{{ dev_user }}"
-    jenkins_group: users
+    build_user: "{{ username }}"
+    build_group: users
     jenkins_configuration: /etc/default/jenkins
     jenkins_run_standalone: yes
     gem2deb_url: http://ftp.de.debian.org/debian/pool/main/g/gem2deb/gem2deb_0.9.1.tar.xz
