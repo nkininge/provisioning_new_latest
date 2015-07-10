@@ -133,13 +133,16 @@
   - name: install_libraries | download s3cmd zip
     sudo: yes
     get_url: url="http://github.com/s3tools/s3cmd/archive/master.zip" dest=/tmp/master.zip
+    tags: install_s3cmd
 
   - name: install_libraries | unarchive s3cmd
     sudo: yes
     unarchive: src=/tmp/master.zip dest=/tmp/ copy=no
+    tags: install_s3cmd
 
   - name: install_libraries | s3cmd setup install
     sudo: yes
     shell: python setup.py install
     args:
       chdir: /tmp/s3cmd-master
+    tags: install_s3cmd

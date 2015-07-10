@@ -1,7 +1,6 @@
 ---
   - include_vars: ../../common/vars/{{project}}_secrets.yml
     when: project != 'dev'
-    tags: setup_user
 
   - name: Replace gpg key | Pre clean up
     sudo: yes

@@ -4,94 +4,113 @@
     sudo_user: "{{ build_user }}"
     get_url: url=http://services.gradle.org/distributions/gradle-2.3-bin.zip
       dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes
+    tags: install_gradle
 
   - name: install_tools | mkdirs for Maven
     file: path={{tools_home}}/maven state=directory mode=0755
     sudo: yes
     sudo_user: "{{ build_user }}"
+    tags: install_maven
 
   - name: install_tools | Download Maven
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{maven_url}} dest={{tools_home}}/maven/maven.tar.gz mode=0644
+    tags: install_maven
 
   - name: install_tools | Download Maven for Ambari
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{maven_ambari_url}} dest={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz mode=0644 force=no
+    tags: install_maven
 
   - name: install_tools | Download Ant
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{ant_url}} dest={{tools_home}}/ant/ant.tar.gz mode=0744
+    tags: install_ant
 
   - name: install_tools | Download Forrest
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{forrest_url}} dest={{forrest_home}}/forrest.tar.gz mode=744
+    tags: install_forrest
 
   - name: install_tools | Untar gradle
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/gradle/gradle.zip dest={{tools_home}}/gradle
+    tags: install_gradle
 
   - name: install_tools | Untar Maven
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/maven/maven.tar.gz dest={{tools_home}}/maven
+    tags: install_maven
 
   - name: install_tools | Untar Maven for Ambari
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz dest={{tools_home}}/maven
+    tags: install_maven
 
   - name: install_tools | Untar Ant
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/ant/ant.tar.gz dest={{tools_home}}/ant
+    tags: install_ant
 
   - name: install_tools | Untar Forrest
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{forrest_home}}/forrest.tar.gz dest={{tools_home}}/forrest
+    tags: install_forrest
 
   - name: install_tools | rm symlink gradle -> latest
     sudo: yes
     sudo_user: "{{ build_user }}"
     file: path={{tools_home}}/gradle/latest state=absent
+    tags: install_gradle
 
   - name: install_tools | symlink gradle -> latest
     sudo: yes
     sudo_user: "{{ build_user }}"
     file: src=gradle-2.3 force=yes dest={{tools_home}}/gradle/latest state=link
+    tags: install_gradle
 
   - name: install_tools | capture gradle version
     sudo: yes
     sudo_user: "{{ build_user }}"
     shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/gradle/latest/bin/gradle --version"
     register: cmd_result
+    tags: install_gradle
 
   - name: install_tools | assert gradle installation
     assert:
       that:
         - "'Gradle 2.3' in cmd_result.stdout"
+    tags: install_gradle
 
   - name: install_tools | symlink Maven -> latest
     sudo: yes
     sudo_user: "{{ build_user }}"
     file: src=apache-maven-{{ mvn_version }} dest={{tools_home}}/maven/latest state=link
+    tags: install_maven
 
   - name: install_tools | symlink Ant -> latest
     sudo: yes
     sudo_user: "{{ build_user }}"
     file: src=apache-ant-1.9.4 dest={{tools_home}}/ant/latest state=link
+    tags: install_ant
 
   - name: install_tools | symlink Forrest -> latest
     sudo: yes
     sudo_user: "{{ build_user }}"
     file: src=apache-forrest-{{forrest_version}} dest={{forrest_home}}/latest state=link
+    tags: install_forrest
 
   - name: install_tools | Remove .tar.gz artifact from Maven install.
     sudo: yes
     sudo_user: "{{ build_user }}"
     file: path={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz state=absent
+    tags: install_maven
