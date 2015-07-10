@@ -1,49 +1,52 @@
 [master]
 
+[centos5]
+
 [centos6]
-52.7.71.84
+
+[centos7]
+
+[debian6]
+
+[sles11sp1]
+
+[suse11sp3]
+
+[ubuntu12]
 
 [master:vars]
-ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/ec2-keypair.pem
-jenkins_home=/grid/0/jenkins
+ansible_ssh_private_key_file=
+ansible_ssh_user=root
 
 [sles11sp1:vars]
-jenkins_home=/grid/0/jenkins
-ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/ec2-keypair.pem
+ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
-[sles11sp3:vars]
-jenkins_home=/grid/0/jenkins
-ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/ec2-keypair.pem
+[suse11sp3:vars]
+ansible_ssh_private_key_file=
 ansible_ssh_user=root
-jenkins_home=/home/jenkins
 
 [centos6:vars]
-jenkins_home=/grid/0/jenkins
-ansible_ssh_private_key_file=~/Downloads/ec2-keypair
-ansible_ssh_user=ec2-user
+ansible_ssh_private_key_file=
+ansible_ssh_user=root
 
-[centos5:vars]
-jenkins_home=/grid/0/jenkins
-ansible_python_interpreter=/usr/bin/python2.6
-ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/ec2-keypair.pem
-remote_tmp=/tmp
+[centos7:vars]
+ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
 [ubuntu:vars]
-jenkins_home=/grid/0/jenkins
-ansible_ssh_user=ubuntu
-ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/ec2-keypair.pem
+ansible_ssh_private_key_file=
+ansible_ssh_user=root
 
 [debian6:vars]
-jenkins_home=/grid/0/jenkins
+ansible_ssh_private_key_file=
 ansible_ssh_user=root
-ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/ec2-keypair.pem
 
 [default:children]
-debian6
-ubuntu
-sles11sp3
 centos5
 centos6
+centos7
+debian6
 sles11sp1
+suse11sp3
+ubuntu12
