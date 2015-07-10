@@ -6,11 +6,11 @@
   - sonatype-nexus
   gather_facts: no
   vars:
-    jenkins_user_uid: 1001
+    build_user_uid: 1001
     slave: False
-    jenkins_user: jenkins
-    jenkins_group: users
+    build_user: jenkins
+    build_group: users
     jenkins_configuration: /etc/default/jenkins
-    jenkins_home:  /usr/jenkins
+    builds_home:  /usr/jenkins
     jenkins_run_standalone: yes
     jenkins_name: jenkins
