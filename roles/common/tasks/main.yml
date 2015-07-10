@@ -6,7 +6,9 @@
 - include: setup_user.yml
   tags: setup_user
 
+- include_vars: "{{ secret_profile_file }}"
 - include: setup_user_sshkeys.yml
+  when: ssh_url is defined
   tags:
     - setup_user
     - ssh_setup
