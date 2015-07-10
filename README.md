@@ -1,36 +1,13 @@
 Provisioning Jenkins slaves
 ===========================
-WIP
 
-To setup Jenkins Master on Ubuntu:
+populate ./hosts file with appropriate values 
 
-1) Install Ansible 
+to execute the playbook against the chosen hosts
 
-2) clone & checkout provisioning.git:wip 
+for project re:
+ansible-playbook setup.yml -e "username=jenkins project_name=re" --ask-vault-pass
 
-3) ansible-playbook jenkins-master.yml -i ./hosts -v 
+for project dev:
+ansible-playbook setup.yml -e "username=jenkins project_name=dev" --ask-vault-pass
 
-
-
-
-Configure jenkins master using Ansible - http://docs.ansible.com 
-
-1) Establish connectivity b/w the ansible control machine and the ASF jenkins slaves
-
-2) Installing Ansible 
-
-* http://docs.ansible.com/intro_installation.html#installation
-
-3) Clone provision - this github repo
-
-git clone git@github.com:hortonworks/provisioning.git
-
-git checkout -t origin/wip -b wip
-
-cd provisioning
-
-4) To provision jenkins master
-
-TO SET UP A JENKINS SLAVE:
-
-1) Start with setup.yml.

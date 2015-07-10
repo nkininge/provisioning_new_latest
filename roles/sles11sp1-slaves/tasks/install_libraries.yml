@@ -5,10 +5,10 @@
     with_items:
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-1.7.0-16.1.x86_64.rpm
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-devel-1.7.0-16.1.x86_64.rpm
-      - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-1.0.5-1.x86_64.rpm
-      - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-devel-1.0.5-1.x86_64.rpm
-      - http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-2.06-1.x86_64.rpm
-      - https://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-devel-2.06-1.x86_64.rpm
+      #- http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-1.0.5-1.x86_64.rpm
+      #- http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/snappy/snappy-devel-1.0.5-1.x86_64.rpm
+      #- http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-2.06-1.x86_64.rpm
+      #- https://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.19/repos/suse11/lzo/lzo-devel-2.06-1.x86_64.rpm
       - https://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/sles11-clamv/clamav-0.98.3-104.1.x86_64.rpm
     tags: install_libraries
 
@@ -86,7 +86,8 @@
     easy_install: name=pip
     easy_install: name=argparse
     easy_install: name=virtualenv
-    tags:   install_argparse
+    easy_install: name=s3cmd
+    tags: argparse
 
   - name: install_libraries | download s3cmd zip
     sudo: yes

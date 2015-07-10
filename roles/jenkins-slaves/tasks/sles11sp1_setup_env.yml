@@ -2,4 +2,5 @@
 - name: sles11sp1_setup_env | install cd1
   sudo: yes
   tags: install_libraries
-  zypper_repository: name="TD-sles11" repo="https://s3.amazonaws.com/dev.hortonworks.com/sles11" state=present
+  #zypper_repository: name="TD-sles11" repo="https://s3.amazonaws.com/dev.hortonworks.com/sles11" state=present
+  zypper_repository: name="TD-sles11" repo="http://54.172.140.233/TD-repo/" state=present

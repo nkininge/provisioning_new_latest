@@ -11,6 +11,16 @@
   sudo: yes
   zypper_repository: name="cd1" repo="http://romolo.cmb.usc.edu/installs/SLES-11-SP3-SDK/CD1/" state=present
 
+- name: install_libraries | zypper in
+  sudo: yes
+  zypper: pkg={{item}} disable_gpg_check=yes state=latest
+  tags: install_libraries
+  with_items: 
+    - snappy-1.0.5
+    - snappy-devel-1.0.5
+    - lzo-devel-2.06
+    - lzo-2.06
+
 - name: sles11sp3_setup_env | install cd2
   sudo: yes
   zypper_repository: name="cd1" repo="http://romolo.cmb.usc.edu/installs/SLES-11-SP3-SDK/CD2/" state=present
