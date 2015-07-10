@@ -13,7 +13,7 @@
   - name: centos7_repo_setup | install epel release
     sudo: yes
     sudo_user: root
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+    when: ansible_distribution_major_version|int == 7
     shell: rpm -Uvh {{item}}
     with_items:
       - 'http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-7-5.noarch.rpm'
@@ -22,14 +22,14 @@
     sudo: yes
     sudo_user: root
     shell: rpm -Uvh {{item}}
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+    when: ansible_distribution_major_version|int == 6
     with_items:
       - http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-6-8.noarch.rpm
  
   - name: install_libraries | centos5 manual rpm install | epel && asciidoc
     sudo: yes
     sudo_user: root
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+    when: ansible_distribution_major_version|int == 5
     shell: rpm -Uvh {{item}}
     with_items:
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/epel-release-5-4.noarch.rpm
@@ -37,7 +37,7 @@
   - name: install_libraries | download s3tools repo file
     sudo: yes
     sudo_user: root
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+    when: ansible_distribution_major_version|int == 5
     get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/s3tools.repo dest=/etc/yum.repos.d/s3tools.repo
 
   - name: install_libraries | centos
@@ -83,12 +83,10 @@
       - cppunit 
       - cppunit-devel 
       - snappy-devel
-      - pdsh
       - xalan-j2
       - glib2
       - cpio
       - cppunit-devel
-      - ant-nodeps
       - ant
       - libstdc++
       - ant-apache-bcel
@@ -103,17 +101,26 @@
       - xmlto
       - expect
       - cmake
-      - graphviz
       - s3cmd
 
   - name: install_libraries | install alien
     sudo: yes
     sudo_user: root
     yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+    when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | install asciidoc - centos5
     sudo: yes
     sudo_user: root
     shell: rpm -Uvh http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/centos5/asciidoc-8.6.9-1.el5.rf.noarch.rpm
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+    when: ansible_distribution_major_version|int == 5
+
+  - name: install_libraries | non centos7 | pdsh, ant-nodeps
+    sudo: yes
+    sudo_user: root
+    when: ansible_distribution_major_version|int != 7
+    yum: pkg={{item}} state=latest
+    with_items:
+      - pdsh
+      - ant-nodeps
+      - graphviz
