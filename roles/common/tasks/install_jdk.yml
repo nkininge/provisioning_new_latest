@@ -2,7 +2,7 @@
   - name: "Download Jdk6" 
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{jdk6_url}} dest={{jdk6_home}}/jdk6.tar.gz mode=744
+    get_url: url={{jdk6_url}} dest={{jdk6_home}}/{{ jdk6_url | basename }} mode=744
     tags:
       - install_jdk
       - install_jdk6
@@ -10,7 +10,7 @@
   - name: "Download Jdk7" 
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{jdk7_url}} dest={{jdk7_home}}/jdk7.gz mode=744
+    get_url: url={{jdk7_url}} dest={{jdk7_home}}/{{ jdk7_url | basename }} mode=744
     tags:
       - install_jdk
       - install_jdk7
@@ -18,7 +18,7 @@
   - name: "Install Jdk7"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk7_home}}/jdk7.gz dest={{jdk7_home}}
+    unarchive: copy=no src={{jdk7_home}}/{{ jdk7_url | basename }} dest={{jdk7_home}}
     tags:
       - install_jdk
       - install_jdk7
@@ -34,7 +34,7 @@
   - name: "Install Jdk6"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk6_home}}/jdk6.tar.gz dest={{jdk6_home}}
+    unarchive: copy=no src={{jdk6_home}}/{{ jdk6_url | basename }} dest={{jdk6_home}}
     tags:
       - install_jdk
       - install_jdk6

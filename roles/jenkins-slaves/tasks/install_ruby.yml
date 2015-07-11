@@ -5,14 +5,21 @@
 - name: install_libraries | unarchive ruby tar.gz
   unarchive: src=/tmp/{{ ruby_url | basename }} dest=/tmp/ copy=no
 
+- set_fact: ruby_base={{ ruby_url | basename }}
+
+- set_fact: ruby_base_dir={{ ruby_base | regex_replace('\.tar\.gz','') }}
+
+- set_fact: ruby_base_dir={{ ruby_base | regex_replace('\.tgz','') }}
+  when: ruby_base_dir is not defined
+
 - name: install_libraries | install ruby from src
   sudo: yes
   sudo_user: root
   shell: ./configure ; make -j12; make install;
   args:
-   chdir: /tmp/ruby-1.9.3-p484
+   chdir: /tmp/{{ ruby_base_dir }}
 
-- name: install_libraries | rm /tmp/ruby-1.9.3-p484
+- name: install_libraries | rm /tmp/{{ ruby_base_dir }}
   sudo: yes
   sudo_user: root
-  shell: rm -rf /tmp/ruby-1.9.3*
+  shell: rm -rf /tmp/{{ ruby_base_dir }}*
