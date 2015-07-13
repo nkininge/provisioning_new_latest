@@ -41,6 +41,9 @@
   - include: install_ruby.yml
     tags: install_ruby
 
+  - include: install_autoconf.yml
+    tags: install_autoconf
+
   - include: install_node_js.yml
     tags: install_nodejs
 
