@@ -48,6 +48,7 @@
       - libjpeg-devel
       - cairo-devel
       - gettext-devel
+      - sqlite-devel
       - intltool
       - lua-devel
       - pango-devel
