@@ -109,6 +109,12 @@
     file: src=apache-forrest-{{forrest_version}} dest={{forrest_home}}/latest state=link
     tags: install_forrest
 
+  - name: install_tools | symlink Forrest - ant -> latest
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: src={{tools_home}}/ant/latest dest={{forrest_home}}/apache-forrest-{{forrest_version}}/tools/ant state=link
+    tags: install_forrest
+
   - name: install_tools | Remove .tar.gz artifact from Maven install.
     sudo: yes
     sudo_user: "{{ build_user }}"
