@@ -21,10 +21,8 @@
   - name: get epel-repo rpm RHEL6
     sudo: yes
     sudo_user: root
-    shell: rpm -Uvh {{item}}
+    shell: yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/6/x86_64/
     when: ansible_distribution_major_version|int == 6
-    with_items:
-      - http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-6-8.noarch.rpm
  
   - name: install_libraries | centos5 manual rpm install | epel && asciidoc
     sudo: yes
