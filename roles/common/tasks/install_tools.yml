@@ -36,6 +36,12 @@
     get_url: url={{forrest_url}} dest={{forrest_home}}/forrest.tar.gz mode=744
     tags: install_forrest
 
+  - name: install_tools | Download Forrest dependency
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{forrest_dependency_url}} dest={{forrest_home}}/forrest_dependency.tar.gz mode=744
+    tags: install_forrest
+
   - name: install_tools | Untar gradle
     sudo: yes
     sudo_user: "{{ build_user }}"
@@ -64,6 +70,12 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{forrest_home}}/forrest.tar.gz dest={{tools_home}}/forrest
+    tags: install_forrest
+
+  - name: install_tools | Untar Forrest dependency
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{forrest_home}}/forrest_dependency.tar.gz dest={{tools_home}}/forrest
     tags: install_forrest
 
   - name: install_tools | rm symlink gradle -> latest
