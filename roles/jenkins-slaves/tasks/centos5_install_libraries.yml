@@ -5,4 +5,4 @@
     yum: pkg={{item}} state=latest
     with_items:
       - python26
-    ignore_errors: yes
+      - python26-devel
