@@ -18,6 +18,7 @@
     nexus_file: ~/nexus_password.txt
     security_file: ~/settings-security.xml
     ec2_hostname: False
+    ec2_hosted_repo_ip: 54.172.140.233
     tar_url: http://s3.amazonaws.com/dev.hortonworks.com/RLENG/tar-1.28.tar.gz
 
   roles:

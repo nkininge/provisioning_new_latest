@@ -13,7 +13,7 @@
 
   - include: sles11sp1_setup_env.yml
     tags: install_libraries
-    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
+    when: ansible_distribution == 'SLES' and ansible_distribution_major_version == '11' and ansible_distribution_release|int == 1
 
   - include: sles11_install_libraries.yml
     tags: install_libraries
