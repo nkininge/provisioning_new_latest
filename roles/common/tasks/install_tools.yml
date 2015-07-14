@@ -24,10 +24,28 @@
     get_url: url={{maven_ambari_url}} dest={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz mode=0644 force=no
     tags: install_maven
 
+  - name: install_tools | Download Eclipse
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{eclipse_url}} dest={{tools_home}}/eclipse.tar.gz mode=0744
+    tags: install_eclipse
+
+  - name: install_tools | Download Xerces
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{xerces_url}} dest={{tools_home}}/xerces.tar.gz mode=0744
+    tags: install_xerces
+
   - name: install_tools | Download Ant
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{ant_url}} dest={{tools_home}}/ant/ant.tar.gz mode=0744
+    tags: install_ant
+
+  - name: install_tools | Download Ant {{ant_old_version}}
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{ant_old_url}} dest={{tools_home}}/ant/ant_old.tar.gz mode=0744
     tags: install_ant
 
   - name: install_tools | Download Forrest
@@ -60,10 +78,28 @@
     unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz dest={{tools_home}}/maven
     tags: install_maven
 
+  - name: install_tools | Untar Eclipse
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/eclipse.tar.gz dest={{tools_home}}/
+    tags: install_eclipse
+
+  - name: install_tools | Untar Xerces
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/xerces.tar.gz dest={{tools_home}}/
+    tags: install_xerces
+
   - name: install_tools | Untar Ant
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/ant/ant.tar.gz dest={{tools_home}}/ant
+    tags: install_ant
+
+  - name: install_tools | Untar Ant {{ant_old_version}}
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/ant/ant_old.tar.gz dest={{tools_home}}/ant
     tags: install_ant
 
   - name: install_tools | Untar Forrest
