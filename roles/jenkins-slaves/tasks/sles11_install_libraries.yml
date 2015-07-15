@@ -11,6 +11,10 @@
       - gcc43
       - gcc43-c++
       - git
+      - cyrus-sasl-devel
+      - openldap2-devel
+      - libmysqlclient-devel
+      - libopenssl-devel
 
   - name: install gcc-c++ | suse11sp3
     sudo: yes
