@@ -31,3 +31,5 @@
     - zip
     - unzip
     when: ansible_os_family == "RedHat"
+    async: 240
+    poll: 15
