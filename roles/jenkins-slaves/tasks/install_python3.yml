@@ -58,7 +58,7 @@
 - name: install_tools | pip install
   sudo: yes
   sudo_user: root
-  shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2"
+  shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2 configobj"
   tags: install_openstack_tools
   when: project == "re" and ( ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5' )
 
@@ -72,6 +72,6 @@
 - name: install_tools | pip install
   sudo: yes
   sudo_user: root
-  shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2"
+  shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2 configobj"
   tags: install_openstack_tools
   when: project == "re" and ansible_os_family != 'RedHat'
