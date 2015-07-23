@@ -1,5 +1,12 @@
 ---
+- stat: path=/etc/zypp/repos.d/sles11.repo
+  register: sles11sp1_default_repo
+
+- name: sles11sp1_setup_env | uninstall sles11.repo
+  zypper_repository: name="Hosted (SLES_11)" repo="http://s3.amazonaws.com/dev.hortonworks.com/sles11" state=absent
+  when: sles11sp1_default_repo.stat.exists
+
 - name: sles11sp1_setup_env | install cd1
   sudo: yes
   tags: install_libraries
-  zypper_repository: name="TD-sles11" repo="http://{{ec2_hosted_repo_ip}}/TD-repo/" state=present
+  zypper_repository: name="TD-sles11" repo="http://{{ec2_hosted_repo_ip}}/TD-repo/" state=present refresh=yes
