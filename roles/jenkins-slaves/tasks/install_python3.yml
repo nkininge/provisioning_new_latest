@@ -58,6 +58,6 @@
 - name: install_tools | pip install
   sudo: yes
   sudo_user: root
-  shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2 configparser"
+  shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2"
   tags: install_openstack_tools
   when: project == "re"

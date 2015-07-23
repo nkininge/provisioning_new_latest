@@ -100,6 +100,7 @@
       - xmlto
       - expect
       - cmake
+      - libffi-devel
       - s3cmd
 
   - name: install_libraries | install alien
