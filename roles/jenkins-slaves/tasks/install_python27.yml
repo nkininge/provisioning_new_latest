@@ -60,4 +60,4 @@
   sudo_user: root
   shell: "/usr/local/bin/pip2.7 install python-novaclient==2.25.0 ConcurrentLogHandler python-glanceclient jinja2"
   tags: install_openstack_tools
-  when: project == "re"
+  when: project == "re" and ansible_distribution != 'Ubuntu'
