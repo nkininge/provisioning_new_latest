@@ -68,6 +68,9 @@
       - install_python3
       - install_python
 
+  - include: install_ansible.yml
+    tags: install_ansible
+
   - include: replace_gpg_key.yml
     tags: replace_gpg_key
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

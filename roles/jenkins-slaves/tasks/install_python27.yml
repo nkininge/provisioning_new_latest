@@ -55,7 +55,7 @@
   tags: install_openstack_tools
   when: project == "re"
 
-- name: install_tools | pip install
+- name: install_tools | pip install openstack packages
   sudo: yes
   sudo_user: root
   shell: "/usr/local/bin/pip2.7 install python-novaclient==2.25.0 ConcurrentLogHandler python-glanceclient jinja2"

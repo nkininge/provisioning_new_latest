@@ -1,0 +1,7 @@
+---
+- name: install_tools | pip install ansible
+  sudo: yes
+  sudo_user: root
+  shell: "/usr/local/bin/pip2.7 install ansible==1.9.2"
+  tags: install_ansible
+  when: project == "re"
