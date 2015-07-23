@@ -32,4 +32,3 @@ ruby_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/ruby-1.9.3-p484.tar
 ant_contrib_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/ant-contrib-1.0b2.jar"
 eclipse_url: "http://dev.hortonworks.com.s3.amazonaws.com/RLENG/eclipse.tar.gz"
 xerces_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/xerces-c.tar.gz"
-ssh_url: "{{ sshkey_tar }}"

@@ -28,11 +28,25 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_rsa {{build_user_home}}/.ssh/id_rsa
+    ignore_errors: yes
 
   - name: setup_user | ssh keys - id_rsa.pub
     sudo: yes
     sudo_user: "{{ build_user }}"
     command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_rsa.pub {{build_user_home}}/.ssh/id_rsa.pub
+    ignore_errors: yes
+
+  - name: setup_user | ssh keys - id_dsa
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_dsa {{build_user_home}}/.ssh/id_dsa
+    ignore_errors: yes
+
+  - name: setup_user | ssh keys - id_dsa.pub
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_dsa.pub {{build_user_home}}/.ssh/id_dsa.pub
+    ignore_errors: yes
 
   - name: setup_user | ssh keys - authorized_keys
     sudo: yes
@@ -49,4 +63,6 @@
     with_items:
      - {name: id_rsa, attr: 600}
      - {name: id_rsa.pub,  attr: 644}
+     - {name: id_dsa, attr: 600}
+     - {name: id_dsa.pub,  attr: 644}
      - {name: authorized_keys, attr: 600}
