@@ -48,30 +48,30 @@
   sudo_user: root
   file:  src={{tools_home}}/python3/Python-{{python3_version}}/python  dest=/usr/local/bin/python3  mode=0755 state=link force=yes
 
-- name: install_tools | pip install
+- name: install_tools | pip install | RedHat except centos5
   sudo: yes
   sudo_user: root
   shell: "/usr/local/bin/python3.4 -m ensurepip"
   when: project == "re" and ( ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5' )
   tags: install_openstack_tools
 
-- name: install_tools | pip install
+- name: install_tools | pip install | RedHat except centos5
   sudo: yes
   sudo_user: root
   shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2 configobj"
   tags: install_openstack_tools
   when: project == "re" and ( ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5' )
 
-- name: install_tools | pip install
+- name: install_tools | pip install | non RedHat and SLES
   sudo: yes
   sudo_user: root
   shell: "/usr/local/bin/python3.4 -m ensurepip"
-  when: project == "re" and ansible_os_family != 'RedHat'
+  when: project == "re" and ( ansible_os_family != 'RedHat' and ansible_distribution != 'Suse' and ansible_distribution != 'SLES' )
   tags: install_openstack_tools
 
-- name: install_tools | pip install
+- name: install_tools | pip install | non RedHat and SLES
   sudo: yes
   sudo_user: root
   shell: "/usr/local/bin/pip3.4 install python-novaclient==2.25.0  ConcurrentLogHandler python-glanceclient jinja2 configobj"
   tags: install_openstack_tools
-  when: project == "re" and ansible_os_family != 'RedHat'
+  when: project == "re" and ( ansible_os_family != 'RedHat' and ansible_distribution != 'Suse' and ansible_distribution != 'SLES' )

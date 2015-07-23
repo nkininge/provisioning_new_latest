@@ -53,11 +53,11 @@
   sudo_user: root
   shell: "/usr/local/bin/python2.7 -m ensurepip"
   tags: install_openstack_tools
-  when: project == "re"
+  when: project == "re" and ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' and ansible_distribution != 'Ubuntu')
 
 - name: install_tools | pip install openstack packages
   sudo: yes
   sudo_user: root
   shell: "/usr/local/bin/pip2.7 install python-novaclient==2.25.0 ConcurrentLogHandler python-glanceclient jinja2 configobj"
   tags: install_openstack_tools
-  when: project == "re" and ansible_distribution != 'Ubuntu'
+  when: project == "re" and ( ansible_distribution != 'Ubuntu' and ansible_distribution != 'Suse' and ansible_distribution != 'SLES')

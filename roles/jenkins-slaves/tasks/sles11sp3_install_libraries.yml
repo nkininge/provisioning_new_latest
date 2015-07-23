@@ -1,0 +1,41 @@
+  - name: Installing Libraries | suse11sp3
+    sudo: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    with_items:
+      - gcc
+      - gcc43
+      - gcc43-c++
+      - git
+      - cyrus-sasl-devel
+      - openldap2-devel
+      - libmysqlclient-devel
+      - libopenssl-devel
+
+  - name: Check if gcc-c++.rpm is installed
+    command: rpm -qa | grep gcc-c++
+    ignore_errors: yes
+    register: gcc_rpm_check
+
+  - name: check the status of gcc_rpm_check
+    debug: msg="{{gcc_rpm_check.stdout.find('gcc-c++')}}"
+
+  - name: download gcc-c++ tarball | suse11sp3
+    sudo: yes
+    sudo_user: root
+    when: gcc_rpm_check.stdout.find('gcc-c++') == -1
+    get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/gcc-suse11sp3.tar.gz" dest=/tmp/gcc-suse11sp3.tar.gz
+
+  - name: unarchive gcc-c++ tarball | suse11sp3
+    sudo: yes
+    sudo_user: root
+    when: gcc_rpm_check.stdout.find('gcc-c++') == -1
+    unarchive: copy=no src=/tmp/gcc-suse11sp3.tar.gz dest=/tmp/
+
+  - name: install gcc-c++ | suse11sp3
+    sudo: yes
+    sudo_user: root
+    when: gcc_rpm_check.stdout.find('gcc-c++') == -1
+    shell: rpm -ivh {{item}}
+    register: shell_result
+    with_items:
+      - /tmp/gcc-suse11sp3/gcc-c++-4.3-62.12.x86_64.rpm

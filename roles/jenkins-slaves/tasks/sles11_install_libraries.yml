@@ -2,41 +2,6 @@
     sudo: yes
     zypper_repository: name="HDP-UTILS" repo="http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.17/repos/suse11" state=present
 
-  - name: Installing Libraries | suse11sp3
-    sudo: yes
-    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
-    zypper: pkg={{item}} disable_gpg_check=yes state=latest
-    with_items:
-      - gcc
-      - gcc43
-      - gcc43-c++
-      - git
-      - cyrus-sasl-devel
-      - openldap2-devel
-      - libmysqlclient-devel
-      - libopenssl-devel
-
-  - name: install gcc-c++ | suse11sp3
-    sudo: yes
-    sudo_user: root
-    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
-    get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/gcc-suse11sp3.tar.gz" dest=/tmp/gcc-suse11sp3.tar.gz
-
-  - name: install gcc-c++ | suse11sp3
-    sudo: yes
-    sudo_user: root
-    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
-    unarchive: copy=no src=/tmp/gcc-suse11sp3.tar.gz dest=/tmp/
-
-  - name: install gcc-c++ | suse11sp3
-    sudo: yes
-    sudo_user: root
-    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
-    shell: rpm -ivh {{item}}
-    register: shell_result
-    with_items:
-      - /tmp/gcc-suse11sp3/gcc-c++-4.3-62.12.x86_64.rpm
-
   - name: Installing Libraries | sles11sp1
     sudo: yes
     when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
@@ -65,8 +30,7 @@
       - ant-trax
       - cmake
       - fuse-devel
-      - docbook-utils
-      - python-devel
+      - python-devel-2.6.8
       - python-setuptools
       - libxml2-devel
       - libxslt-devel
@@ -96,7 +60,6 @@
       - rrdtool-devel
       - latex2html-pngicons
       - clamav
-      - docbook-xsl-stylesheets
       - docbook
       - texlive-latex-doc
       - texlive-latex

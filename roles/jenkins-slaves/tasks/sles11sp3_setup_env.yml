@@ -14,3 +14,7 @@
 - name: sles11sp3_setup_env | install cd2
   sudo: yes
   zypper_repository: name="cd1" repo="http://romolo.cmb.usc.edu/installs/SLES-11-SP3-SDK/CD2/" state=present
+
+- name: sles11sp3_setup_env | install hosted sles11sp3
+  sudo: yes
+  zypper_repository: name="hosted-sles11sp3" repo="http://{{ec2_hosted_repo_ip}}/repo" state=present
