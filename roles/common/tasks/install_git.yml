@@ -1,0 +1,32 @@
+---
+  - name: slave setup | download git
+    sudo: yes
+    sudo_user: root
+    get_url: url={{git_url}} dest=/tmp/{{ git_url | basename }} mode=0770
+
+  - name: slave setup | untar git
+    sudo: yes
+    sudo_user: root
+    unarchive: copy=no src=/tmp/{{ git_url | basename }} dest=/tmp/
+
+  - set_fact: git_base={{ git_url | basename }}
+
+  - set_fact: git_base_dir={{ git_base | regex_replace('\.tar\.gz','') }}
+
+  - set_fact: git_base_dir={{ git_base | regex_replace('\.tgz','') }}
+    when: git_base_dir is not defined
+
+  - name: slave setup | install git
+    sudo: yes
+    sudo_user: root
+    shell: "cd /tmp/{{git_base_dir}} ; ./configure  --prefix=/usr && make && make install"
+
+  - name: setup git-completion | download
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url="http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash" dest={{build_user_home}}/git-completion.bash mode="a+x"
+
+  - name: setup git-completion | setup
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    lineinfile: dest="{{build_user_home}}/.bashrc" regexp='.*git-completion.bash' line="source {{build_user_home}}/git-completion.bash" mode="a+x" state=present

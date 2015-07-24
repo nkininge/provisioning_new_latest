@@ -69,7 +69,6 @@
       - python-virtualenv
       - openssh-clients
       - lsb 
-      - git
       - wget 
       - openldap-devel
       - mysql-devel 

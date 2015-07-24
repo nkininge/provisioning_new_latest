@@ -5,7 +5,6 @@
       - gcc
       - gcc43
       - gcc43-c++
-      - git
       - cyrus-sasl-devel
       - openldap2-devel
       - libmysqlclient-devel
