@@ -1,0 +1,47 @@
+---
+  - name: install_gradle | capture gradle version
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/gradle/latest/bin/gradle --version"
+    register: check_gradle
+    ignore_errors: yes
+
+  - name: install_gradle | "set fact if gradle version is 2.3"
+    set_fact: gradle_exists="true"
+    when: check_gradle.rc == 0 and check_gradle.stdout.find('Gradle 2.3') != -1
+
+  - name: install_gradle | skip gradle installation
+    debug: msg="skip gradle installation as it is already installed"
+    when: gradle_exists is defined
+
+  - name: install_gradle | Download gradle
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url=http://services.gradle.org/distributions/gradle-2.3-bin.zip
+      dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes
+    when: gradle_exists is not defined
+
+    # check if "check_gradle" is defined and value is equal to desired gradle version
+  - name: install_gradle | Untar gradle
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/gradle/gradle.zip dest={{tools_home}}/gradle
+    when: gradle_exists is not defined
+
+  - name: install_gradle | rm symlink gradle -> latest
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/gradle/latest state=absent
+    when: gradle_exists is not defined
+
+  - name: install_gradle | symlink gradle -> latest
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: src=gradle-2.3 force=yes dest={{tools_home}}/gradle/latest state=link
+    when: gradle_exists is not defined
+
+  - name: install_gradle | assert gradle installation
+    assert:
+      that:
+        - "'Gradle 2.3' in cmd_result.stdout"
+    when: gradle_exists is not defined

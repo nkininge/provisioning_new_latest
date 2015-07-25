@@ -18,8 +18,15 @@
 - include: prepare_env.yml
   tags: prepare_env
 
-- include: install_jdk.yml
-  tags: install_jdk
+- include: install_jdk7.yml
+  tags:
+    - install_jdk7
+    - install_jdk
+
+- include: install_jdk6.yml
+  tags:
+    - install_jdk6
+    - install_jdk
 
 - include: install_git.yml
   tags: install_git
@@ -32,6 +39,15 @@
   yum: name={{item}} state=present
   with_items:
     - python-devel
+
+- include: install_gradle.yml
+  tags: install_gradle
+
+- include: install_maven.yml
+  tags: install_maven
+
+- include: install_ant.yml
+  tags: install_ant
 
 - include: install_tools.yml
   tags: install_tools

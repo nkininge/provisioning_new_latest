@@ -1,0 +1,72 @@
+---
+  - name: install_maven | capture maven version
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/maven/apache-maven-{{ mvn_version }}/bin/mvn --version"
+    register: check_maven
+    ignore_errors: yes
+
+  - name: install_maven | "set fact if maven version is {{mvn_version}}"
+    set_fact: maven_exists="true"
+    when: check_maven.rc == 0 and check_maven.stdout.find("{{mvn_version}}") != -1
+
+  - name: install_maven | skip maven installation
+    debug: msg="skipping maven installation as it is already installed"
+    when: maven_exists is defined
+
+  - name: install_maven | mkdirs for Maven
+    file: path={{tools_home}}/maven state=directory mode=0755
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: maven_exists is not defined
+
+  - name: install_maven | Download Maven
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{maven_url}} dest={{tools_home}}/maven/maven.tar.gz mode=0644
+    when: maven_exists is not defined
+
+  - name: install_maven | Untar Maven
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/maven/maven.tar.gz dest={{tools_home}}/maven
+    when: maven_exists is not defined
+
+  - name: install_maven | capture maven for ambari version
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/maven/apache-maven-{{ mvn_ambari_version }}/bin/mvn --version"
+    register: check_maven_ambari
+    ignore_errors: yes
+
+  - name: install_maven | "set fact if maven for ambari version is {{mvn_ambari_version}}"
+    set_fact: maven_ambari_exists="true"
+    when: check_maven_ambari.rc == 0 and check_maven_ambari.stdout.find("{{mvn_ambari_version}}") != -1
+
+  - name: install_maven | skip maven for ambari installation
+    debug: msg="skipping maven installation as it is already installed"
+    when: maven_ambari_exists is defined
+
+  - name: install_maven | Download Maven for Ambari
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{maven_ambari_url}} dest={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz mode=0644 force=no
+    when: maven_ambari_exists is not defined
+
+  - name: install_maven | Untar Maven for Ambari
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz dest={{tools_home}}/maven
+    when: maven_ambari_exists is not defined
+
+  - name: install_maven | symlink Maven -> latest
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: src=apache-maven-{{ mvn_version }} dest={{tools_home}}/maven/latest state=link
+    when: maven_exists is not defined
+
+  - name: install_maven | Remove .tar.gz artifact from Maven install.
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz state=absent
+    when: maven_ambari_exists is not defined

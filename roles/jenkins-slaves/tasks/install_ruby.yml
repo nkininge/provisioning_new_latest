@@ -1,16 +1,34 @@
 ---
+- name: install_ruby | check if ruby is installed
+  command: ruby --version
+  register: check_ruby
+  ignore_errors: yes
+
+# check if "check_ruby" is defined and value is equal to desired ruby version
+- name: install_ruby | "set fact if ruby version is {{ ruby_version }}"
+  set_fact: ruby_exists="true"
+  when: check_ruby.rc == 0 and check_ruby.stdout.find("{{ruby_version}}") != -1
+
+- name: install_ruby | skip ruby installation
+  debug: msg="skipping ruby installation as it is already installed"
+  when: ruby_exists is defined
+
 - name: install_libraries | download ruby
   get_url: url="{{ruby_url}}" dest=/tmp/{{ ruby_url | basename }}
+  when: ruby_exists is not defined
 
 - name: install_libraries | unarchive ruby tar.gz
   unarchive: src=/tmp/{{ ruby_url | basename }} dest=/tmp/ copy=no
+  when: ruby_exists is not defined
 
 - set_fact: ruby_base={{ ruby_url | basename }}
+  when: ruby_exists is not defined
 
 - set_fact: ruby_base_dir={{ ruby_base | regex_replace('\.tar\.gz','') }}
+  when: ruby_exists is not defined
 
 - set_fact: ruby_base_dir={{ ruby_base | regex_replace('\.tgz','') }}
-  when: ruby_base_dir is not defined
+  when: ruby_base_dir is not defined and ruby_exists is not defined
 
 - name: install_libraries | install ruby from src
   sudo: yes
@@ -18,8 +36,10 @@
   shell: ./configure ; make -j12; make install;
   args:
    chdir: /tmp/{{ ruby_base_dir }}
+  when: ruby_exists is not defined
 
 - name: install_libraries | rm /tmp/{{ ruby_base_dir }}
   sudo: yes
   sudo_user: root
   shell: rm -rf /tmp/{{ ruby_base_dir }}*
+  when: ruby_exists is not defined

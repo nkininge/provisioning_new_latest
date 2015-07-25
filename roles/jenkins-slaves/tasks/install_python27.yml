@@ -1,52 +1,65 @@
 --- 
-- stat: path=/usr/local/bin/python2.7
-  register: python27stat
+- name: install_python27 | check if python27 is installed
+  command: "python27 --version"
+  register: check_python27
+  ignore_errors: yes
+
+# check if "check_python27" is defined and value is equal to desired python27 version
+- name: install_python27 | "set fact if python27 version is {{python27_version}}"
+  set_fact: python27_exists="true"
+  when: check_python27.rc == 0 and check_python27.stderr.find("{{python27_version}}") != -1
+
+- name: install_python27 | skip python27 installation
+  debug: msg="skip python27 installation as it is already installed"
+  when: python27_exists is defined
 
 - name: install_tools | Mkdir python27
   sudo: yes
   sudo_user: root
   file: path={{tools_home}}/python27 state=directory
-  when: not python27stat.stat.exists
+  when: python27_exists is not defined
 
 - name: install_tools | Download python27
   sudo: yes
   sudo_user: root
   get_url: url=http://www.python.org/ftp/python/{{python27_version}}/Python-{{python27_version}}.tgz  dest={{tools_home}}/python27/Python-{{python27_version}}.tgz  mode=0644 force=yes
-  when: not python27stat.stat.exists
+  when: python27_exists is not defined
 
 - name: install_tools | Untar python27
   sudo: yes
   sudo_user: root
   unarchive: copy=no src={{tools_home}}/python27/Python-{{python27_version}}.tgz  dest={{tools_home}}/python27
-  when: not python27stat.stat.exists
+  when: python27_exists is not defined
 
 - name: install_tools | Configure python27
   sudo: yes
   sudo_user: root
   command:  ./configure chdir={{tools_home}}/python27/Python-{{python27_version}}
-  when: not python27stat.stat.exists
+  when: python27_exists is not defined
 
 - name: install_tools | Compile python27
   sudo: yes
   sudo_user: root
   command:  make chdir={{tools_home}}/python27/Python-{{python27_version}}
-  when: not python27stat.stat.exists
+  when: python27_exists is not defined
 
 - name: install_tools | Install python27
   sudo: yes
   sudo_user: root
   command:  make  altinstall chdir={{tools_home}}/python27/Python-{{python27_version}}
-  when: not python27stat.stat.exists
+  when: python27_exists is not defined
 
 - name: install_tools | Remove symlink for python27
   sudo: yes
   sudo_user: root
   file: path=/usr/local/bin/python27 state=absent
+  when: python27_exists is not defined
 
 - name: install_tools | Symlink python27
   sudo: yes
   sudo_user: root
   file:  src={{tools_home}}/python27/Python-{{python27_version}}/python  dest=/usr/local/bin/python27  mode=0755 state=link force=yes
+  when: python27_exists is not defined
 
 - name: install_tools | pip install
   sudo: yes

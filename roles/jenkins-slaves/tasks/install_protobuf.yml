@@ -1,14 +1,32 @@
 ---
+  - name: install_protobuf | check if protobuf is installed
+    command: /opt/bin/protoc --version
+    register: check_protobuf
+    ignore_errors: yes
+
+  # check if "check_protobuf" is defined and value is equal to desired protobuf version
+  - name: install_protobuf | "set fact if protobuf version is 2.5.0"
+    set_fact: protobuf_exists="true"
+    when: check_protobuf.rc == 0 and check_protobuf.stdout.find('2.5.0') != -1
+
+  - name: install_protobuf | skip protobuf installation
+    debug: msg="skip protobuf installation as it is already installed"
+    when: protobuf_exists is defined
+
   - name: install_protobuf | Download protobuf
     get_url: url={{protobuf_url}} dest=/tmp/{{ protobuf_url | basename }}
+    when: protobuf_exists is not defined
 
   - name: install_protobuf | rm protobuf
-    shell: rm -rf /usr/local/bin/protoc
+    shell: rm -rf /opt/bin/protoc
+    when: protobuf_exists is not defined
 
   - name: install_protobuf | untar Protobuf
     unarchive: copy=no src=/tmp/{{ protobuf_url | basename }} dest=/tmp/
+    when: protobuf_exists is not defined
 
   - name: install_protobuf | configure/make/make install
     sudo: yes
     sudo_user: root
     shell: cd /tmp/protobuf-2.5.0 ; ./configure --prefix=/opt ; make clean ; make install
+    when: protobuf_exists is not defined
