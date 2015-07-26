@@ -1,0 +1,37 @@
+---
+- name: check if build_user is set
+  fail: msg='Bailing out. this play requires username, Please pass in the form  -e "build_user=xyz"'
+  when: build_user is not defined
+
+- include: setup_user.yml
+  tags: setup_user
+
+- include_vars: "{{ secret_profile_file }}"
+  tags: setup_user
+
+- include: setup_user_sshkeys.yml
+  when: ssh_url is defined
+  tags:
+    - setup_user
+    - ssh_setup
+
+- include: prepare_env.yml
+  tags: prepare_env
+
+- include: install_git.yml
+  tags: install_git
+
+- name: centos5 | yum install python-devel
+  sudo: yes
+  sudo_user: root
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
+  tags: install_libraries
+  yum: name={{item}} state=present
+  with_items:
+    - python-devel
+
+- include: install_tools.yml
+  tags: install_tools
+
+- include: update_configs.yml
+  tags: update_configs
