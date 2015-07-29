@@ -40,6 +40,13 @@
     file: src=gradle-2.3 force=yes dest={{tools_home}}/gradle/latest state=link
     when: gradle_exists is not defined
 
+  - name: install_tools | capture gradle version
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/gradle/latest/bin/gradle --version"
+    register: cmd_result
+    tags: install_gradle
+
   - name: install_gradle | assert gradle installation
     assert:
       that:

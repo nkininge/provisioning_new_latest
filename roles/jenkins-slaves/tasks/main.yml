@@ -39,6 +39,9 @@
     tags: install_libraries
     when: ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5'
 
+  - include: install_git.yml
+    tags: install_git
+
   - include: install_protobuf.yml
     tags: install_protobuf
 

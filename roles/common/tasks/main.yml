@@ -28,9 +28,6 @@
     - install_jdk6
     - install_jdk
 
-- include: install_git.yml
-  tags: install_git
-
 - name: centos5 | yum install python-devel
   sudo: yes
   sudo_user: root

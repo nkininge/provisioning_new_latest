@@ -86,7 +86,6 @@
       - sharutils
       - texlive-latex-base
       - xmlto
-     # - libgd2-xpm-dev
       - libperl-dev 
       - libpng-dev
       - hardening-wrapper
@@ -102,7 +101,6 @@
       - lua5.1
       - libperl-dev 
       - libpng12-dev 
-      # - libgd2-noxpm-dev
       - dpatch
       - ruby1.9.1 
       - ruby1.9.1-dev 
@@ -114,6 +112,7 @@
       - rubygems
       - python-argparse
       - rubygems
+      - zlib1g-dev
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes

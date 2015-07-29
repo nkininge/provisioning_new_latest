@@ -9,9 +9,6 @@
     set_fact: git_exists="true"
     when: check_git.rc == 0 and check_git.stdout.find("{{git_version}}") != -1
 
-  - debug: msg="{{ check_git.rc }}"
-  - debug: msg="{{ check_git.stdout }}"
-
   - name: install_git | skip git installation
     debug: msg="skipping git installation as it is already installed"
     when: git_exists is defined
