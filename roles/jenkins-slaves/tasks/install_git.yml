@@ -35,7 +35,7 @@
   - name: slave setup | install git
     sudo: yes
     sudo_user: root
-    shell: "cd /tmp/{{git_base_dir}} ; ./configure  --prefix=/usr && make && make install"
+    shell: "cd /tmp/{{git_base_dir}} ; ./configure --with-openssl --with-curl --with-expat  && make && make install"
     when: git_exists is not defined
 
   - name: setup git-completion | download

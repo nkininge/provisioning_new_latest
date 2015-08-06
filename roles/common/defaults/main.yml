@@ -36,3 +36,4 @@ ant_contrib_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/ant-contrib-
 eclipse_url: "http://dev.hortonworks.com.s3.amazonaws.com/RLENG/eclipse.tar.gz"
 xerces_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/xerces-c.tar.gz"
 git_url: "http://www.kernel.org/pub/software/scm/git/git-2.4.6.tar.gz"
+curl_url: "http://curl.haxx.se/download/curl-7.43.0.tar.gz"
