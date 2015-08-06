@@ -101,6 +101,7 @@
       - cmake
       - libffi-devel
       - s3cmd
+      - createrepo
 
   - name: install_libraries | install alien
     sudo: yes
