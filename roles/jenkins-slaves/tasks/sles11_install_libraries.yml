@@ -76,12 +76,28 @@
 
   - name: install_libraries | zypper in
     sudo: yes
-    shell: rpm -Uvh {{item}} 
-    register: shell_result
+    zypper: name={{item}} disable_gpg_check=yes state=present
     with_items:
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-1.7.0-16.1.x86_64.rpm
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-devel-1.7.0-16.1.x86_64.rpm
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/asciidoc-8.6.8-8.1.noarch.rpm
       - http://s3tools.org/repo/SLE_11/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm
     tags: install_libraries
-    ignore_errors: true
+
+  - name: Installing Libraries | sles11sp1
+    sudo: yes
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
+    tags: install_libraries
+    zypper: pkg={{item}} disable_gpg_check=yes state=absent
+    with_items:
+      - libmysqlclient_r15
+
+  - name: Installing Libraries | sles11sp1
+    sudo: yes
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
+    tags: install_libraries
+    zypper: name={{item}} disable_gpg_check=yes state=present
+    with_items:
+      - http://dev.hortonworks.com.s3.amazonaws.com/RLENG/sles11sp1/libmysqlclient-devel-5.0.94-0.2.4.1.x86_64.rpm
+      - cyrus-sasl-devel
+      - http://dev.hortonworks.com.s3.amazonaws.com/RLENG/sles11sp1/openldap2-devel-2.4.26-4.2.x86_64.rpm
