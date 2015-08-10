@@ -55,13 +55,6 @@
     command: cp {{build_user_home}}/{{ base_ssh_dir }}/authorized_keys {{build_user_home}}/.ssh/authorized_keys
              removes={{build_user_home}}/{{ base_ssh_dir }}/
 
-  - name: setup_user | ssh keys - config
-    sudo: yes
-    sudo_user: "{{ build_user }}"
-    ignore_errors: yes
-    command: cp {{build_user_home}}/{{ base_ssh_dir }}/config {{build_user_home}}/.ssh/config
-             removes={{build_user_home}}/{{ base_ssh_dir }}/
-
   - name: setup_user | ssh keys - file attributes for authorized keys
     sudo: yes
     sudo_user: "{{ build_user }}"
@@ -72,5 +65,4 @@
      - {name: id_rsa.pub,  attr: 644}
      - {name: id_dsa, attr: 600}
      - {name: id_dsa.pub,  attr: 644}
-     - {name: config,  attr: 644}
      - {name: authorized_keys, attr: 600}
