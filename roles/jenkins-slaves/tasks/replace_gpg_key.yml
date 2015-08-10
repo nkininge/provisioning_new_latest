@@ -22,13 +22,13 @@
   - name: Replace gpg key | delete gpg secret key
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "gpg --batch --yes --delete-secret-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD"
+    shell: "gpg --batch --yes --delete-secret-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD; gpg --batch --yes --delete-key 07513CAD"
     ignore_errors: yes
 
   - name: Jenkins Slave Setup - Import gpg secret
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "gpg --allow-secret-key-import --import {{build_user_home}}/jenkins-gpg-keys/jenkins_sec.gpg"
+    shell: "gpg --allow-secret-key-import --import {{build_user_home}}/jenkins-gpg-keys/jenkins_sec_no_passphrase.gpg"
     ignore_errors: yes
 
   - name: Replace gpg key | Post clean up
