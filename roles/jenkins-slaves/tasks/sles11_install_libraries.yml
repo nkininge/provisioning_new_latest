@@ -90,4 +90,3 @@
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/asciidoc-8.6.8-8.1.noarch.rpm
       - http://s3tools.org/repo/SLE_11/x86_64/s3cmd-1.0.0-4.1.x86_64.rpm
     tags: install_libraries
-    ignore_errors: yes
