@@ -5,4 +5,9 @@
     yum: pkg={{item}} state=latest
     with_items:
       - texlive-latex
-      - asciidoc
+
+  - name: install_libraries | install asciidoc - centos6
+    sudo: yes
+    sudo_user: root
+    shell: rpm -Uvh http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/centos6/asciidoc-8.6.8-1.el6.rfx.noarch.rpm
+    when: ansible_distribution_major_version|int == 6
