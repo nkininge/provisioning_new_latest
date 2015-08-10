@@ -10,7 +10,7 @@
   - name: Replace gpg key | Download gpg keys
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url="{{ gpgkeys_url }}"
+    get_url: url="{{ gpgkeys_nosec_url }}"
              dest="{{ build_user_home }}/jenkins-gpg-keys.tar.gz" force=yes
  
   - name: Replace gpg key | Untar gpg keys archive
