@@ -113,6 +113,7 @@
       - python-argparse
       - rubygems
       - zlib1g-dev
+      - s3cmd
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
