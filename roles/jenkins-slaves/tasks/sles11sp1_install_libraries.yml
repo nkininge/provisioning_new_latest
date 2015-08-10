@@ -40,5 +40,5 @@
   - name: slave setup | install curl
     sudo: yes
     sudo_user: root
-    shell: "cd /tmp/{{curl_base_dir}} ; ./configure && make && make install"
+    shell: "cd /tmp/{{curl_base_dir}} ; ./configure --disable-shared && make && make install"
     when: curl_exists is not defined
