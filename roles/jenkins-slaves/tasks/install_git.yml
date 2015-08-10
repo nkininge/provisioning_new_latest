@@ -49,3 +49,9 @@
     sudo_user: "{{ build_user }}"
     lineinfile: dest="{{build_user_home}}/.bashrc" regexp='.*git-completion.bash' line="source {{build_user_home}}/git-completion.bash" mode="a+x" state=present
     when: git_exists is not defined
+
+  - name: setup git ssh | known_hosts
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: 'echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config'
+    tags: try_git
