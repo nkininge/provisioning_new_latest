@@ -10,6 +10,7 @@
       - libmysqlclient-devel
       - libopenssl-devel
       - python-devel-2.6.8
+      - curl-devel
 
   - name: Check if gcc-c++.rpm is installed
     command: rpm -qa | grep gcc-c++
