@@ -14,7 +14,6 @@
     sudo: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=installed
     with_items:
-      - clamav
       - createrepo
       - wget
       - lsb-release

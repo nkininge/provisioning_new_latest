@@ -1,0 +1,7 @@
+---
+
+  - name: configure_clamav | run freshclam
+    shell: freshclam
+
+  - name: configure_clamav | start clamav deamon
+    service: name=clamd state=started
