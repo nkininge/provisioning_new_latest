@@ -88,3 +88,7 @@
 
   - include: centos5_install_tar.yml
     when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+
+  - include: install_asciidoc.yml
+    tags: install_asciidoc
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

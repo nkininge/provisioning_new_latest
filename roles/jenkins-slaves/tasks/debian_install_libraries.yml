@@ -4,7 +4,6 @@
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
       - ant
-      - asciidoc
       - autoconf
       - automake
       - bison
