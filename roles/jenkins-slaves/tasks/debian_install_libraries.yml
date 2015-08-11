@@ -4,6 +4,7 @@
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
       - ant
+      - subversion
       - autoconf
       - automake
       - bison
