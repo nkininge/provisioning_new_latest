@@ -68,7 +68,10 @@
     when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
   - name: Install sensu itself
     sudo: yes
-    shell:  yum install -y sensu
+    yum: name={{item}} state=latest update_cache=yes
+    with_items: 
+      - sensu
+      - chkconfig
     when: ansible_os_family == 'RedHat'
   - name: Copy in Sensu Rabbitmq configs
     sudo: yes
@@ -173,7 +176,7 @@
   - name: configure services
     sudo: yes
     tags: sensu_services
-    shell:  chkconfig "{{item}}"  on
+    shell:  /sbin/chkconfig "{{item}}"  on
     with_items:
       - sensu-client
     when: ansible_os_family == 'RedHat'
@@ -193,26 +196,33 @@
     # when: not (ansible_distribution == 'Suse')
 
   - name: Setup up git repository retrievals.
-    file: path={{item}} owner=root state=directory 
+    sudo: yes
+    file: path={{item}} owner=sensu state=directory 
     with_items:
        - /opt
     tags: gitsetup
-    sudo: yes
+
   - name: Setup up git repository retrievals.
     file: path={{item}} owner=sensu state=directory 
+    sudo: yes
+    sudo_user: sensu
     with_items:
        - /opt/sensu
        - /opt/sensu/git-repos
     tags: gitsetup
-    sudo: yes
+
   - name: Setup up git repository retrievals.
-    git:  accept_hostkey=yes  repo="git@github.com:hortonworks/local-sensu-scripts.git" update=yes  ssh_opts="-o StrictHostKeyChecking=no"  dest="/opt/sensu/git-repos/local-sensu-scripts" 
+    git:  accept_hostkey=yes  repo="git@github.com:hortonworks/local-sensu-scripts.git" 
+          update=yes  ssh_opts="-o StrictHostKeyChecking=no"  
+          dest="/opt/sensu/git-repos/local-sensu-scripts" 
     sudo: yes
     sudo_user: sensu
-    tags: gitsetup
+    tags: git_clone
+
   - name: Make symlinks as needed.
     file: path="/etc/sensu/plugins/imports" owner=sensu state=link   src="/opt/sensu/git-repos/local-sensu-scripts/sensu-root/plugins"
     tags: gitsetup
+
     sudo: yes
   - name: Run Sensu check-for-restart every so often.
     cron: name="Run Sensu restart-client Code"

@@ -1,5 +1,5 @@
 - hosts: openstack
-  vars:
+  gather_facts: yes
   vars:
     sensu_server: false
     sensu_client: true
