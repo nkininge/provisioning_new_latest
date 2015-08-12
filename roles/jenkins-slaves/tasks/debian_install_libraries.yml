@@ -122,3 +122,23 @@
   with_items:
    - gem2deb
    - json
+
+- name: install_libraries | setup hdp-utils on debian
+  sudo: yes
+  sudo_user: root
+  apt_repository: repo='deb http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.20/repos/debian6 HDP-UTILS main' state=present
+  when: ansible_distribution == 'Debian'
+
+- name: install_libraries | setup hdp-utils on ubuntu
+  sudo: yes
+  sudo_user: root
+  apt_repository: repo='deb http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.20/repos/ubuntu12 HDP-UTILS main' state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install_Libraries | Install snappy
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest force=yes
+  with_items:
+    - libsnappy1
+    - libsnappy-dev
