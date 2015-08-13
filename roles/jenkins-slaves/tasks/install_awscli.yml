@@ -1,0 +1,36 @@
+---
+  - name: install_aws | pip install | non sles
+    sudo: yes
+    sudo_user: root
+    shell: /usr/local/bin/pip2.7 install awscli
+    when: ansible_distribution != 'Suse' and ansible_distribution != 'SLES'
+
+  - name: install_aws | Download awscli
+    sudo: yes
+    sudo_user: root
+    get_url: url=http://s3.amazonaws.com/aws-cli/awscli-bundle.zip  dest=/tmp/awscli-bundle.zip  mode=0644 force=yes
+    when: ansible_distribution == 'Suse' or ansible_distribution == 'SLES'
+
+  - name: install_aws | Untar awscli
+    sudo: yes
+    sudo_user: root
+    unarchive: copy=no src=/tmp/awscli-bundle.zip  dest=/tmp/
+    when: ansible_distribution == 'Suse' or ansible_distribution == 'SLES'
+
+  - name: install_aws | install awscli
+    sudo: yes
+    sudo_user: root
+    shell: ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+    args:
+      chdir: /tmp/
+    when: ansible_distribution == 'Suse' or ansible_distribution == 'SLES'
+
+  - name: install_aws | Mkdir aws
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{ build_user_home }}/.aws state=directory
+
+  - name: install_aws | setup aws config
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    copy: content="{{ aws_config }}" dest={{ build_user_home }}/.aws/config

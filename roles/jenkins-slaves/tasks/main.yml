@@ -96,3 +96,6 @@
   - include: install_asciidoc.yml
     tags: install_asciidoc
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - include: install_awscli.yml
+    tags: install_awscli
