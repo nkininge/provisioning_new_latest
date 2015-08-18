@@ -103,6 +103,7 @@
       - s3cmd
       - curl-devel
       - createrepo
+      - subversion
 
   - name: install_libraries | install alien
     sudo: yes
