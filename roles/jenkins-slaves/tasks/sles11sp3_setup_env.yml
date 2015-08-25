@@ -18,3 +18,12 @@
 - name: sles11sp3_setup_env | install hosted sles11sp3
   sudo: yes
   zypper_repository: name="hosted-sles11sp3" repo="http://{{ec2_hosted_repo_ip}}/repo" state=present
+
+- name: sles11sp3_setup_env | get hostname
+  shell: 'x=`cat /etc/hostname`; echo $x'
+  register: host_name
+  tags: set_hostname
+
+- name: sles11sp3_setup_env | set hostname
+  shell: "hostname {{host_name.stdout}}"
+  tags: set_hostname
