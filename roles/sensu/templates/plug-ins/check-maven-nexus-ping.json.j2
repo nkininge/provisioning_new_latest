@@ -1,13 +1,13 @@
 {
   "checks": {
     "check-maven-nexus-ping": {
-      "handlers": ["slack"],
+      "handlers": ["slack", "hipchat"],
       "command": "bash  /etc/sensu/plugins/imports/maven/check-maven-ping.sh",
       "interval": 60,
       "subscribers": [ "maven-nexus" ]
     },
     "check-win-maven-nexus-ping": {
-      "handlers": ["slack"],
+      "handlers": ["slack", "hipchat"],
       "command": "URL=sijenkinsservice.cloudapp.net:8081 bash  /etc/sensu/plugins/imports/maven/check-maven-ping.sh",
       "interval": 60,
       "subscribers": [ "maven-nexus" ]

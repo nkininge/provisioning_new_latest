@@ -140,6 +140,10 @@
   - name: Install sensu itself
     sudo: yes
     apt:  name=sensu
+  - name: install hipchat gem for Ruby2.0
+    sudo: yes
+    tags: install_checkscripts
+    shell: /usr/local/bin/gem install hipchat
   - name: make sensu conf.d dir
     tags: install_checkscripts
     sudo: yes
@@ -195,6 +199,7 @@
     with_items:
       - file.rb
       - slack.rb
+      - hipchat.rb
   - name: copy in handler definition.
     sudo: yes
     tags: install_checkscripts
@@ -202,6 +207,7 @@
     with_items:
       - handler_file.json
       - slack.json
+      - hipchat.json
   - name: configure services
     sudo: yes
     tags: sensu_services
