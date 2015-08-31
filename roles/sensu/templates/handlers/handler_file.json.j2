@@ -4,22 +4,11 @@
       "type": "pipe",
       "command": "/usr/local/bin/ruby /etc/sensu/handlers/file.rb"
     },
-    "slack": {
-      "type": "pipe",
-      "command": "/usr/local/bin/ruby /etc/sensu/handlers/slack.rb"
-    },
     "hipchat": {
       "type": "pipe",
       "command": "/usr/local/bin/ruby /etc/sensu/handlers/hipchat.rb"
     }
  },
-   "slack": {
-    "webhook_url": "{{slack_webhook_url}}",
-    "channel": "#sensu-notifications",
-    "message_prefix": "",
-    "surround": "",
-    "bot_name": ""
-   },
    "hipchat": {
     "apikey": "{{hipchat_api_token}}",
     "apiversion": "v2",

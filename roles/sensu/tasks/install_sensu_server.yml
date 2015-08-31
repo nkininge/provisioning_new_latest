@@ -198,7 +198,6 @@
     template:  src=handlers/{{item}}.j2   dest=/etc/sensu/handlers/{{item}} force=yes mode=0755
     with_items:
       - file.rb
-      - slack.rb
       - hipchat.rb
   - name: copy in handler definition.
     sudo: yes
@@ -206,7 +205,6 @@
     template:  src=handlers/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}} force=yes  mode=0644
     with_items:
       - handler_file.json
-      - slack.json
       - hipchat.json
   - name: configure services
     sudo: yes

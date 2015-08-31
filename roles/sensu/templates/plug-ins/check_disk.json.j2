@@ -1,7 +1,7 @@
 {
   "checks": {
     "disk-check": {
-      "handlers": ["slack", "hipchat"],
+      "handlers": ["hipchat"],
       "command": "/usr/local/bin/ruby  /etc/sensu/plugins/system/check-disk.rb -x rootfs,tmpfs",
       "interval": 240,
       "subscribers": [ "Suse" ]

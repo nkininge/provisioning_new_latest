@@ -74,7 +74,6 @@
    - elastic-axis
    - ssh-credentials
    - downstream-buildview
-   - slack
    - github-api
    - statusmonitor
    - external-monitor-job

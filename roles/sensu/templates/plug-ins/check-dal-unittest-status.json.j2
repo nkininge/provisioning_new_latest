@@ -1,7 +1,7 @@
 {
   "checks": {
     "check-dal-unittest-status": {
-      "handlers": ["slack", "hipchat"],
+      "handlers": ["hipchat"],
       "command": "/usr/local/bin/ruby  /etc/sensu/plugins/imports/jenkins/check-jenkins-job-status.rb  -j '^UT-.*-dal$' -u 54.86.163.166" ,
       "interval": 60,
       "subscribers": [ "jenkins-master-services" ]

@@ -7,7 +7,6 @@
     datacentername: "Openstack"
     sensu_password: xpassword
     admin_password: secret
-    slack_webhook_url: https://hooks.slack.com/services/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
     hipchat_api_token: bicPTrQ2eLagahHfBwi7zPKaGeOeFMB2waU6J5ZT
     defaultsubscription: all
 
