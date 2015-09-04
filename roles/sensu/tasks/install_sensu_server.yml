@@ -169,6 +169,7 @@
       - check_cron.json
       - check_jenkins_slave.json
       - check_disk.json
+      - check_win_disk.json
       - disk-usage-metrics.json
       - auto-updates.json
       - check_disk-from-imports.json
@@ -186,6 +187,7 @@
       - disk-usage-metrics.json
       - auto-updates.json
       - check_disk.json
+      - check_win_disk.json
       - check_disk-from-imports.json
       - check-dal-build-status.json
       - check-2.2-maint-build-status.json
