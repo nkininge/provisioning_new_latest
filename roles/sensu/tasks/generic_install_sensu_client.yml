@@ -151,7 +151,7 @@
   - name: Add user if necessary
     sudo: yes
     tags: copyinitscripts
-    user:  name=sensu  home=/opt/sensu generate_ssh_key=yes createhome=yes
+    user:  name=sensu  home=/opt/sensu generate_ssh_key=yes createhome=yes shell=/bin/bash
   - name: Add user ssh-keys as necessary
     sudo: yes
     tags: copyinitscripts
