@@ -27,7 +27,6 @@
   - name: "setup ./m2 settings.xml"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml mode=744
-    ignore_errors: yes
+    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml 
+          mode=744 force=yes
     tags: nexus_settings
-
