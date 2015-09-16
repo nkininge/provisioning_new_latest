@@ -46,6 +46,9 @@
 - include: install_ant.yml
   tags: install_ant
 
+- include: install_sonar_ant_task.yml
+  tags: sonar_ant_task
+
 - include: install_tools.yml
   tags: install_tools
 

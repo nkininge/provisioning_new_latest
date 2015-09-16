@@ -13,6 +13,7 @@
     jenkins_run_standalone: yes
     gem2deb_url: http://ftp.de.debian.org/debian/pool/main/g/gem2deb/gem2deb_0.9.1.tar.xz
     protobuf_url: http://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+    sonar_ant_task_url: http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/sonar-ant-task-2.3.jar
     push_password: false
     gpg_file: ~/password_gpg.txt
     nexus_file: ~/nexus_password.txt

@@ -1,0 +1,7 @@
+---
+  - name: install_sonar_ant_task | add sonar ant task
+    sudo: yes 
+    sudo_user: "{{ build_user }}"
+    get_url: url="{{ sonar_ant_task_url }}"
+             dest={{tools_home}}/ant/latest/lib/sonar-ant-task-2.3.jar
+    tags: sonar_ant_task 
