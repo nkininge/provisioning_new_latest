@@ -142,3 +142,9 @@
   with_items:
     - libsnappy1
     - libsnappy-dev
+
+- name: install_libraries | symlink gem | debian 7 only
+  sudo: yes
+  sudo_user: root
+  file: src="/usr/bin/gem"  dest="/usr/local/bin/gem" state=link
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '7'
