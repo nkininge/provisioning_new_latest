@@ -74,6 +74,13 @@
   tags: install_openstack_tools
   when: project == "re" and ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' and ansible_distribution != 'Ubuntu')
 
+- name: install_tools | pip upgrade | debian7
+  sudo: yes
+  sudo_user: root
+  shell: "/usr/local/bin/pip2.7 install --upgrade setuptools"
+  tags: install_openstack_tools
+  when: project == "re" and ( ansible_distribution == "Debian" and ansible_distribution_release == "7")
+
 - name: install_tools | pip install openstack packages
   sudo: yes
   sudo_user: root
