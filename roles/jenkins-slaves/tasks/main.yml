@@ -99,3 +99,4 @@
 
   - include: install_awscli.yml
     tags: install_awscli
+    when: project != "dev"
