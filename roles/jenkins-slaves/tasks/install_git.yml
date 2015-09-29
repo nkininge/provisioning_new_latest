@@ -49,3 +49,9 @@
     sudo_user: "{{ build_user }}"
     lineinfile: dest="{{build_user_home}}/.bashrc" regexp='.*git-completion.bash' line="source {{build_user_home}}/git-completion.bash" mode="a+x" state=present
     when: git_exists is not defined
+
+  - name: slave setup | add gerrit to known hosts
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: ssh-keyscan -p 29418 -H gerrit.eng.hortonworks.com >> "{{ build_user_home }}/.ssh/known_hosts"
+    tags: gerrit_setup

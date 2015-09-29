@@ -11,6 +11,7 @@
 [sles11sp1]
 
 [suse11sp3]
+172.22.66.32
 
 [ubuntu12]
 
@@ -23,7 +24,7 @@ ansible_ssh_private_key_file=
 ansible_ssh_user=root
 
 [suse11sp3:vars]
-ansible_ssh_private_key_file=
+ansible_ssh_private_key_file=~/git/releng/build-utils/openstack-utils/accounts/hw-re-keypair.pem
 ansible_ssh_user=root
 
 [centos6:vars]
