@@ -23,7 +23,7 @@ asciidoc_version: "8.6.9"
 
 maven_url: "http://mirror.metrocast.net/apache/maven/maven-3/{{ mvn_version }}/binaries/apache-maven-{{ mvn_version }}-bin.tar.gz"
 maven_ambari_url: "http://mirror.metrocast.net/apache/maven/maven-3/{{ mvn_ambari_version }}/binaries/apache-maven-{{ mvn_ambari_version }}-bin.tar.gz"
-maven333_url: "http://mirror.sdunix.com/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz"
+maven333_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/apache-maven-3.3.3-bin.tar.gz"
 ant_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/apache-ant-{{ant_version}}-bin.tar.gz"
 ant_old_url: "http://archive.apache.org/dist/ant/binaries/apache-ant-{{ant_old_version}}-bin.tar.gz"
 td_repo: "http://s3.amazonaws.com/dev.hortonworks.com/sles11/sles11.repo"
