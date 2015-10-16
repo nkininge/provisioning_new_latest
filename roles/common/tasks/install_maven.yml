@@ -74,7 +74,7 @@
   - name: install_maven 3.3.3 | capture maven 3.3.3 version
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/maven/apache-maven-{{ mvn333_version }}/bin/mvn --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn333_version }}/bin/mvn --version"
     register: check_maven333
     ignore_errors: yes
     tags: maven333
