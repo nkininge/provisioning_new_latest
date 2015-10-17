@@ -114,6 +114,7 @@
       - rubygems
       - zlib1g-dev
       - s3cmd
+      - r-base
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
