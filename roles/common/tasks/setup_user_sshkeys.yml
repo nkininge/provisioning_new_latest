@@ -3,7 +3,7 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     when: project != 'dev'
-    get_url: url={{ ssh_url }} dest={{build_user_home}}/{{ ssh_url | basename }}
+    get_url: url={{ ssh_url }} dest={{build_user_home}}/{{ ssh_url | basename }} force=yes
 
   - name: setup_user | ssh keys - Download
     sudo: yes
