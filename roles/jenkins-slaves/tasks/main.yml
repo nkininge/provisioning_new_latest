@@ -45,6 +45,10 @@
     tags: install_libraries
     when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
 
+  - include: install_r.yml
+    tags: install_r
+    when: ( ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5 ) or ansible_distribution == 'Debian'
+
   - include: centos6_install_libraries.yml
     tags:
       - install_libraries
