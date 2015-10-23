@@ -114,6 +114,8 @@
       - rubygems
       - zlib1g-dev
       - s3cmd
+      - gfortran
+      - fort77
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
@@ -148,27 +150,3 @@
   sudo_user: root
   file: src="/usr/bin/gem"  dest="/usr/local/bin/gem" state=link
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '7'
-
-- name: install_libraries | install r-base repo
-  apt_repository: repo="deb http://cran.rstudio.com/bin/linux/ubuntu precise/" state=present update_cache=yes
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '12'
-  tags: install_r
-
-- name: install_libraries | Install Ruby Libraries and Debian build Tools
-  sudo: yes
-  sudo_user: root
-  apt: pkg={{item}} update_cache=yes state=latest force=yes
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '12'
-  with_items:
-   - r-base
-  tags: install_r
-
-- name: install_libraries | Install fort77 on debian
-  sudo: yes
-  sudo_user: root
-  apt: pkg={{item}} update_cache=yes state=latest force=yes
-  when: ansible_distribution == 'Debian'
-  with_items:
-   - gfortran
-   - fort77
-  tags: install_r

@@ -126,3 +126,4 @@
       - pdsh
       - ant-nodeps
       - graphviz
+      - gcc-gfortran

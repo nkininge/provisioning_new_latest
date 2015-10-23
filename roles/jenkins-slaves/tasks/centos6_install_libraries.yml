@@ -5,7 +5,6 @@
     yum: pkg={{item}} state=latest
     with_items:
       - texlive-latex
-      - R
 
   - name: install_libraries | install asciidoc - centos6
     sudo: yes

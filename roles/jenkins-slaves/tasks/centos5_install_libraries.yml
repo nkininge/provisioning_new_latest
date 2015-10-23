@@ -6,4 +6,3 @@
     with_items:
       - python26
       - python26-devel
-      - gcc-gfortran
