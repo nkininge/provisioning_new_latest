@@ -12,3 +12,21 @@
     sudo_user: root
     shell: rpm -Uvh http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/centos6/asciidoc-8.6.8-1.el6.rfx.noarch.rpm
     when: ansible_distribution_major_version|int == 6
+
+  - name: uninstall_i686_libraries | uninstall i686 packages - centos6
+    sudo: yes
+    sudo_user: root
+    yum: name="glibc*.i686" state=absent
+    when: ansible_distribution_major_version|int == 6
+
+  - name: remove limits | remove limits - centos6
+    sudo: yes
+    sudo_user: root
+    file: path=/etc/security/limits.d/90-nproc.conf state=absent
+    when: ansible_distribution_major_version|int == 6
+
+  - name: update limits | update limits - centos6
+    sudo: yes
+    sudo_user: root
+    copy: src=90-nproc.conf.template dest=/etc/security/limits.d/90-nproc.conf owner=root group=root mode=0644
+    when: ansible_distribution_major_version|int == 6
