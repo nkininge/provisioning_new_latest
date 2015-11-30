@@ -8,7 +8,6 @@
       - cyrus-sasl-devel
       - openldap2-devel
       - libmysqlclient-devel
-      - libopenssl-devel
       - python-devel-2.6.8
       - curl-devel
 
