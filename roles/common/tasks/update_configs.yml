@@ -30,3 +30,10 @@
     get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml 
           mode=744 force=yes
     tags: nexus_settings
+
+  - name: "setup ./gradle/gradle.properties"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties
+          mode=744 force=yes
+    tags: gradle_properties
