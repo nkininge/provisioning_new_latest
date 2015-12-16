@@ -10,6 +10,7 @@
       - "{{tools_home}}/jdk7"
       - "{{tools_home}}/forrest"
       - "{{build_user_home}}/.m2/"
+      - "{{build_user_home}}/.gradle/"
       - "{{tools_home}}/gradle"
       - "{{build_user_home}}/.ssh/"
 
