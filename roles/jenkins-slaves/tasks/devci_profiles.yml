@@ -1,0 +1,65 @@
+---
+  - include_vars: ../../common/vars/{{project}}_secrets.yml
+
+  - name: install_aws | setup aws config
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    copy: content="{{ devci_aws_config }}" dest={{ build_user_home }}/profiles/devci/aws_config
+
+  - name: centos_env_setup | setup rpmmacros
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url="{{ devci_rpmmacros_url }}" dest={{build_user_home}}/
+
+  - name: centos_env_setup | unarchive rpmmacros.tar.gz
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ devci_rpmmacros_url | basename }} dest={{build_user_home}}/
+
+  - name: centos_env_setup | rpm --import
+    sudo: yes
+    sudo_user: root
+    shell: rpm --import /{{build_user_home}}/devci_rpmmacros/RPM-GPG-KEY-Jenkins
+
+  - name: setup_user_configs | Download gpg keys
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{ devci_gpgkeys_url }}
+            dest={{ build_user_home }}/{{ devci_gpgkeys_url | basename }}
+
+  - name: setup_user_configs | Untar gpg keys archive
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ devci_gpgkeys_url | basename }}
+        dest={{build_user_home}}/
+
+  - name: setup_user_configs | delete gpg secret and key
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "gpg --batch --yes --delete-secret-and-public-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD"
+    ignore_errors: yes
+
+  - name: setup_user_configs | Import gpg pub
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "gpg --import {{build_user_home}}/devci-gpg-keys/devci_pub.gpg"
+    ignore_errors: yes
+
+  - name: setup_user_configs | Import gpg secret
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "gpg --allow-secret-key-import --import {{build_user_home}}/devci-gpg-keys/devci_sec.gpg"
+    ignore_errors: yes
+
+  - name: Replace gpg key | Post clean up
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{ build_user_home }}/devci-gpg-keys{,.tar.gz,.tar.gz.gpg} state=absent
+
+  - name: "setup ./m2 settings.xml"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{devci_settings_url}} dest={{build_user_home}}/profiles/devci/settings.xml 
+          mode=744 force=yes
+    when: project == "re"
+    tags: nexus_settings

@@ -112,3 +112,7 @@
   - include: install_awscli.yml
     tags: install_awscli
     when: project != "dev"
+
+  - include: devci_profiles.yml
+    tags: devci_profiles
+    when: project == "re"

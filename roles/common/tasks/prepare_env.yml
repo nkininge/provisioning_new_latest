@@ -14,6 +14,16 @@
       - "{{tools_home}}/gradle"
       - "{{build_user_home}}/.ssh/"
 
+  - name: prepare_env | create all the tools folders
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: project == "re"
+    file: path={{item}} state=directory owner="{{ build_user }}"
+    with_items:
+      - "{{build_user_home}}/profiles/"
+      - "{{build_user_home}}/profiles/jenkins/"
+      - "{{build_user_home}}/profiles/devci/"
+
   - name: prepare_env | install tools necessary for ansible exec - debian
     sudo: yes
     sudo_user: root

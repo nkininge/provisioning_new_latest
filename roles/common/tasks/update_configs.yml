@@ -20,7 +20,16 @@
   - name: "setup s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744
+    when: project != "re"
+    ignore_errors: yes
+    tags: s3cmd_config
+
+  - name: "setup s3cfg"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/profiles/jenkins/.s3cfg mode=744
+    when: project == "re"
     ignore_errors: yes
     tags: s3cmd_config
 
@@ -30,10 +39,28 @@
     get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml 
           mode=744 force=yes
     tags: nexus_settings
+    when: project != "re"
+
+  - name: "setup ./m2 settings.xml"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{settings_url}} dest={{build_user_home}}/profiles/jenkins/settings.xml
+          mode=744 force=yes
+    when: project == "re"
+    tags: nexus_settings
 
   - name: "setup ./gradle/gradle.properties"
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties
           mode=744 force=yes
+    tags: gradle_properties
+    when: project != "re"
+
+  - name: "setup ./gradle/gradle.properties"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/profiles/jenkins/gradle.properties
+          mode=744 force=yes
+    when: project == "re"
     tags: gradle_properties
