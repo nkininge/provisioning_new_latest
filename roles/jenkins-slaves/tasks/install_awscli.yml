@@ -1,4 +1,6 @@
 ---
+  - include_vars: ../../common/vars/{{project}}_secrets.yml
+
   - name: install_aws | pip install | non sles
     sudo: yes
     sudo_user: root

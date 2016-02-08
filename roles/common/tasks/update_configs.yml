@@ -22,7 +22,6 @@
     sudo_user: "{{ build_user }}"
     get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744
     when: project != "re"
-    ignore_errors: yes
     tags: s3cmd_config
 
   - name: "setup s3cfg"
@@ -30,7 +29,6 @@
     sudo_user: "{{ build_user }}"
     get_url: url={{s3cfg_url}} dest={{build_user_home}}/profiles/jenkins/.s3cfg mode=744
     when: project == "re"
-    ignore_errors: yes
     tags: s3cmd_config
 
   - name: "setup ./m2 settings.xml"
