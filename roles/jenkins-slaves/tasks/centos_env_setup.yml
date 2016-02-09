@@ -18,3 +18,15 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ rpmmacros_url | basename }} dest={{build_user_home}}/
+
+  - name: centos_env_setup | create jenkins_rpmmacros directory
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{item}} state=directory owner="{{ build_user }}"
+    with_items:
+      - "{{build_user_home}}/profiles/jenkins/jenkins_rpmmacros"
+
+  - name: centos_env_setup | unarchive rpmmacros.tar.gz
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ rpmmacros_url | basename }} dest={{build_user_home}}/profiles/jenkins/jenkins_rpmmacros/
