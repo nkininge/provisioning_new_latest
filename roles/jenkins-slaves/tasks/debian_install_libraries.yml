@@ -150,3 +150,11 @@
   sudo_user: root
   file: src="/usr/bin/gem"  dest="/usr/local/bin/gem" state=link
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '7'
+
+- name: install_Libraries | Install 7zip
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest force=yes
+  with_items:
+    - p7zip
+    - p7zip-full

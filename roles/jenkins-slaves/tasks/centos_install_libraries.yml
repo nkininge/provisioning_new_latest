@@ -127,3 +127,11 @@
       - ant-nodeps
       - graphviz
       - gcc-gfortran
+
+  - name: install_libraries | install 7zip
+    sudo: yes
+    sudo_user: root
+    yum: pkg={{item}} state=latest
+    with_items:
+      - p7zip
+      - p7zip-plugins

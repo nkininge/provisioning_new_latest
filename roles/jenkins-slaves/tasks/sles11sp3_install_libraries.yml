@@ -47,3 +47,11 @@
     register: shell_result
     with_items:
       - /tmp/gcc-suse11sp3/gcc-c++-4.3-62.12.x86_64.rpm
+
+  - name: install 7zip | suse11sp3
+    sudo: yes
+    sudo_user: root
+    shell: zypper in {{item}}
+    register: shell_result
+    with_items:
+      - http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/p7zip-9.20.1-24.9.x86_64.rpm
