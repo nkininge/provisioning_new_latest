@@ -4,6 +4,7 @@
   - name: Decvi | "setup s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
+    no_log: true
     get_url: url={{devci_s3cfg_url}} dest={{build_user_home}}/profiles/devci/.s3cfg mode=744
 
   - name: Decvi | install_aws | setup aws config
@@ -24,7 +25,7 @@
   - name: Decvi | centos_env_setup | rpm --import
     sudo: yes
     sudo_user: root
-    shell: rpm --import /{{build_user_home}}/devci_rpmmacros/RPM-GPG-KEY-Jenkins
+    shell: rpm --import /{{build_user_home}}/profiles/devci/devci_rpmmacros/RPM-GPG-KEY-Jenkins
 
   - name: Decvi | setup_user_configs | Download gpg keys
     sudo: yes
