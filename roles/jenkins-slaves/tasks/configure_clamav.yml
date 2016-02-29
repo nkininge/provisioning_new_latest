@@ -1,6 +1,8 @@
 ---
 
   - name: configure_clamav | run freshclam
+    sudo: yes
+    sudo_user: root
     shell: freshclam
 
   - name: configure_clamav | start clamav deamon
