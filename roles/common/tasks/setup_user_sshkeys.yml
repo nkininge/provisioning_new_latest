@@ -74,3 +74,9 @@
      - {name: id_dsa.pub,  attr: 644}
      - {name: config,  attr: 644}
      - {name: authorized_keys, attr: 600}
+
+  - name: setup_user | copy hwx_secrets.conf file
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{jenkins_secrets_conf}} {{build_user_home}}/.ssh/{{ jenkins_secrets_conf | basename }} force=yes
+    tags: secrets_conf

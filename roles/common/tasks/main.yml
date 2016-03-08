@@ -10,12 +10,14 @@
   tags:
     - setup_user
     - secret_profile
+    - secrets_conf
 
 - include: setup_user_sshkeys.yml
   when: ssh_url is defined
   tags:
     - setup_user
     - ssh_setup
+    - secrets_conf
 
 - include: prepare_env.yml
   tags: prepare_env
