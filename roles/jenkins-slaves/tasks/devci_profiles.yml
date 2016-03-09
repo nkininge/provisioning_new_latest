@@ -35,7 +35,7 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ devci_rpmmacros_url | basename }}
-        est={{build_user_home}}/
+        dest={{build_user_home}}/
 
   - name: Decvi | setup_user_configs | Download jenkins gpgkeys
     sudo: yes
@@ -71,4 +71,4 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ jenkins_rpmmacros_url | basename }}
-        est={{build_user_home}}/
+        dest={{build_user_home}}/
