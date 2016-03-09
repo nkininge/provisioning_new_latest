@@ -1,69 +1,74 @@
 ---
   - include_vars: ../../common/vars/{{project}}_secrets.yml
 
-  - name: Decvi | "setup s3cfg"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
-    no_log: true
-    get_url: url={{devci_s3cfg_url}} dest={{build_user_home}}/profiles/devci/.s3cfg mode=744
-
-  - name: Decvi | install_aws | setup aws config
-    sudo: yes
-    sudo_user: "{{ build_user }}"
-    copy: content="{{ devci_aws_config }}" dest={{ build_user_home }}/profiles/devci/aws_config
-
-  - name: Decvi | centos_env_setup | setup rpmmacros
-    sudo: yes
-    sudo_user: "{{ build_user }}"
-    get_url: url="{{ devci_rpmmacros_url }}" dest={{build_user_home}}/
-
-  - name: Decvi | centos_env_setup | unarchive rpmmacros.tar.gz
-    sudo: yes
-    sudo_user: "{{ build_user }}"
-    unarchive: copy=no src={{build_user_home}}/{{ devci_rpmmacros_url | basename }} dest={{build_user_home}}/profiles/devci/
-
-  - name: Decvi | centos_env_setup | rpm --import
-    sudo: yes
-    sudo_user: root
-    shell: rpm --import /{{build_user_home}}/profiles/devci/devci_rpmmacros/RPM-GPG-KEY-Jenkins
-
-  - name: Decvi | setup_user_configs | Download gpg keys
+  - name: Decvi | setup_user_configs | Download devci gpgkeys
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{ devci_gpgkeys_url }}
             dest={{ build_user_home }}/{{ devci_gpgkeys_url | basename }}
 
-  - name: Decvi | setup_user_configs | Untar gpg keys archive
+  - name: Decvi | setup_user_configs | Unarchive devci gpgkeys
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ devci_gpgkeys_url | basename }}
         dest={{build_user_home}}/
 
-  - name: Decvi | setup_user_configs | delete gpg secret and key
+  - name: Decvi | setup_user_configs | Download devci config-all
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "gpg --batch --yes --delete-secret-and-public-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD"
-    ignore_errors: yes
+    get_url: url={{ devci_config_all_url }}
+            dest={{ build_user_home }}/{{ devci_config_all_url | basename }}
 
-  - name: Decvi | setup_user_configs | Import gpg pub
+  - name: Decvi | setup_user_configs | Unarchive devci config-all
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "gpg --import {{build_user_home}}/devci-gpg-keys/devci_pub.gpg"
-    ignore_errors: yes
+    unarchive: copy=no src={{build_user_home}}/{{ devci_config_all_url | basename }}
+        dest={{build_user_home}}/
 
-  - name: Decvi | setup_user_configs | Import gpg secret
+  - name: Decvi | setup_user_configs | Download devci rpmmacros
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "gpg --allow-secret-key-import --import {{build_user_home}}/devci-gpg-keys/devci_sec.gpg"
-    ignore_errors: yes
+    get_url: url={{ devci_rpmmacros_url }}
+            dest={{ build_user_home }}/{{ devci_rpmmacros_url | basename }}
 
-  - name: Decvi | Replace gpg key | Post clean up
+  - name: Decvi | setup_user_configs | Unarchive devci rpmmacros
     sudo: yes
     sudo_user: "{{ build_user }}"
-    file: path={{ build_user_home }}/devci-gpg-keys{,.tar.gz,.tar.gz.gpg} state=absent
+    unarchive: copy=no src={{build_user_home}}/{{ devci_rpmmacros_url | basename }}
+        est={{build_user_home}}/
 
-  - name: Decvi | "setup ./m2 settings.xml"
+  - name: Decvi | setup_user_configs | Download jenkins gpgkeys
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{devci_settings_url}} dest={{build_user_home}}/profiles/devci/settings.xml 
-          mode=744 force=yes
+    get_url: url={{ jenkins_gpgkeys_url }}
+            dest={{ build_user_home }}/{{ jenkins_gpgkeys_url | basename }}
+
+  - name: Decvi | setup_user_configs | Uuarchive jenkins gpgkeys
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ jenkins_gpgkeys_url | basename }}
+        dest={{build_user_home}}/
+
+  - name: Decvi | setup_user_configs | Download jenkins config-all
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{ jenkins_config_all_url }}
+            dest={{ build_user_home }}/{{ jenkins_config_all_url | basename }}
+
+  - name: Decvi | setup_user_configs | Unarchive jenkins config-all
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ jenkins_config_all_url | basename }}
+        dest={{build_user_home}}/
+
+  - name: Decvi | setup_user_configs | Download jenkins rpmmacros
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{ jenkins_rpmmacros_url }}
+            dest={{ build_user_home }}/{{ jenkins_rpmmacros_url | basename }}
+
+  - name: Decvi | setup_user_configs | Unarchive jenkins rpmmacros
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ jenkins_rpmmacros_url | basename }}
+        est={{build_user_home}}/
