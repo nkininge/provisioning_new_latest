@@ -1,5 +1,5 @@
 ---
-  - include_vars: ../../common/vars/{{project}}_secrets.yml
+  - include_vars: ../../common/vars/devci_secrets.yml
 
   - name: Decvi | setup_user_configs | Download devci gpgkeys
     sudo: yes
