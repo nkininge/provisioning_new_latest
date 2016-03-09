@@ -58,6 +58,12 @@
   file:  src={{tools_home}}/python3/Python-{{python3_version}}/bin/python3  dest=/usr/local/bin/python3  mode=0755 state=link force=yes
   when: python3_exists is not defined
 
+- name: install_tools | Symlink pyvenv-3.4
+  sudo: yes
+  sudo_user: root
+  file:  src={{tools_home}}/python3/Python-{{python3_version}}/bin/pyvenv-3.4  dest=/usr/local/bin/pyvenv-3.4  mode=0755 state=link force=yes
+  when: python3_exists is not defined
+
 - name: install_tools | pip install | RedHat except centos5
   sudo: yes
   sudo_user: root
