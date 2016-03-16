@@ -15,8 +15,8 @@
     with_items:
       - libmysqlclient-devel
       - cyrus-sasl-devel
-      - http://dev.hortonworks.com.s3.amazonaws.com/RLENG/sles11sp1/libopenssl-devel-0.9.8j-2.1.x86_64.rpm
-      - http://dev.hortonworks.com.s3.amazonaws.com/RLENG/sles11sp1/openldap2-devel-2.4.26-4.2.x86_64.rpm
+      - http://dev.hortonworks.com.s3.amazonaws.com/REJENKINS/sles11sp1/libopenssl-devel-0.9.8j-2.1.x86_64.rpm
+      - http://dev.hortonworks.com.s3.amazonaws.com/REJENKINS/sles11sp1/openldap2-devel-2.4.26-4.2.x86_64.rpm
 
   - name: slave setup | download curl
     sudo: yes

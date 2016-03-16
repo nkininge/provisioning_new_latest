@@ -5,5 +5,5 @@ tools_home: "{{build_user_home}}/tools"
 
 git_version: "2.4.6"
 
-tools_url: "http://dev.hortonworks.com.s3.amazonaws.com/RLENG/build-tools-new.tar.gz"
+tools_url: "http://dev.hortonworks.com.s3.amazonaws.com/REJENKINS/build-tools-new.tar.gz"
 git_url: "http://www.kernel.org/pub/software/scm/git/git-2.4.6.tar.gz"

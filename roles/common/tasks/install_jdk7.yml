@@ -34,7 +34,7 @@
   - name: install_jdk7 | Install JCE Policy files for JDK7 | Download tar
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/RLENG/UnlimitedJCEPolicyJDK7.zip" dest={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip mode=744
+    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK7.zip" dest={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip mode=744
 
   - name: install_jdk7 | "unzip JCE Policy files"
     sudo: yes

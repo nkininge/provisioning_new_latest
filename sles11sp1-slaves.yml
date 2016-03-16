@@ -9,10 +9,10 @@
     jenkins_run_standalone: yes
     jenkins_name: jenkins
     s3tools_url: "http://s3tools.org/repo/SLE_11/s3tools.repo"
-    s3cfg_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/s3cfg"
+    s3cfg_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/s3cfg"
     settings_url: "http://s3.amazonaws.com/dev.hortonworks.com/jenkins_bk/54.243.248.12/settings.xml"
-    gpgkeys_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/jenkins-gpg-keys.tar.gz"
-    ssh_url: "http://s3.amazonaws.com/dev.hortonworks.com/RLENG/hortonworksre.tar.gz"
+    gpgkeys_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/jenkins-gpg-keys.tar.gz"
+    ssh_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/hortonworksre.tar.gz"
     hdp_utils_url: "http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-{{utils_version}}/repos/suse11/hdp-util.repo"
     opensuse_repo_url: "http://download.opensuse.org/repositories/devel:/tools:/scm/SLE_11_SP2/devel:tools:scm.repo"
     fakeroot_rpm_url: "ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/jnweiger/SLE_11_SP1/x86_64/fakeroot-1.9.3-5.2.x86_64.rpm"    

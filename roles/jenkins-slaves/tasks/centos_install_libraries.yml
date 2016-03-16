@@ -16,7 +16,7 @@
     when: ansible_distribution_major_version|int == 7
     shell: rpm -Uvh {{item}}
     with_items:
-      - 'http://s3.amazonaws.com/dev.hortonworks.com/RLENG/epel-release-7-5.noarch.rpm'
+      - 'http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/epel-release-7-5.noarch.rpm'
 
   - name: get epel-repo rpm RHEL6
     sudo: yes
@@ -108,7 +108,7 @@
   - name: install_libraries | install alien
     sudo: yes
     sudo_user: root
-    yum: name=http://dev.hortonworks.com.s3.amazonaws.com/RLENG/alien-8.81-2.noarch.rpm state=present
+    yum: name=http://dev.hortonworks.com.s3.amazonaws.com/REJENKINS/alien-8.81-2.noarch.rpm state=present
     when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | install asciidoc - centos5
