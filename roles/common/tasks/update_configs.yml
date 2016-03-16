@@ -27,6 +27,13 @@
   - name: "setup s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes
+    when: project == "re"
+    tags: s3cmd_config
+
+  - name: "setup s3cfg"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
     get_url: url={{s3cfg_url}} dest={{build_user_home}}/profiles/jenkins/.s3cfg mode=744 force=yes
     when: project == "re"
     tags: s3cmd_config
