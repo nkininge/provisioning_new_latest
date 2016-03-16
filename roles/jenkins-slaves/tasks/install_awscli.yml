@@ -35,4 +35,9 @@
   - name: install_aws | setup aws config
     sudo: yes
     sudo_user: "{{ build_user }}"
-    copy: content="{{ aws_config }}" dest={{ build_user_home }}/profiles/jenkins/aws_config
+    copy: content="{{ aws_config }}" dest={{ build_user_home }}/profiles/jenkins/aws_config force=yes
+  
+  - name: install_aws | setup aws config
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    copy: content="{{ aws_config }}" dest={{ build_user_home }}/.aws/config force=yes
