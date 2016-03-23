@@ -42,4 +42,5 @@
     with_items:
     - zip
     - unzip
+    - yum-utils
     when: ansible_os_family == "RedHat"
