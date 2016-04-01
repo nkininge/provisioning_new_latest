@@ -116,3 +116,6 @@
   - include: devci_profiles.yml
     tags: devci_profiles
     when: project == "re"
+
+  - include: install_zinc.yml
+    tags: install_zinc
