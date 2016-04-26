@@ -54,4 +54,5 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     shell: ssh-keyscan -p 29418 -H gerrit.eng.hortonworks.com >> "{{ build_user_home }}/.ssh/known_hosts"
+    when: project == "re"
     tags: gerrit_setup
