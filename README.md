@@ -27,10 +27,11 @@ tar tvf ~/.ssh.tar.gz
  .ssh/id_rsa
  .ssh/id_rsa.pub
 ```
+Note: * can be id_rsa, id_rsa.pub, id_dsa, id_dsa.pub, authorized_keys
 
 ```
 Hosts file
-
+===========
 Create a hosts file under provisioning.git
 
 cat hosts
@@ -46,5 +47,4 @@ ansible_ssh_pass=vagrant
 centos6
 ```
 
-Note: * can be id_rsa, id_rsa.pub, id_dsa, id_dsa.pub, authorized_keys
-
+Note: Please make sure /grid/0/ directory path is created and has root ownership
