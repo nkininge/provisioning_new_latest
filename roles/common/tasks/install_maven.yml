@@ -117,3 +117,50 @@
     file: path={{tools_home}}/maven/maven.{{mvn333_version}}.tar.gz state=absent
     when: maven333_exists is not defined
     tags: maven333
+
+  - name: install_maven 3.3.9 | capture maven 3.3.9 version
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn339_version }}/bin/mvn --version"
+    register: check_maven339
+    ignore_errors: yes
+    tags: maven339
+
+  - name: install_maven 3.3.9 | "set fact if maven version is {{mvn339_version}}"
+    set_fact: maven339_exists="true"
+    when: check_maven339.rc == 0 and check_maven339.stdout.find("{{mvn339_version}}") != -1
+    when: maven339_exists is defined
+    tags: maven339
+
+  - name: install_maven 3.3.9 | skip maven 3.3.9 installation
+    debug: msg="skipping maven 3.3.9 installation as it is already installed"
+    when: maven339_exists is defined
+    tags: maven339
+
+  - name: install_maven 3.3.9 | mkdirs for Maven 3.3.9
+    file: path={{tools_home}}/maven state=directory mode=0755
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: maven339_exists is not defined
+    tags: maven339
+
+  - name: install_maven 3.3.9 | Download Maven 3.3.9
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{maven339_url}} dest={{tools_home}}/maven/maven.{{mvn339_version}}.tar.gz mode=0644
+    when: maven339_exists is not defined
+    tags: maven339
+
+  - name: install_maven 3.3.9 | Untar Maven 3.3.9
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn339_version}}.tar.gz dest={{tools_home}}/maven
+    when: maven339_exists is not defined
+    tags: maven339
+
+  - name: install_maven 3.3.9 | Remove .tar.gz artifact from Maven install.
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/maven/maven.{{mvn339_version}}.tar.gz state=absent
+    when: maven339_exists is not defined
+    tags: maven339
