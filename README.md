@@ -29,9 +29,9 @@ tar tvf ~/.ssh.tar.gz
 ```
 Note: * can be id_rsa, id_rsa.pub, id_dsa, id_dsa.pub, authorized_keys
 
-```
 Hosts file
 ===========
+```
 Create a hosts file under provisioning.git
 
 cat hosts
