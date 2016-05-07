@@ -27,3 +27,9 @@
   - pip
   - argparse
   - requests
+
+- name: create .pip directory | install python libs
+  file: path={{build_user_home}}/.pip state=directory
+
+- name: copy pip config file | install python libs
+  copy: src=pip.conf dest={{build_user_home}}/.pip/pip.conf

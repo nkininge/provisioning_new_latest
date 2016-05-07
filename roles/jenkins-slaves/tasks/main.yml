@@ -83,7 +83,9 @@
     tags: install_ruby
 
   - include: install_python_libs.yml
-    tags: install_python
+    tags:
+      - install_python
+      - pip_conf
 
   - include: install_python27.yml
     tags:
