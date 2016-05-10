@@ -22,6 +22,11 @@
 - include: prepare_env.yml
   tags: prepare_env
 
+- include: install_jdk8.yml
+  tags:
+    - install_jdk8
+    - install_jdk
+
 - include: install_jdk7.yml
   tags:
     - install_jdk7
