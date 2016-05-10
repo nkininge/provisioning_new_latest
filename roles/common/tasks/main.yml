@@ -6,6 +6,9 @@
 - include: setup_user.yml
   tags: setup_user
 
+- include: npm_cleanup.yml
+  tags: npm_cleanup
+
 - include_vars: "{{ secret_profile_file }}"
   tags:
     - setup_user

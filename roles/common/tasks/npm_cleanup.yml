@@ -1,0 +1,6 @@
+---
+  - name: cleanup | rm .npm
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path="{{ build_user_home }}/.npm" state=absent
+    tags: npm_cleanup
