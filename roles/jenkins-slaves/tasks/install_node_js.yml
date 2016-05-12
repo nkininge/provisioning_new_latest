@@ -50,3 +50,9 @@
     sudo_user: root
     shell: /usr/local/bin/npm install -g brunch 
     when: npm_exists is not defined
+
+  - name: run npm set secure | npm install
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: "/usr/local/bin/npm config set unsafe-perm true"
+    tags: npm_config

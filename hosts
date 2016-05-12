@@ -3,7 +3,7 @@
 [centos5]
 
 [centos6]
-172.22.81.234
+172.22.66.151
 
 [centos7]
 
@@ -28,8 +28,9 @@ ansible_ssh_private_key_file=~/git/releng/build-utils/openstack-utils/accounts/h
 ansible_ssh_user=root
 
 [centos6:vars]
-ansible_ssh_private_key_file=~/git/releng/build-utils/openstack-utils/accounts/hw-qe-keypair.pem
+ansible_ssh_private_key_file=~/git/releng/build-utils/openstack-utils/accounts/hw-re-keypair.pem
 ansible_ssh_user=root
+#ansible_ssh_pass=vagrant
 
 [centos7:vars]
 ansible_ssh_private_key_file=
