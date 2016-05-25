@@ -48,8 +48,7 @@
   - name: install_node_js | brunch install
     sudo: yes
     sudo_user: root
-    shell: /usr/local/bin/npm install -g brunch 
-    when: npm_exists is not defined
+    shell: /usr/local/bin/npm install -g brunch@1.8.5
 
   - name: run npm set secure | npm install
     sudo: yes
