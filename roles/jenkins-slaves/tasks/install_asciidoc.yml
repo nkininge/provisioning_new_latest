@@ -14,7 +14,7 @@
   when: asciidoc_exists is defined
 
 - name: install_libraries | download asciidoc
-  get_url: url="{{asciidoc_url}}" dest=/tmp/{{ asciidoc_url | basename }}
+  get_url: url="{{asciidoc_url}}" dest=/tmp/{{ asciidoc_url | basename }} timeout=120
   when: asciidoc_exists is not defined
 
 - name: install_libraries | unarchive asciidoc tar.gz

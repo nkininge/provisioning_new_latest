@@ -2,7 +2,7 @@
   - name: install_tools | Download Eclipse
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{eclipse_url}} dest={{tools_home}}/eclipse.tar.gz mode=0744
+    get_url: url={{eclipse_url}} dest={{tools_home}}/eclipse.tar.gz mode=0744 timeout=120
     tags: install_eclipse
 
   - name: install_tools | Untar Eclipse
@@ -14,7 +14,7 @@
   - name: install_tools | Download Xerces
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{xerces_url}} dest={{tools_home}}/xerces.tar.gz mode=0744
+    get_url: url={{xerces_url}} dest={{tools_home}}/xerces.tar.gz mode=0744 timeout=120
     tags: install_xerces
 
   - name: install_tools | Untar Xerces
@@ -26,13 +26,13 @@
   - name: install_tools | Download Forrest
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{forrest_url}} dest={{forrest_home}}/forrest.tar.gz mode=744
+    get_url: url={{forrest_url}} dest={{forrest_home}}/forrest.tar.gz mode=744 timeout=120
     tags: install_forrest
 
   - name: install_tools | Download Forrest dependency
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{forrest_dependency_url}} dest={{forrest_home}}/forrest_dependency.tar.gz mode=744
+    get_url: url={{forrest_dependency_url}} dest={{forrest_home}}/forrest_dependency.tar.gz mode=744 timeout=120
     tags: install_forrest
 
   - name: install_tools | Untar Forrest

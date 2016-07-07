@@ -10,7 +10,7 @@
   - name: install_aws | Download awscli
     sudo: yes
     sudo_user: root
-    get_url: url=http://s3.amazonaws.com/aws-cli/awscli-bundle.zip  dest=/tmp/awscli-bundle.zip  mode=0644 force=yes
+    get_url: url=http://s3.amazonaws.com/aws-cli/awscli-bundle.zip  dest=/tmp/awscli-bundle.zip  mode=0644 force=yes timeout=120
     when: ansible_distribution == 'Suse' or ansible_distribution == 'SLES'
 
   - name: install_aws | Untar awscli

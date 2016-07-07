@@ -2,7 +2,7 @@
   - name: install_ant | Download Ant
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ant_url}} dest={{tools_home}}/ant/ant.tar.gz mode=0744
+    get_url: url={{ant_url}} dest={{tools_home}}/ant/ant.tar.gz mode=0744 timeout=120
 
   - name: install_ant | Untar Ant
     sudo: yes
@@ -12,7 +12,7 @@
   - name: install_ant | Download Ant {{ant_old_version}}
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ant_old_url}} dest={{tools_home}}/ant/ant_old.tar.gz mode=0744
+    get_url: url={{ant_old_url}} dest={{tools_home}}/ant/ant_old.tar.gz mode=0744 timeout=120
 
   - name: install_ant | Untar Ant {{ant_old_version}}
     sudo: yes
@@ -22,7 +22,7 @@
   - name: install_ant | Download ant-contrib-1.0b2.jar file
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ant_contrib_url}} dest={{tools_home}}/ant/apache-ant-{{ant_old_version}}/lib/ant-contrib-1.0b2.jar mode=0744
+    get_url: url={{ant_contrib_url}} dest={{tools_home}}/ant/apache-ant-{{ant_old_version}}/lib/ant-contrib-1.0b2.jar mode=0744 timeout=120
 
   - name: install_ant | symlink Ant -> latest
     sudo: yes

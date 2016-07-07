@@ -16,7 +16,7 @@
   - name: install_jdk8 | "Download Jdk8"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{jdk8_url}} dest={{jdk8_home}}/{{ jdk8_url | basename }} mode=744
+    get_url: url={{jdk8_url}} dest={{jdk8_home}}/{{ jdk8_url | basename }} mode=744 timeout=120
     when: jdk8_exists is not defined
 
   - name: install_jdk8 | "Install Jdk8"
@@ -28,7 +28,7 @@
   - name: install_jdk8 | "Install JCE Policy files for JDK8"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK8.zip" dest={{jdk8_home}}/UnlimitedJCEPolicyJDK8.zip mode=744
+    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK8.zip" dest={{jdk8_home}}/UnlimitedJCEPolicyJDK8.zip mode=744 timeout=120
 
   - name: install_jdk8 | "Symlink jdk8 -> latest"
     sudo: yes

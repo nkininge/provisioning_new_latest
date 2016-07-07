@@ -11,7 +11,7 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url="{{ gpgkeys_nosec_url }}"
-             dest="{{ build_user_home }}/jenkins-gpg-keys.tar.gz" force=yes
+             dest="{{ build_user_home }}/jenkins-gpg-keys.tar.gz" force=yes timeout=120
  
   - name: Replace gpg key | Untar gpg keys archive
     sudo: yes

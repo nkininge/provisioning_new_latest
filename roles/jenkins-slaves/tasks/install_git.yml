@@ -16,7 +16,7 @@
   - name: slave setup | download git
     sudo: yes
     sudo_user: root
-    get_url: url={{git_url}} dest=/tmp/{{ git_url | basename }} mode=0770
+    get_url: url={{git_url}} dest=/tmp/{{ git_url | basename }} mode=0770 timeout=120
     when: git_exists is not defined
 
   - name: slave setup | untar git
@@ -41,7 +41,7 @@
   - name: setup git-completion | download
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url="http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash" dest={{build_user_home}}/git-completion.bash mode="a+x"
+    get_url: url="http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash" dest={{build_user_home}}/git-completion.bash mode="a+x" timeout=120
     when: git_exists is not defined
 
   - name: setup git-completion | setup

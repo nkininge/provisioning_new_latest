@@ -19,7 +19,7 @@
     when: npm_exists is defined
 
   - name: install_node_js | Download node js
-    get_url: url={{node_js_url}} dest=/tmp/{{ node_js_url | basename }}
+    get_url: url={{node_js_url}} dest=/tmp/{{ node_js_url | basename }} timeout=120
     when: npm_exists is not defined
 
   - name: install_node_js | rm /usr/local/bin/{npm,node} 

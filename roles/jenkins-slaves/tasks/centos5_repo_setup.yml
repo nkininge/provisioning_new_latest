@@ -9,4 +9,4 @@
 - name: centos5_repo_setup | install s3tools repo
   sudo : yes
   sudo_user: root
-  get_url: url="http://s3tools.org/repo/RHEL_5/s3tools.repo" dest="/etc/yum.repos.d/"
+  get_url: url="http://s3tools.org/repo/RHEL_5/s3tools.repo" dest="/etc/yum.repos.d/" timeout=120

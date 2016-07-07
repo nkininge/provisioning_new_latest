@@ -1,6 +1,6 @@
 ---
   - name: install_tar | Download tar
-    get_url: url={{tar_url}} dest=/tmp/{{ tar_url | basename }}
+    get_url: url={{tar_url}} dest=/tmp/{{ tar_url | basename }} timeout=120
 
   - name: install_tar | untar tar
     unarchive: copy=no src=/tmp/{{ tar_url | basename }} dest=/tmp/

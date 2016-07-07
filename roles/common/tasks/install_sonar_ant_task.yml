@@ -3,7 +3,7 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url="{{ sonar_ant_task_url }}"
-             dest={{tools_home}}/ant/latest/lib/sonar-ant-task-2.3.jar
+             dest={{tools_home}}/ant/latest/lib/sonar-ant-task-2.3.jar timeout=120
     tags: sonar_ant_task
 
   - name: install_sonar_ant_task | Download sonar_runner

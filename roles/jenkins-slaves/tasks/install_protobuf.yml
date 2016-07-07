@@ -14,7 +14,7 @@
     when: protobuf_exists is defined
 
   - name: install_protobuf | Download protobuf
-    get_url: url={{protobuf_url}} dest=/tmp/{{ protobuf_url | basename }}
+    get_url: url={{protobuf_url}} dest=/tmp/{{ protobuf_url | basename }} timeout=120
     when: protobuf_exists is not defined
 
   - name: install_protobuf | rm protobuf

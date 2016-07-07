@@ -16,7 +16,7 @@
   - name: install_jdk6 | "Download Jdk6" 
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{jdk6_url}} dest={{jdk6_home}}/{{ jdk6_url | basename }} mode=744
+    get_url: url={{jdk6_url}} dest={{jdk6_home}}/{{ jdk6_url | basename }} mode=744 timeout=120
     when: jdk6_exists is not defined
 
   - name: install_jdk6 | "Install Jdk6"

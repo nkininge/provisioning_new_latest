@@ -21,7 +21,7 @@
   - name: slave setup | download curl
     sudo: yes
     sudo_user: root
-    get_url: url={{curl_url}} dest=/tmp/{{ curl_url | basename }} mode=0770
+    get_url: url={{curl_url}} dest=/tmp/{{ curl_url | basename }} mode=0770 timeout=120
     when: curl_exists is not defined
 
   - name: slave setup | untar curl

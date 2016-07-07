@@ -22,7 +22,7 @@
 - name: install_tools | Download python27
   sudo: yes
   sudo_user: root
-  get_url: url=http://www.python.org/ftp/python/{{python27_version}}/Python-{{python27_version}}.tgz  dest={{tools_home}}/python27/Python-{{python27_version}}.tgz  mode=0644 force=yes
+  get_url: url=http://www.python.org/ftp/python/{{python27_version}}/Python-{{python27_version}}.tgz  dest={{tools_home}}/python27/Python-{{python27_version}}.tgz  mode=0644 force=yes timeout=120
   when: python27_exists is not defined
 
 - name: install_tools | Untar python27

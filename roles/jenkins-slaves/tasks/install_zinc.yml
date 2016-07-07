@@ -29,7 +29,7 @@
   when: zinc_exists is not defined
 
 - name: install_zinc | Download zinc
-  get_url: url={{ zinc_url }} dest=/tmp/{{ zinc_base }}
+  get_url: url={{ zinc_url }} dest=/tmp/{{ zinc_base }} timeout=120
   sudo: yes
   sudo_user: {{ build_user }}
   when: zinc_exists is not defined

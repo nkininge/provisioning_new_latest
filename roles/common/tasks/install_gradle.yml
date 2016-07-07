@@ -18,7 +18,7 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url=http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/gradle-2.3-bin.zip
-      dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes timeout=60
+      dest={{tools_home}}/gradle/gradle.zip mode=0744 force=yes timeout=120
     when: gradle_exists is not defined
 
     # check if "check_gradle" is defined and value is equal to desired gradle version

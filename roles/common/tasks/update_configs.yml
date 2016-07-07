@@ -20,21 +20,21 @@
   - name: "setup s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes timeout=120
     when: project != "re"
     tags: s3cmd_config
 
   - name: "setup s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes timeout=120
     when: project == "re"
     tags: s3cmd_config
 
   - name: "setup s3cfg"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{build_user_home}}/profiles/jenkins/.s3cfg mode=744 force=yes
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/profiles/jenkins/.s3cfg mode=744 force=yes timeout=120
     when: project == "re"
     tags: s3cmd_config
 
@@ -42,14 +42,14 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml 
-          mode=744 force=yes
+          mode=744 force=yes timeout=120
     tags: nexus_settings
     when: project != "re"
 
   - name: "setup ./m2 settings.xml"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml
+    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml timeout=120
           mode=744 force=yes
     tags: nexus_settings
     when: project == "re"
@@ -57,7 +57,7 @@
   - name: "setup ./m2 settings.xml"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{settings_url}} dest={{build_user_home}}/profiles/jenkins/settings.xml
+    get_url: url={{settings_url}} dest={{build_user_home}}/profiles/jenkins/settings.xml timeout=120
           mode=744 force=yes
     when: project == "re"
     tags: nexus_settings
@@ -65,7 +65,7 @@
   - name: "setup ./gradle/gradle.properties"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties timeout=120
           mode=744 force=yes
     tags: gradle_properties
     when: project == "re"
@@ -73,7 +73,7 @@
   - name: "setup ./gradle/gradle.properties"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties timeout=120
           mode=744 force=yes
     tags: gradle_properties
     when: project != "re"
@@ -81,7 +81,7 @@
   - name: "setup ./gradle/gradle.properties"
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/profiles/jenkins/gradle.properties
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/profiles/jenkins/gradle.properties timeout=120
           mode=744 force=yes
     when: project == "re"
     tags: gradle_properties

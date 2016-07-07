@@ -2,7 +2,7 @@
   - include_vars: ../../common/vars/{{project}}_secrets.yml
 
   - name: centos_env_setup | download 
-    get_url: url="{{ rpm_gpg_url }}" dest=/tmp
+    get_url: url="{{ rpm_gpg_url }}" dest=/tmp timeout=120
 
   - name: centos_env_setup | rpm --import
     sudo: yes
@@ -12,7 +12,7 @@
   - name: centos_env_setup | setup rpmmacros
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url="{{ rpmmacros_url }}" dest={{build_user_home}}/
+    get_url: url="{{ rpmmacros_url }}" dest={{build_user_home}}/ timeout=120
 
   - name: centos_env_setup | unarchive rpmmacros.tar.gz
     sudo: yes

@@ -14,7 +14,7 @@
   when: ruby_exists is defined
 
 - name: install_libraries | download ruby
-  get_url: url="{{ruby_url}}" dest=/tmp/{{ ruby_url | basename }}
+  get_url: url="{{ruby_url}}" dest=/tmp/{{ ruby_url | basename }} timeout=120
   when: ruby_exists is not defined
 
 - name: install_libraries | unarchive ruby tar.gz

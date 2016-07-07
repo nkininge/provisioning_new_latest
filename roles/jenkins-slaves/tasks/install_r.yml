@@ -23,7 +23,7 @@
   when: r_base_dir is not defined and r_exists is not defined
 
 - name: install_R | Download R
-  get_url: url={{r_url}} dest=/tmp/{{ r_base }}
+  get_url: url={{r_url}} dest=/tmp/{{ r_base }} timeout=120
   sudo: yes
   sudo_user: root
   when: r_exists is not defined

@@ -14,7 +14,7 @@
     when: autoconf_exists is defined
 
   - name: install_autoconf | Download autoconf
-    get_url: url={{autoconf_url}} dest=/tmp/{{ autoconf_url | basename }}
+    get_url: url={{autoconf_url}} dest=/tmp/{{ autoconf_url | basename }} timeout=120
     when: autoconf_exists is not defined
 
   - name: install_autoconf | untar autoconf

@@ -31,7 +31,7 @@
     sudo: yes
     sudo_user: root
     when: gcc_rpm_check.stdout.find('gcc-c++') == -1
-    get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/gcc-suse11sp3.tar.gz" dest=/tmp/gcc-suse11sp3.tar.gz
+    get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/gcc-suse11sp3.tar.gz" dest=/tmp/gcc-suse11sp3.tar.gz timeout=120
 
   - name: unarchive gcc-c++ tarball | suse11sp3
     sudo: yes

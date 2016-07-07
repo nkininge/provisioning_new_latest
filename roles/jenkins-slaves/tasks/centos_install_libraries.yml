@@ -36,7 +36,7 @@
     sudo: yes
     sudo_user: root
     when: ansible_distribution_major_version|int == 5
-    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/s3tools.repo dest=/etc/yum.repos.d/s3tools.repo
+    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/s3tools.repo dest=/etc/yum.repos.d/s3tools.repo timeout=120
 
   - name: install_libraries | centos
     sudo: yes

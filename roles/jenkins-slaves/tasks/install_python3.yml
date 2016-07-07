@@ -19,7 +19,7 @@
 - name: install_tools | Download python3
   sudo: yes
   sudo_user: root
-  get_url: url=http://www.python.org/ftp/python/{{python3_version}}/Python-{{python3_version}}.tgz  dest=/tmp/Python-{{python3_version}}.tgz  mode=0644 force=yes
+  get_url: url=http://www.python.org/ftp/python/{{python3_version}}/Python-{{python3_version}}.tgz  dest=/tmp/Python-{{python3_version}}.tgz  mode=0644 force=yes timeout=120
   when: python3_exists is not defined
 
 - name: install_tools | Untar python3
