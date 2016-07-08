@@ -22,6 +22,9 @@
     - ssh_setup
     - secrets_conf
 
+- include: readonly_sshkeys.yml
+  when: readonly_ssh is defined
+
 - include: prepare_env.yml
   tags: prepare_env
 

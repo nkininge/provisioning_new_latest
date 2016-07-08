@@ -1,20 +1,20 @@
 ---
-  - set_fact: base_ssh_url="{{ ssh_url | basename }}"
+  - set_fact: base_ssh_url="{{ readonly_ssh_url | basename }}"
   - set_fact: base_ssh_dir="{{ base_ssh_url.split('.')[0] }}"
 
-  - name: setup_user | ssh keys - Download
+  - name: setup_user | readonly ssh keys - Download
     sudo: yes
     sudo_user: "{{ build_user }}"
     when: project != 'dev'
-    get_url: url={{ ssh_url }} dest={{build_user_home}}/{{ base_ssh_url }} force=yes timeout=120
+    get_url: url={{ readonly_ssh_url }} dest={{build_user_home}}/{{ base_ssh_url }} force=yes timeout=120
 
-  - name: setup_user | ssh keys - Download
+  - name: setup_user | readonly ssh keys - Download
     sudo: yes
     sudo_user: "{{ build_user }}"
     when: project == 'dev'
-    copy: src={{ ssh_url }} dest={{build_user_home}}/{{ base_ssh_url }} owner={{ build_user }}  group={{ build_group }} mode=0644
+    copy: src={{ readonly_ssh_url }} dest={{build_user_home}}/{{ base_ssh_url }} owner={{ build_user }}  group={{ build_group }} mode=0644
 
-  - name: setup_user | ssh keys - untar
+  - name: setup_user | readonly ssh keys - untar
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ base_ssh_url }} dest={{build_user_home}}/

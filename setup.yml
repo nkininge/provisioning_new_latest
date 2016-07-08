@@ -21,6 +21,7 @@
     # ec2 hosted sles sp1 zypper repo ip
     ec2_hosted_repo_ip: 172.22.77.245
     tar_url: http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/tar-1.28.tar.gz
+    # pass readonly_ssh=true
 
   roles:
     - common
