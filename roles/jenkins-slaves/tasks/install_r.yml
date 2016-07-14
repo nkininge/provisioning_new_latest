@@ -1,6 +1,6 @@
 ---
 - name: install_libraries | check if R is installed
-  command: /grid/0/jenkins/tools/R/{{ r_version }}/bin/R --version
+  command: "{{ tools_home }}/R/{{ r_version }}/bin/R --version"
   register: check_r
   ignore_errors: yes
 
@@ -37,5 +37,5 @@
 - name: install_R | R configure/make/make install
   sudo: yes
   sudo_user: root
-  shell: cd /tmp/{{ r_base_dir }} ; ./configure --with-x=no --with-readline=no --prefix=/grid/0/jenkins/tools/R/{{ r_version }}/ ; make ; make install
+  shell: cd /tmp/{{ r_base_dir }} ; ./configure --with-x=no --with-readline=no --prefix={{ tools_home }}/R/{{ r_version }}/ ; make ; make install
   when: r_exists is not defined
