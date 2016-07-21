@@ -77,8 +77,6 @@
   - include: update_ulimit.yml
     tags: update_ulimit
 
-  - include: install_massageHostname.yml
-
   - include: install_ruby_libs.yml
     tags: install_ruby
 
