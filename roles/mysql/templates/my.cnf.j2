@@ -1,0 +1,13 @@
+[mysqld]
+datadir={{ cinder_disk_partition }}/mysql
+socket={{ cinder_disk_partition }}/mysql/mysql.sock
+user=mysql
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+[mysqld_safe]
+log-error={{ cinder_disk_partition }}/mysql/mysqld.log
+pid-file={{ cinder_disk_partition }}/mysql/mysqld.pid
+
+[client]
+socket={{ mysql_socket }}

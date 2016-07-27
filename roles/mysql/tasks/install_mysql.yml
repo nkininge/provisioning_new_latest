@@ -1,0 +1,11 @@
+---
+ - name: install_mysql | Yum install Mysql packages
+   yum: "name={{item}} state=installed"
+   with_items:
+   - mysql-server
+   - mysql
+   register: mysql_install_packages
+
+ - name: check if mysql packages are installed
+   set_fact:
+     installed_mysql_packages: "{{ (mysql_install_packages is defined and mysql_install_packages.changed) }}"

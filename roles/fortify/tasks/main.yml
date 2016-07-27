@@ -1,0 +1,5 @@
+---
+ - name: Include variables
+   include_vars: mysql.yml
+
+ - include: create_database.yml
