@@ -57,6 +57,26 @@
   - name: "setup ./m2 settings.xml"
     sudo: yes
     sudo_user: "{{ build_user }}"
+    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/main_settings.xml timeout=120
+          mode=744 force=yes
+    tags:
+      - nexus_settings
+      - new_nexus_settings
+    when: project == "re"
+
+  - name: "setup ./m2 settings.xml"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url={{template_settings_url}} dest={{build_user_home}}/.m2/template_settings.xml timeout=120
+          mode=744 force=yes
+    tags:
+      - nexus_settings
+      - new_nexus_settings
+    when: project == "re"
+
+  - name: "setup ./m2 settings.xml"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
     get_url: url={{settings_url}} dest={{build_user_home}}/profiles/jenkins/settings.xml timeout=120
           mode=744 force=yes
     when: project == "re"
