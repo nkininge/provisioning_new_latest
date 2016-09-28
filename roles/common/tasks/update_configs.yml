@@ -1,5 +1,6 @@
 ---
   - include_vars: "{{ secret_profile_file }}"
+    tags: new_nexus_settings
 
   - name: "Update limits.conf"
     sudo: yes
