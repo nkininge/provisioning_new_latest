@@ -4,7 +4,7 @@
   - name: setup_user_configs | Download gpg keys
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ gpgkeys_url }}
+    get_url: url={{ gpgkeys_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ gpgkeys_url | basename }} timeout=120
 
   - name: setup_user_configs | Untar gpg keys archive

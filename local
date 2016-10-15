@@ -1,5 +1,0 @@
-[localhost]
-127.0.0.1 ansible_python_interpreter=/usr/local/bin/python2.7
-
-[localhost:vars]
-ansible_ssh_user={{lookup("env", "USER")}}

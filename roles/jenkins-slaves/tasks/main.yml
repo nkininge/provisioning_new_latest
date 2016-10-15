@@ -51,7 +51,7 @@
 
   - include: install_r.yml
     tags: install_r
-    when: ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' )
+    when: ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES') and not ( ansible_os_family == "RedHat" and  ansible_distribution_major_version == "7" )
 
   - include: centos6_install_libraries.yml
     tags:

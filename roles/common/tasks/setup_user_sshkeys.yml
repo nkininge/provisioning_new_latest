@@ -7,6 +7,7 @@
     sudo_user: "{{ build_user }}"
     when: project != 'dev'
     get_url: url={{ ssh_url }} dest={{build_user_home}}/{{ base_ssh_url }} force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
 
   - name: setup_user | ssh keys - Download
     sudo: yes
@@ -78,6 +79,7 @@
   - name: setup_user | copy hwx_secrets.conf file
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{jenkins_secrets_conf}} dest={{build_user_home}}/.ssh/{{ jenkins_secrets_conf | basename }} force=yes timeout=120
+    get_url: url={{jenkins_secrets_conf}} dest={{build_user_home}}/.ssh/{{ jenkins_secrets_conf | basename }}
+             force=yes timeout=120 url_password={{ url_download_key }} url_username=releng
     tags: secrets_conf
     when: project == 're'

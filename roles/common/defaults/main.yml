@@ -38,7 +38,7 @@ jdk7_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/jdk-7u21-linux-
 jdk8_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/jdk-8u91-linux-x64.tar.gz"
 forrest_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/apache-forrest-{{forrest_version}}-sources.tar.gz"
 forrest_dependency_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/apache-forrest-{{forrest_version}}-dependencies.tar.gz"
-protobuf_url: "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
+protobuf_url: "http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/protobuf-2.5.0.tar.gz"
 autoconf_url: "http://ftp.gnu.org/gnu/autoconf/autoconf-2.63.tar.gz"
 node_js_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/node-v{{node_version}}-linux-x64.tar.gz"
 ruby_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/ruby-1.9.3-p484.tar.gz"

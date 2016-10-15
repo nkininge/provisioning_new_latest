@@ -3,6 +3,7 @@
 
   - name: centos_env_setup | download 
     get_url: url="{{ rpm_gpg_url }}" dest=/tmp timeout=120
+             url_password={{ url_download_key }} url_username=releng
 
   - name: centos_env_setup | rpm --import
     sudo: yes
@@ -13,6 +14,15 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url="{{ rpmmacros_url }}" dest={{build_user_home}}/ timeout=120
+             url_password={{ url_download_key }} url_username=releng
+    when: project == "re"
+
+  - name: centos_env_setup | setup rpmmacros
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    get_url: url="{{ rpmmacros_url }}" dest={{build_user_home}}/ timeout=120
+             url_password={{ url_download_key }} url_username=releng
+    when: project != "re"
 
   - name: centos_env_setup | unarchive rpmmacros.tar.gz
     sudo: yes

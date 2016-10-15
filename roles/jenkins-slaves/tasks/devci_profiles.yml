@@ -1,10 +1,10 @@
 ---
-  - include_vars: ../../common/vars/devci_secrets.yml
+  - include_vars: ../../common/vars/re_secrets.yml
 
   - name: Decvi | setup_user_configs | Download devci gpgkeys
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ devci_gpgkeys_url }}
+    get_url: url={{ devci_gpgkeys_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ devci_gpgkeys_url | basename }} timeout=120
 
   - name: Decvi | setup_user_configs | Unarchive devci gpgkeys
@@ -16,7 +16,7 @@
   - name: Decvi | setup_user_configs | Download devci config-all
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ devci_config_all_url }}
+    get_url: url={{ devci_config_all_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ devci_config_all_url | basename }} timeout=120
 
   - name: Decvi | setup_user_configs | Unarchive devci config-all
@@ -28,7 +28,7 @@
   - name: Decvi | setup_user_configs | Download devci rpmmacros
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ devci_rpmmacros_url }}
+    get_url: url={{ devci_rpmmacros_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ devci_rpmmacros_url | basename }} timeout=120
 
   - name: Decvi | setup_user_configs | Unarchive devci rpmmacros
@@ -40,7 +40,7 @@
   - name: Decvi | setup_user_configs | Download jenkins gpgkeys
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ jenkins_gpgkeys_url }}
+    get_url: url={{ jenkins_gpgkeys_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ jenkins_gpgkeys_url | basename }} timeout=120
 
   - name: Decvi | setup_user_configs | Uuarchive jenkins gpgkeys
@@ -52,7 +52,7 @@
   - name: Decvi | setup_user_configs | Download jenkins config-all
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ jenkins_config_all_url }}
+    get_url: url={{ jenkins_config_all_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ jenkins_config_all_url | basename }} timeout=120
 
   - name: Decvi | setup_user_configs | Unarchive jenkins config-all
@@ -64,7 +64,7 @@
   - name: Decvi | setup_user_configs | Download jenkins rpmmacros
     sudo: yes
     sudo_user: "{{ build_user }}"
-    get_url: url={{ jenkins_rpmmacros_url }}
+    get_url: url={{ jenkins_rpmmacros_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ jenkins_rpmmacros_url | basename }} timeout=120
 
   - name: Decvi | setup_user_configs | Unarchive jenkins rpmmacros

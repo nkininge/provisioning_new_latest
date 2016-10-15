@@ -14,9 +14,7 @@
     sudo: yes
     sudo_user: root
     when: ansible_distribution_major_version|int == 7
-    shell: rpm -Uvh {{item}}
-    with_items:
-      - 'http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/epel-release-7-5.noarch.rpm'
+    yum: name='http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/epel-release-7-8.noarch.rpm' state=present
 
   - name: get epel-repo rpm RHEL6
     sudo: yes
@@ -135,3 +133,10 @@
     with_items:
       - p7zip
       - p7zip-plugins
+
+  - name: install_libraries | centos7 | install R
+    sudo: yes
+    sudo_user: root
+    when: ansible_distribution_major_version|int == 7
+    yum: name=R state=latest update_cache=yes
+    tags: install_r
