@@ -9,11 +9,6 @@
     sudo_user: root
     yum: name=docker-engine state=present update_cache=yes
 
-  - name: install_docker | copy daemon.json
-    sudo: yes
-    sudo_user: root
-    copy: src=files/daemon.json dest=/etc/docker/daemon.json force=yes
-
   - name: install_docker | enable docker service
     sudo: yes
     sudo_user: root
@@ -28,3 +23,13 @@
     sudo: yes
     sudo_user: root
     shell: systemctl start docker 
+
+  - name: install_docker | copy daemon.json
+    sudo: yes
+    sudo_user: root
+    copy: src=files/daemon.json dest=/etc/docker/daemon.json force=yes
+
+  - name: install_docker | start docker service
+    sudo: yes
+    sudo_user: root
+    shell: systemctl restart docker
