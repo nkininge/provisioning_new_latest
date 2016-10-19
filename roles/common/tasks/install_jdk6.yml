@@ -30,3 +30,8 @@
     sudo_user: "{{ build_user }}"
     file: src="jdk{{jdk6_version}}" dest={{jdk6_home}}/latest state=link 
     when: jdk6_exists is not defined
+
+  - name: install_jdk6 | delete jdk tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{jdk6_home}}/{{ jdk6_url | basename }} state=absent

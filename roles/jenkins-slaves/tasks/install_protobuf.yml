@@ -30,3 +30,15 @@
     sudo_user: root
     shell: cd /tmp/protobuf-2.5.0 ; ./configure --prefix=/opt ; make clean ; make install
     when: protobuf_exists is not defined
+
+  - name: install_protobuf | delete protobuf from /tmp
+    sudo: yes
+    sudo_user: root
+    file: path=/tmp/protobuf-2.5.0 state=absent
+    when: protobuf_exists is not defined
+
+  - name: install_protobuf | delete protobuf tarball from /tmp
+    sudo: yes
+    sudo_user: root
+    file: path=/tmp/{{ protobuf_url | basename }} state=absent
+    when: protobuf_exists is not defined

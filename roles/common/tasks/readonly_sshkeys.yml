@@ -19,6 +19,11 @@
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ base_ssh_url }} dest={{build_user_home}}/
 
+  - name: setup_user | delete ssh keys tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{build_user_home}}/{{ base_ssh_url }} state=absent
+
   - name: setup_user | create ssh directory
     sudo: yes
     sudo_user: "{{ build_user }}"

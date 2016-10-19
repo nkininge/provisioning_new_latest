@@ -9,3 +9,8 @@
     sudo: yes
     sudo_user: root
     shell: cd /tmp/tar-1.28 ; export FORCE_UNSAFE_CONFIGURE=1 ; ./configure ; make && make install
+
+  - name: install_tar | delete tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path=/tmp/{{ tar_url | basename }} state=absent

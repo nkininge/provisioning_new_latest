@@ -55,3 +55,13 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     shell: cp -r {{jdk7_home}}/UnlimitedJCEPolicy/*.jar {{jdk7_home}}/jdk1.7.0_21/lib/security/
+
+  - name: install_jdk7 | delete jdk tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{jdk7_home}}/{{ jdk7_url | basename }} state=absent
+
+  - name: install_jdk7 | delete JCE Policy files tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip state=absent

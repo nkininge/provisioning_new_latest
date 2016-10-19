@@ -28,3 +28,13 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     file: src=apache-ant-1.9.4 dest={{tools_home}}/ant/latest state=link
+
+  - name: install_ant | delete ant tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/ant/ant_old.tar.gz state=absent
+
+  - name: install_ant | delete ant tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/ant/ant.tar.gz state=absent

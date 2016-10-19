@@ -19,3 +19,9 @@
     unarchive: copy=no  src={{tools_home}}/sonar-runner-dist-2.4.zip
              dest={{tools_home}}/
     tags: sonar_ant_task
+
+  - name: install_sonar_ant_task | delete sonar_runner zip
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/sonar-runner-dist-2.4.zip state=absent
+    tags: sonar_ant_task

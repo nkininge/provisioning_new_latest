@@ -11,6 +11,12 @@
     unarchive: copy=no src={{tools_home}}/eclipse.tar.gz dest={{tools_home}}/
     tags: install_eclipse
 
+  - name: install_tools | delete eclipse tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/eclipse.tar.gz state=absent
+    tags: install_eclipse
+
   - name: install_tools | Download Xerces
     sudo: yes
     sudo_user: "{{ build_user }}"
@@ -21,6 +27,12 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/xerces.tar.gz dest={{tools_home}}/
+    tags: install_xerces
+
+  - name: install_tools | delete xerces tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/xerces.tar.gz state=absent
     tags: install_xerces
 
   - name: install_tools | Download Forrest
@@ -45,6 +57,18 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{forrest_home}}/forrest_dependency.tar.gz dest={{tools_home}}/forrest
+    tags: install_forrest
+
+  - name: install_tools | delete forrest tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{forrest_home}}/forrest.tar.gz state=absent
+    tags: install_forrest
+
+  - name: install_tools | delete forrest dependency tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{forrest_home}}/forrest_dependency.tar.gz state=absent
     tags: install_forrest
 
   - name: install_tools | symlink Forrest -> latest

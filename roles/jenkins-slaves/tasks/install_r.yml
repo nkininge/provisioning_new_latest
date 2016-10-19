@@ -39,3 +39,15 @@
   sudo_user: root
   shell: cd /tmp/{{ r_base_dir }} ; ./configure --with-x=no --with-readline=no --prefix={{ tools_home }}/R/{{ r_version }}/ ; make ; make install
   when: r_exists is not defined
+
+- name: install_R | delete R from /tmp
+  sudo: yes
+  sudo_user: root
+  file: path=/tmp/{{ r_base_dir }} state=absent
+  when: r_exists is not defined
+
+- name: install_R | delete R tarball from /tmp
+  sudo: yes
+  sudo_user: root
+  file: path=/tmp/{{ r_base }} state=absent
+  when: r_exists is not defined

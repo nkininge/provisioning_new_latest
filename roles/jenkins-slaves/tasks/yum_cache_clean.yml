@@ -1,0 +1,12 @@
+---
+  - name: cleaning task for yum
+    command: /usr/bin/yum clean all
+    sudo: yes
+    sudo_user: root
+    when: ansible_os_family == "RedHat"
+
+  - name: delete cache files
+    file: path=/var/cache/yum state=absent
+    sudo: yes
+    sudo_user: root
+    when: ansible_os_family == "RedHat"

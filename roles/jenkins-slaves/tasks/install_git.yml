@@ -38,6 +38,18 @@
     shell: "cd /tmp/{{git_base_dir}} ; ./configure --with-openssl --with-curl --with-expat  && make && make install"
     when: git_exists is not defined
 
+  - name: slave setup | delete git from /tmp
+    sudo: yes
+    sudo_user: root
+    file: path=/tmp/{{ git_base_dir }} state=absent
+    when: git_exists is not defined
+
+  - name: slave setup | delete git from /tmp
+    sudo: yes
+    sudo_user: root
+    file: path=/tmp/{{ git_url | basename }} state=absent
+    when: git_exists is not defined
+
   - name: setup git-completion | download
     sudo: yes
     sudo_user: "{{ build_user }}"

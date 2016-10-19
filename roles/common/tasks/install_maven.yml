@@ -32,6 +32,12 @@
     unarchive: copy=no src={{tools_home}}/maven/maven.tar.gz dest={{tools_home}}/maven
     when: maven_exists is not defined
 
+  - name: install_maven | delete maven tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/maven/maven.tar.gz state=absent
+    when: maven_exists is not defined
+
   - name: install_maven | capture maven for ambari version
     sudo: yes
     sudo_user: "{{ build_user }}"

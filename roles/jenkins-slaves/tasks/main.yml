@@ -117,8 +117,8 @@
     tags: devci_profiles
     when: project == "re"
 
-  - include: install_fortify_sca.yml
-    tags: fortify_sca
-
 #  - include: install_zinc.yml
 #    tags: install_zinc
+
+  - include: yum_cache_clean.yml
+    when: project == "re"

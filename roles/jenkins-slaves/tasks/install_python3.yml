@@ -28,6 +28,12 @@
   unarchive: copy=no src=/tmp/Python-{{python3_version}}.tgz  dest=/tmp
   when: python3_exists is not defined
 
+- name: install_tools | delete python3 tarball
+  sudo: yes
+  sudo_user: root
+  file: path=/tmp/Python-{{python3_version}}.tgz state=absent
+  when: python3_exists is not defined
+
 - name: install_tools | Configure python3
   sudo: yes
   sudo_user: root
@@ -70,3 +76,8 @@
   shell: "/usr/local/bin/python3 -m ensurepip"
   when: project == "re" and ( ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5' )
 
+- name: install_tools | delete python3 from /tmp
+  sudo: yes
+  sudo_user: root
+  file: path=/tmp/Python-{{python3_version}} state=absent
+  when: python3_exists is not defined

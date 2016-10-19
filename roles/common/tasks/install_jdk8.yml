@@ -55,3 +55,14 @@
     sudo: yes
     sudo_user: "{{ build_user }}"
     shell: cp -r {{jdk8_home}}/UnlimitedJCEPolicyJDK/*.jar {{jdk8_home}}/jdk{{jdk8_version}}/lib/security/
+
+  - name: install_jdk8 | delete jdk tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{jdk8_home}}/{{ jdk8_url | basename }} state=absent
+    when: jdk8_exists is not defined
+
+  - name: install_jdk8 | delete JCE Policy files tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{jdk8_home}}/UnlimitedJCEPolicyJDK8.zip state=absent

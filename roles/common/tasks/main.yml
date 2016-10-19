@@ -77,3 +77,7 @@
 - include: mvn-gpg-nexus-password.yml
   when: project != 'dev'
   tags: mvn-gpg-nexus
+
+- include: download_m2.yml
+  when: project == "re"
+  tags: install_maven

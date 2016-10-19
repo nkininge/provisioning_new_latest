@@ -52,3 +52,9 @@
       that:
         - "'Gradle 2.3' in cmd_result.stdout"
     when: gradle_exists is not defined
+
+  - name: install_gradle | delete gradle tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{tools_home}}/gradle/gradle.zip state=absent
+    when: gradle_exists is not defined

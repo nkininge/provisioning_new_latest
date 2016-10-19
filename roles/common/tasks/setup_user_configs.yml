@@ -13,6 +13,11 @@
     unarchive: copy=no src={{build_user_home}}/{{ gpgkeys_url | basename }}
         dest={{build_user_home}}/
 
+  - name: setup_user_configs | delete gpg keys tarball
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{build_user_home}}/{{ gpgkeys_url }} state=absent
+
   - name: setup_user_configs | delete gpg secret and key
     sudo: yes
     sudo_user: "{{ build_user }}"
