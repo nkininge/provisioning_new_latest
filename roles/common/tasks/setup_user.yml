@@ -19,6 +19,14 @@
     sudo_user: root
     file: path="{{home_base_dir}}" state=directory 
 
+  - name: setup_fact | set build_user_uid to 99 if nobody user
+    set_fact: build_user_uid="99"
+    when: build_user == "nobody"
+
+  - name: setup_fact | set build_group to nobody if nobody user
+    set_fact: build_group="nobody"
+    when: build_user == "nobody"
+
   - name: setup_user | Add user
     sudo: yes
     sudo_user: root
