@@ -15,7 +15,7 @@
     },
     "hwx": {
         "stack-version": "0.1.0.0",
-        "poll-frequency": "60",
+        "poll-frequency": "360",
         "platforms": [
              "centos6",
              "centos7"
