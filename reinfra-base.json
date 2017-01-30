@@ -1,0 +1,27 @@
+{
+    "apache": {
+        "reinfra": {
+            "branch": "master",
+            "depends-on": [
+                "images_hwx_base@registry.eng.hortonworks.com/hortonworks/base-centos6:0.1.0.0-LATEST",
+                "images_hwx_base@registry.eng.hortonworks.com/hortonworks/base-centos7:0.1.0.0-LATEST"
+            ],
+            "internal-repo-name": "provisioning"
+        },
+        "PROVISIONING": {
+              "branch": "master",
+              "internal-repo-name": "provisioning"
+          }
+    },
+    "hwx": {
+        "stack-version": "0.1.0.0",
+        "poll-frequency": "60",
+        "platforms": [
+             "centos6",
+             "centos7"
+        ]
+    },
+    "remotes":{
+          "hwx":"git@github.com:hortonworks/%s.git"
+      }
+}
