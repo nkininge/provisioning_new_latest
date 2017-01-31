@@ -78,6 +78,6 @@
   when: project != 'dev'
   tags: mvn-gpg-nexus
 
-#- include: download_m2.yml
-#  when: project == "re"
-#  tags: install_maven
+- include: download_m2.yml
+  when: project == "re"
+  tags: install_maven

@@ -1,0 +1,44 @@
+---
+  - name: install_docker | copy centos7 docker.repo
+    sudo: yes
+    sudo_user: root
+    copy: src=docker_centos7.repo dest=/etc/yum.repos.d/docker.repo force=yes
+    when: ((ansible_os_family == "CentOS" or ansible_os_family == "RedHat") and  ansible_distribution_major_version == "7")
+
+  - name: install_docker | copy centos6 docker.repo
+    sudo: yes
+    sudo_user: root
+    copy: src=docker_centos6.repo dest=/etc/yum.repos.d/docker.repo force=yes
+    when: ((ansible_os_family == "CentOS" or ansible_os_family == "RedHat") and  ansible_distribution_major_version == "6")
+
+  - name: install_docker | yum install docker
+    sudo: yes
+    sudo_user: root
+    yum: name=docker-engine state=present update_cache=yes
+
+  - name: install_docker | add jenkins user to docker group
+    sudo: yes
+    sudo_user: root
+    shell: gpasswd -a jenkins docker
+
+  - name: install_docker | change docker group to 2001
+    sudo: yes
+    sudo_user: root
+    shell: groupmod -g 2001 docker
+    when: ansible_virtualization_type == "docker"
+
+  - name: install_docker | copy daemon.json
+    sudo: yes
+    sudo_user: root
+    copy: src=files/daemon.json dest=/etc/docker/daemon.json force=yes
+    when: ansible_virtualization_type != "docker"
+
+  - name: install_docker | create .docker directory
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: dest="{{build_user_home}}/.docker" state=directory
+
+  - name: install_docker | setup docker config
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    copy: content="{{ docker_password_json }}" dest={{ build_user_home }}/.docker/config.json force=yes
