@@ -26,4 +26,4 @@
   roles:
     - common
     - jenkins-slaves
-    - docker
+    - {role: docker, when: build_user == "jenkins" and project == "re"}
