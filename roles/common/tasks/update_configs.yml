@@ -93,6 +93,13 @@
     tags: gradle_properties
     when: project == "re"
 
+  - name: "setup ./gradle/gradle.properites | update gradle.properties if user is not jenkins"
+    shell: sed -i "s;0\/jenkins;0\/{{ build_user }};" "{{ build_user_home }}/.gradle/gradle.properties"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    tags: gradle_properties
+    when: project == "re" and build_user != "jenkins"
+
   - name: "setup ./gradle/gradle.properties"
     sudo: yes
     sudo_user: "{{ build_user }}"
