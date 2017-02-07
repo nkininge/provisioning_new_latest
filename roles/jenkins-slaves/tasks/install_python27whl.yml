@@ -52,7 +52,7 @@
 - name: install_tools | pip install
   sudo: yes
   sudo_user: root
-  shell: "{{ tools_home }}/python27whl/bin/python2.7 -m ensurepip"
+  shell: "{{tools_home}}/python27whl/Python-{{python27_version}}/bin/python2.7 -m ensurepip"
   tags: install_openstack_tools
   when: project == "re"
 
