@@ -115,3 +115,9 @@
              mode=744 force=yes url_password={{ url_download_key }} url_username=releng
     when: project == "re"
     tags: gradle_properties
+
+  - name: "copy hw-caching-proxy.sh file"
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    copy: src="hw-caching-proxy.sh" dest="/etc/profile.d/hw-caching-proxy.sh" force=yes
+    tags: update_caching_proxy
