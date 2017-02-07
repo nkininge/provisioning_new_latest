@@ -122,3 +122,8 @@
 
   - include: yum_cache_clean.yml
     when: project == "re"
+
+  - include: install_python27whl.yml
+    tags:
+      - install_python27whl
+      - install_python
