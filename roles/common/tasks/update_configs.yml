@@ -118,6 +118,6 @@
 
   - name: "copy hw-caching-proxy.sh file"
     sudo: yes
-    sudo_user: "{{ build_user }}"
+    sudo_user: root
     copy: src="hw-caching-proxy.sh" dest="/etc/profile.d/hw-caching-proxy.sh" force=yes
     tags: update_caching_proxy
