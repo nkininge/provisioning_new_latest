@@ -52,3 +52,5 @@ sonar_ant_task_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/sonar
 sonar_runner_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/sonar-runner-dist-2.4.zip"
 r_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/R-3.2.2.tar.gz"
 zinc_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/zinc-{{ zinc_version }}.tgz"
+npm_registry: "http://registry.npmjs.org/"
+cache_proxy: "http://hwx-eng:5XD6xKQDiKDjOD@cache.eng.hortonworks.com:1280"

@@ -55,3 +55,21 @@
     sudo_user: "{{ build_user }}"
     command: "/usr/local/bin/npm config set unsafe-perm true"
     tags: npm_config
+
+  - name: run npm set registry | npm install
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: "/usr/local/bin/npm config set registry {{ npm_registry }}"
+    tags: npm_config
+
+  - name: run npm set proxy | npm install
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: "/usr/local/bin/npm config set proxy {{ cache_proxy }}"
+    tags: npm_config
+
+  - name: run npm set https-proxy | npm install
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    command: "/usr/local/bin/npm config set https-proxy {{ cache_proxy }}"
+    tags: npm_config
