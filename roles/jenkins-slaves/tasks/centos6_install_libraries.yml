@@ -4,7 +4,10 @@
     sudo_user: root
     yum: pkg={{item}} state=latest
     with_items:
+      - epel-release
       - texlive-latex
+      - postgresql-devel
+      - openblas-devel
 
   - name: install_libraries | install asciidoc - centos6
     sudo: yes
