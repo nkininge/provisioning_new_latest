@@ -116,6 +116,9 @@
       - s3cmd
       - gfortran
       - fort77
+      - libopenblas-base
+      - libopenblas-dev
+      - libpq-dev
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
