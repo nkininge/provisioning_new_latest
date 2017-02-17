@@ -119,6 +119,8 @@
       - libopenblas-base
       - libopenblas-dev
       - libpq-dev
+      - libblas-dev
+      - liblapack-dev
   
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   sudo: yes
