@@ -116,8 +116,6 @@
       - s3cmd
       - gfortran
       - fort77
-      - libopenblas-base
-      - libopenblas-dev
       - libpq-dev
       - libblas-dev
       - liblapack-dev
