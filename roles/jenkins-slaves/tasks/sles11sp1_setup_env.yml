@@ -13,9 +13,10 @@
 
 - name: sles11sp1_setup_env | update rpmmacros
   sudo: yes
-  tags: install_libraries
   copy: src=rpmmacros dest={{ build_user_home }}/.rpmmacros
       owner={{build_user}} group=users
-  tags: setup_rpmmacro
+  tags: 
+   - install_libraries
+   - setup_rpmmacro
 
 

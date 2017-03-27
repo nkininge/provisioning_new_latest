@@ -1,0 +1,116 @@
+  - name: Installing Libraries | sles12sp1
+    sudo: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    with_items:
+      - cyrus-sasl-devel
+      - libmysqlclient-devel
+      - python-devel
+      - curl-devel
+      - bzip2
+      - libbz2-1
+      - libbz2-devel
+      - libzip-devel
+      - bzip2-doc
+      - libzip-devel
+      - p7zip
+      - rpmbuild
+      - rsync
+
+  - name: Installing Libraries | sles12sp1 | gcc gcc-c++
+    sudo: yes
+    sudo_user: root
+    zypper: pkg={{item}} disable_gpg_check=yes state=installed
+    with_items:
+     - gcc
+     - gcc-c++
+     - ant
+     - ant-nodeps
+     - ant-trax
+     - krb5-devel
+     - tcpd-devel
+     - xorg-x11-devel
+
+  - name: Installing Libraries | sles12sp1 | openldap2-devel
+    sudo: yes
+    sudo_user: root
+    zypper: pkg={{item}} disable_gpg_check=yes state=installed
+    with_items:
+     - openldap2-devel
+     - fuse-devel
+     - libxslt-devel
+     - cairo-devel
+     - pango-devel
+     - rrdtool-devel
+     - gettext-tools
+
+  - name: Check if gcc-c++.rpm is installed
+    command: rpm -qa | grep gcc-c++
+    ignore_errors: yes
+    register: gcc_rpm_check
+
+  - name: check the status of gcc_rpm_check
+    debug: msg="{{gcc_rpm_check.stdout.find('gcc-c++')}}"
+
+  - name: install_libraries | install HDP-utils zypper repo
+    sudo: yes
+    zypper_repository: name="HDP-UTILS" repo="http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.21/repos/sles12" state=present
+
+  - name: "Installing Libraries"
+    sudo: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=installed
+    with_items:
+      - wget
+      - createrepo
+      - lsb-release
+      - curl
+      - subversion
+      - snappy-devel
+      - lzo-devel
+      - asciidoc
+      - libcppunit-devel
+      - gcc
+      - automake
+      - autoconf
+      - libconfuse-devel
+      - cmake
+      - python-setuptools
+      - libxml2-devel
+      - sqlite3-devel
+      - gd-devel
+      - libpng-devel
+      - libjpeg-devel
+      - docbook-xsl-stylesheets
+      - texlive-latex
+      - intltool
+      - lua-devel
+      - dejagnu
+      - rsh
+      - fdupes
+      - tcl-devel
+      - rrdtool-devel
+      - latex2html-pngicons
+      - clamav
+      - docbook
+      - texlive-latex-doc
+      - xmlto
+      - libtool
+      - libxslt
+      - pcre-devel
+      - docbook5-xsl-stylesheets
+      - docbook-utils
+      - libart_lgpl-devel
+      - freetype2-devel
+      - glib2-devel
+      - ruby-devel
+
+  - name: install_libraries | zypper in
+    sudo: yes
+    shell: rpm -ivh http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-1.7.0-16.1.x86_64.rpm http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-devel-1.7.0-16.1.x86_64.rpm
+    tags: install_libraries
+
+  - name: install_libraries | zypper in
+    sudo: yes
+    zypper: name={{item}} disable_gpg_check=yes state=present
+    with_items:
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/sles12sp1/asciidoc-8.6.8-6.15.noarch.rpm
+    tags: install_libraries

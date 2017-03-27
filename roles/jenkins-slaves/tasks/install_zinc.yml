@@ -25,23 +25,28 @@
 - name: install_zinc | Create zinc directory
   file: path={{ tools_home }}/zinc state=directory owner="{{ build_user }}"
   sudo: yes
-  sudo_user: {{ build_user }}
+  sudo_user: "{{ build_user }}"
   when: zinc_exists is not defined
 
 - name: install_zinc | Download zinc
   get_url: url={{ zinc_url }} dest=/tmp/{{ zinc_base }} timeout=120
   sudo: yes
-  sudo_user: {{ build_user }}
+  sudo_user: "{{ build_user }}"
   when: zinc_exists is not defined
 
 - name: install_zinc | untar zinc
   sudo: yes
-  sudo_user: {{ build_user }}
+  sudo_user: "{{ build_user }}"
   unarchive: copy=no src=/tmp/{{ zinc_base }} dest={{ tools_home }}/zinc/
   when: zinc_exists is not defined
 
 - name: install_zinc | Symlink zinc-<version> -> latest
   sudo: yes
-  sudo_user: {{ build_user }}
+  sudo_user: "{{ build_user }}"
   file: src={{ tools_home }}/zinc/zinc-{{ zinc_version }} dest={{ tools_home }}/zinc/latest state=link
   when: zinc_exists is not defined
+
+- name: install_zinc | delete zinc.tgz from /tmp
+  sudo: yes
+  sudo_user: root
+  file: path=/tmp/{{ zinc_base }} state=absent

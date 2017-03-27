@@ -1,6 +1,6 @@
---- 
+---
 - name: install_python27 | check if python27 is installed
-  command: "python27 --version"
+  command: "/usr/local/bin/python27 --version"
   register: check_python27
   ignore_errors: yes
 
@@ -16,37 +16,37 @@
 - name: install_tools | Mkdir python27
   sudo: yes
   sudo_user: root
-  file: path={{tools_home}}/python27 state=directory
+  file: path={{tools_home}}/python state=directory
   when: python27_exists is not defined
 
 - name: install_tools | Download python27
   sudo: yes
   sudo_user: root
-  get_url: url=http://www.python.org/ftp/python/{{python27_version}}/Python-{{python27_version}}.tgz  dest={{tools_home}}/python27/Python-{{python27_version}}.tgz  mode=0644 force=yes timeout=120
+  get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/Python-{{python27_version}}.tgz  dest=/tmp/Python-{{python27_version}}.tgz  mode=0644 force=yes timeout=120
   when: python27_exists is not defined
 
 - name: install_tools | Untar python27
   sudo: yes
   sudo_user: root
-  unarchive: copy=no src={{tools_home}}/python27/Python-{{python27_version}}.tgz  dest={{tools_home}}/python27
+  unarchive: copy=no src=/tmp/Python-{{python27_version}}.tgz  dest=/tmp/
   when: python27_exists is not defined
 
 - name: install_tools | Configure python27
   sudo: yes
   sudo_user: root
-  command:  ./configure chdir={{tools_home}}/python27/Python-{{python27_version}}
+  command: ./configure --prefix {{tools_home}}/python/{{python27_version}} chdir=/tmp/Python-{{python27_version}}
   when: python27_exists is not defined
 
 - name: install_tools | Compile python27
   sudo: yes
   sudo_user: root
-  command:  make chdir={{tools_home}}/python27/Python-{{python27_version}}
+  command: make chdir=/tmp/Python-{{python27_version}}
   when: python27_exists is not defined
 
-- name: install_tools | Install python27
+- name: install_tools | Install python27 non docker
   sudo: yes
   sudo_user: root
-  command:  make  altinstall chdir={{tools_home}}/python27/Python-{{python27_version}}
+  command: make install chdir=/tmp/Python-{{python27_version}}
   when: python27_exists is not defined
 
 - name: install_tools | Remove symlink for python27
@@ -58,7 +58,7 @@
 - name: install_tools | Symlink python27
   sudo: yes
   sudo_user: root
-  file:  src={{tools_home}}/python27/Python-{{python27_version}}/python  dest=/usr/local/bin/python27  mode=0755 state=link force=yes
+  file:  src={{tools_home}}/python/{{python27_version}}/bin/python  dest=/usr/local/bin/python27  mode=0755 state=link force=yes
   when: python27_exists is not defined
 
 - name: install_tools | Symlink python27
@@ -70,26 +70,26 @@
 - name: install_tools | pip install
   sudo: yes
   sudo_user: root
-  shell: "/usr/local/bin/python2.7 -m ensurepip"
+  shell: "/usr/local/bin/python27 -m ensurepip"
   tags: install_openstack_tools
-  when: project == "re" and ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' and ansible_distribution != 'Ubuntu')
+  when: project == "re" and ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' and ansible_distribution != 'Debian7')
 
 - name: install_tools | pip upgrade | debian7
   sudo: yes
   sudo_user: root
-  shell: "/usr/local/bin/pip2.7 install --upgrade setuptools"
+  shell: "/usr/local/bin/pip27 install --upgrade setuptools"
   tags: install_openstack_tools
-  when: project == "re" and ( ansible_distribution == "Debian" and ansible_distribution_major_version == "7")
+  when: project == "re" and ( ansible_distribution == "Debian" and ansible_distribution_major_version == "5")
 
 - name: install_tools | pip install openstack packages
   sudo: yes
   sudo_user: root
   shell: "/usr/local/bin/pip2.7 install python-novaclient==2.25.0 ConcurrentLogHandler python-glanceclient jinja2 configobj"
   tags: install_openstack_tools
-  when: project == "re" and ( ansible_distribution != 'Ubuntu' and ansible_distribution != 'Suse' and ansible_distribution != 'SLES')
+  when: project == "re" and ansible_virtualization_type != "docker" and ( ansible_distribution != 'Ubuntu' and ansible_distribution != 'Suse' and ansible_distribution != 'SLES')
 
 - name: install_tools | delete python27 from /tmp
   sudo: yes
   sudo_user: root
-  file: path={{tools_home}}/python27/Python-{{python27_version}}.tgz state=absent
+  file: path=/tmp/Python-{{python27_version}}.tgz state=absent
   when: python27_exists is not defined

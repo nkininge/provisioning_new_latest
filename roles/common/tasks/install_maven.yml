@@ -88,7 +88,6 @@
   - name: install_maven 3.3.3 | "set fact if maven version is {{mvn333_version}}"
     set_fact: maven333_exists="true"
     when: check_maven333.rc == 0 and check_maven333.stdout.find("{{mvn333_version}}") != -1
-    when: maven333_exists is defined
     tags: maven333
 
   - name: install_maven 3.3.3 | skip maven 3.3.3 installation

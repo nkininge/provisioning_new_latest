@@ -19,6 +19,15 @@
       - libzip1
       - libzip-devel
 
+  - name: Installing Libraries | suse11sp3
+    sudo: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    when: ansible_virtualization_type == "docker"
+    with_items:
+     - glibc-locale
+     - rsync
+     - patch
+
   - name: Check if gcc-c++.rpm is installed
     command: rpm -qa | grep gcc-c++
     ignore_errors: yes

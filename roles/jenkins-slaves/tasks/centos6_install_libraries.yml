@@ -8,6 +8,7 @@
       - texlive-latex
       - postgresql-devel
       - openblas-devel
+      - python-argparse
 
   - name: install_libraries | install asciidoc - centos6
     sudo: yes

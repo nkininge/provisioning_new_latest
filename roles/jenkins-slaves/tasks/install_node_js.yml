@@ -73,3 +73,8 @@
     sudo_user: "{{ build_user }}"
     command: "/usr/local/bin/npm config set https-proxy {{ cache_proxy }}"
     tags: npm_config
+
+  - name: install_node_js | delete node.tar.gz from /tmp
+    sudo: yes
+    sudo_user: root
+    file: path=/tmp/{{ node_js_url | basename }} state=absent

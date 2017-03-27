@@ -22,7 +22,7 @@
 - name: install_tools | download python27whl
   sudo: yes
   sudo_user: root
-  get_url: url=http://www.python.org/ftp/python/{{python27_version}}/Python-{{python27_version}}.tgz  dest=/tmp/Python-{{python27_version}}.tgz  mode=0644 force=yes timeout=120
+  get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/Python-{{python27_version}}.tgz  dest=/tmp/Python-{{python27_version}}.tgz  mode=0644 force=yes timeout=120
   when: python27whl_exists is not defined
 
 - name: install_tools | untar python27whl

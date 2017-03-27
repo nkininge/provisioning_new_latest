@@ -1,6 +1,6 @@
 ---
 - name: check if build_user is set
-  fail: msg='Bailing out. this play requires username, Please pass in the form  -e "build_user=xyz"'
+  fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
   when: build_user is not defined
 
 - include: setup_user.yml
@@ -14,6 +14,7 @@
     - setup_user
     - secret_profile
     - secrets_conf
+    - docker_slave_setup
 
 - include: setup_user_sshkeys.yml
   when: ssh_url is defined
@@ -21,6 +22,7 @@
     - setup_user
     - ssh_setup
     - secrets_conf
+    - docker_slave_setup
 
 - include: readonly_sshkeys.yml
   when: readonly_ssh is defined
@@ -34,6 +36,11 @@
     - install_jdk
 
 - include: install_jdk7.yml
+  tags:
+    - install_jdk7
+    - install_jdk
+
+- include: install_jdk7_80.yml
   tags:
     - install_jdk7
     - install_jdk
@@ -68,11 +75,20 @@
   tags: install_tools
 
 - include: setup_user_configs.yml
-  when: project != 'dev'
+  when: project != 'dev' and build_user != "nobody"
   tags: setup_gpg
 
 - include: update_configs.yml
-  tags: update_configs
+  when: build_user != "nobody"
+  tags:
+    - update_configs
+    - docker_slave_setup
+
+- include: re_readonly_update_configs.yml
+  when: project == "re" and build_user == "nobody"
+  tags:
+    - update_configs
+    - docker_slave_setup
 
 - include: mvn-gpg-nexus-password.yml
   when: project != 'dev'

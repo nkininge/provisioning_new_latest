@@ -102,6 +102,8 @@
       - curl-devel
       - createrepo
       - subversion
+      - gcc-gfortran
+      - rsync
 
   - name: install_libraries | install alien
     sudo: yes
@@ -124,7 +126,6 @@
       - pdsh
       - ant-nodeps
       - graphviz
-      - gcc-gfortran
 
   - name: install_libraries | install 7zip
     sudo: yes

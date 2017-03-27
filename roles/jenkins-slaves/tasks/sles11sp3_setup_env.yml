@@ -26,5 +26,8 @@
   tags: set_hostname
 
 - name: sles11sp3_setup_env | set hostname
+  sudo: yes
+  sudo_user: root
   shell: "hostname {{host_name.stdout}}"
+  when: ansible_virtualization_type != "docker"
   tags: set_hostname

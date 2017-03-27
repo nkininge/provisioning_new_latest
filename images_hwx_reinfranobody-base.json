@@ -3,7 +3,7 @@
         "reinfranobody": {
             "branch": "master",
             "depends-on": [
-                "images_hwx_base@registry.eng.hortonworks.com/hortonworks/base-centos6:0.1.0.0-LATEST"
+                "images_hwx_base@centos6@registry.eng.hortonworks.com/hortonworks/base-centos6:0.1.0.0-LATEST@centos6"
             ],
             "internal-repo-name": "provisioning"
         },

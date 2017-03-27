@@ -1,4 +1,7 @@
 ---
+  - set_fact: ssh_url="{{ readonly_ssh_url }}"
+    when: project == "re" and build_user == "nobody"
+
   - set_fact: base_ssh_url="{{ ssh_url | basename }}"
   - set_fact: base_ssh_dir="{{ base_ssh_url.split('.')[0] }}"
 
@@ -81,10 +84,29 @@
      - {name: config,  attr: 644}
      - {name: authorized_keys, attr: 600}
 
-  - name: setup_user | copy hwx_secrets.conf file
+  - name: setup_user | root | autorized_keys
     sudo: yes
-    sudo_user: "{{ build_user }}"
-    get_url: url={{jenkins_secrets_conf}} dest={{build_user_home}}/.ssh/{{ jenkins_secrets_conf | basename }}
-             force=yes timeout=120 url_password={{ url_download_key }} url_username=releng
-    tags: secrets_conf
-    when: project == 're'
+    sudo_user: root
+    file: path=/root/.ssh state=directory
+
+  - name: setup_user | root | autorized_keys
+    sudo: yes
+    sudo_user: root
+    copy: src="authorized_keys" dest="/root/.ssh/authorized_keys" force=yes
+    when: ansible_virtualization_type == "docker"
+
+  - name: setup_user | add lines at EOF /etc/ssh/sshd_config
+    sudo: yes
+    sudo_user: root
+    lineinfile: dest="/etc/ssh/sshd_config" line="{{item}}" insertafter=EOF
+    with_items:
+     - "PasswordAuthentication no"
+     - "PermitRootLogin without-password"
+     - "PubkeyAuthentication yes"
+    when: ansible_virtualization_type == "docker"
+
+  - name: setup_user | disable PermitRootLogin
+    sudo: yes
+    sudo_user: root
+    lineinfile: dest="/etc/ssh/sshd_config" regexp="PermitRootLogin yes" line="#PermitRootLogin yes"
+    when: ansible_virtualization_type == "docker"
