@@ -9,19 +9,19 @@
       - ruby-libs-1.8.7.352
       - epel-release
     ignore_errors: yes
-  
+
   - name: centos7_repo_setup | install epel release
     sudo: yes
     sudo_user: root
     when: ansible_distribution_major_version|int == 7
-    yum: name='http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/epel-release-7-8.noarch.rpm' state=present
+    yum: name='http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/epel-release-7-9.noarch.rpm' state=present
 
   - name: get epel-repo rpm RHEL6
     sudo: yes
     sudo_user: root
     shell: yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/6/x86_64/
     when: ansible_distribution_major_version|int == 6
- 
+
   - name: install_libraries | centos5 manual rpm install | epel && asciidoc
     sudo: yes
     sudo_user: root
@@ -140,3 +140,17 @@
     when: ansible_distribution_major_version|int == 7
     yum: name=R state=latest update_cache=yes
     tags: install_r
+
+  - name: install_libraries | centos7 | leveldb-devel, boost-devel
+    sudo: yes
+    sudo_user: root
+    when: ansible_distribution_major_version|int == 7
+    yum: pkg={{item}} state=latest
+    with_items:
+      - leveldb-devel
+      - boost-devel
+      - cmake3
+      - libuuid-devel
+      - libssl-dev
+      - doxygen
+      - libcurl-devel
