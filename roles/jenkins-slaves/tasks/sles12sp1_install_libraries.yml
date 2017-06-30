@@ -102,6 +102,7 @@
       - freetype2-devel
       - glib2-devel
       - ruby-devel
+      - gcc-fortran
 
   - name: install_libraries | zypper in
     sudo: yes
