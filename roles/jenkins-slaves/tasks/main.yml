@@ -49,7 +49,7 @@
 
   - include: configure_clamav.yml
     tags: configure_clamav
-    when: project == "re" and build_user != "nobody" and (ansible_distribution == 'Suse' or  ansible_distribution == 'SLES')
+    when: project == "re" and build_user != "nobody"
 
   - include: centos_env_setup.yml
     tags: centos_rpm_gpg
