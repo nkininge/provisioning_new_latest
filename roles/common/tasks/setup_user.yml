@@ -13,6 +13,7 @@
     group: name="{{item}}" state=present
     with_items:
       - "{{build_group}}"
+    when: build_user != "{{current_user}}"
 
   - name: setup_user | create {{build_user_home}} base dir
     sudo: yes
@@ -32,3 +33,4 @@
     sudo_user: root
     user: name="{{ build_user }}" home={{build_user_home}} uid="{{ build_user_uid }}"
       group={{build_group}} shell="/bin/bash"
+    when: build_user != "{{current_user}}"
