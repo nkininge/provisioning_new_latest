@@ -152,6 +152,5 @@
       - boost-devel
       - cmake3
       - libuuid-devel
-      - libssl-dev
       - doxygen
       - libcurl-devel
