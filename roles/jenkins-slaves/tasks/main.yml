@@ -47,10 +47,6 @@
     tags: install_libraries
     when: (ansible_distribution == 'Suse' or  ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
 
-  - include: configure_clamav.yml
-    tags: configure_clamav
-    when: project == "re" and build_user != "nobody"
-
   - include: centos_env_setup.yml
     tags: centos_rpm_gpg
     when: project != "dev" and ansible_os_family == 'RedHat'
@@ -152,3 +148,7 @@
     tags:
       - install_python27whl
       - install_python
+
+  - include: configure_clamav.yml
+    tags: configure_clamav
+    when: project == "re" and build_user != "nobody"
