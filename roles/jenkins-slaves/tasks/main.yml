@@ -152,3 +152,7 @@
   - include: configure_clamav.yml
     tags: configure_clamav
     when: project == "re" and build_user != "nobody"
+
+  - include: install_hdpchanges.yml
+    tags: install_hdpchanges
+
