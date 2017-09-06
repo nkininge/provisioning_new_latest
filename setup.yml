@@ -5,7 +5,6 @@
     slave: False
     project: "{{ project_name }}"
     build_user: "{{ username }}"
-    current_user: "{{ ansible_env.LOGNAME }}"
     home_base_dir: "/grid/0"
     builds_home: "{{home_base_dir}}/{{ build_user }}"
     secret_profile_file: "{{ project }}_secrets.yml"
