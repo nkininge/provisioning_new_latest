@@ -1,0 +1,83 @@
+---
+  - name: install_libraries | check if cmake is installed
+    command: cmake --version
+    register: check_cmake
+    ignore_errors: yes
+    always_run: yes
+
+  - set_fact: installed_cmake_version={{ check_cmake.stdout.split('\n')[0].split(' ')[2] }}
+    when: check_cmake.rc == 0
+
+  - set_fact: installed_cmake_version=0
+    when: check_cmake.rc != 0
+
+  - name: install_libraries | "set fact if cmake version is {{ installed_cmake_version }} > {{cmake_version}}"
+    set_fact: cmake_exists="true"
+    when: check_cmake.rc == 0 and {{ installed_cmake_version | version_compare(cmake_version, '>') }}
+
+  - name: install_libraries | skip cmake installation
+    debug: msg="skipping cmake installation as it is already installed"
+    when: cmake_exists is defined
+
+  - set_fact: install_base_dir={{tools_home}}/cmake
+
+  - set_fact: install_dir={{install_base_dir}}/{{ cmake_version }}
+
+  - set_fact: cmake_base={{install_base_dir}}/{{ cmake_url | basename }}
+
+  - set_fact: cmake_base_dir={{ cmake_base | regex_replace('\.tar\.gz','') }}
+    when: cmake_base is defined
+
+  - name: install_cmake | Make cmake build folder
+    file: path={{ install_base_dir }} state=directory
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: cmake_exists is not defined
+
+  - name: install_cmake | download cmake
+    get_url: url={{cmake_url}} dest={{cmake_base}} mode=0770 timeout=120
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: cmake_exists is not defined
+
+  - name: install_cmake | untar cmake
+    unarchive: copy=no src={{ cmake_base }} dest={{ install_base_dir }}
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: cmake_exists is not defined
+
+  - name: install_cmake | configure cmake
+    shell: chdir={{cmake_base_dir}} {{ cmake_base_dir }}/configure --prefix={{install_dir}}
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: cmake_exists is not defined
+
+  - name: install_cmake | make CMake
+    shell: chdir={{cmake_base_dir}} make
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: cmake_exists is not defined
+
+  - name: install_cmake | install CMake
+    shell: chdir={{cmake_base_dir}} make install
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: cmake_exists is not defined
+
+  - name: install_cmake | Symlink <version> -> latest
+    file: src={{ install_dir }} dest={{ tools_home }}/cmake/latest state=link
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    when: cmake_exists is not defined
+
+  - name: install_cmake | delete cmake tarball from {{ cmake_base }}
+    sudo: yes
+    sudo_user: root
+    file: path={{ cmake_base }} state=absent
+    when: cmake_exists is not defined
+
+  - name: install_cmake | delete cmake source directory from {{ cmake_base_dir }}
+    sudo: yes
+    sudo_user: root
+    file: path={{ cmake_base_dir }} state=absent
+    when: cmake_exists is not defined
