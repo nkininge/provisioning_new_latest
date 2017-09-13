@@ -1,4 +1,4 @@
-FROM registry.eng.hortonworks.com/hortonworks/base-sles11sp3:0.1-testing
+FROM REPLACE_BASE_IMAGE
 
 RUN zypper ar http://172.22.77.245/sles11sp3 hosted_sp3
 RUN zypper install -y --force-resolution gcc43-c++ unzip
