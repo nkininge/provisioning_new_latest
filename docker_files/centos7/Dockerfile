@@ -1,6 +1,7 @@
 FROM REPLACE_BASE_IMAGE
 
-RUN yum install -y ansible
+RUN rpm --rebuilddb
+RUN yum install -y ansible deltarpm yum-plugin-ovl
 
 COPY . /root/ansible/
 
