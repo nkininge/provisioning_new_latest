@@ -104,6 +104,14 @@
       - subversion
       - gcc-gfortran
       - rsync
+      - autoconf
+      - automake
+
+  - name: install_libraries | install the 'Development tools' package group
+    sudo: yes
+    sudo_user: root
+    yum: name="@Development tools" state=present
+    when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | install alien
     sudo: yes
