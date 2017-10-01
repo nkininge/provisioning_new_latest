@@ -1,0 +1,45 @@
+---
+- name: install_zookeeper | check if zookeeper is installed
+  stat:
+    path: "{{ hbase_native_home }}/lib/libzookeeper_mt.so"
+  register: stat_result
+
+- name: install_zookeeper | set fact false if zookeeper is not installed
+  set_fact:
+    zookeeper_exists: false
+  when: stat_result.stat.exists == False
+
+- name: install_zookeeper | set fact true if zookeeper is installed
+  set_fact:
+    zookeeper_exists: true
+  when: stat_result.stat.exists == True
+
+- name: install_zookeeper | skip zookeeper installation
+  debug: msg="skipping zookeeper installation as it is already installed"
+  when: zookeeper_exists
+
+- name: install_zookeeper | download zookeeper
+  get_url: url="{{zookeeper_url}}" dest=/tmp/{{ zookeeper_url | basename }} timeout=120
+  when: not zookeeper_exists
+
+- name: install_zookeeper | unarchive zookeeper tar.gz
+  unarchive: src=/tmp/{{ zookeeper_url | basename }} dest=/tmp/ copy=no
+  when: not zookeeper_exists
+
+- name: install_zookeeper | install zookeeper from src
+  shell: export JAVA_HOME={{jdk8_home}}/jdk{{jdk8_version}}; {{tools_home}}/ant/apache-ant-{{ant_version}}/bin/ant mvn-install; cd src/c; ./configure --prefix={{hbase_native_home}}; make; make install
+  args:
+   chdir: /tmp/zookeeper-release-HDP-2.6.2.8-tag
+  when: not zookeeper_exists
+
+- name: install_zookeeper | rm /tmp/zookeeper-{{zookeeper_version}}
+  sudo: yes
+  sudo_user: root
+  shell: rm -rf /tmp/zookeeper-{{zookeeper_version}}
+  when: not zookeeper_exists
+
+- name: install_zookeeper | rm /tmp/{{ zookeeper_url | basename }}
+  sudo: yes
+  sudo_user: root
+  shell: rm -rf /tmp/{{ zookeeper_url | basename }}
+  when: not zookeeper_exists

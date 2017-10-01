@@ -1,0 +1,45 @@
+---
+- name: install_glog | check if glog is installed
+  stat:
+    path: "{{ hbase_native_home }}/lib/libglog.so"
+  register: stat_result
+
+- name: install_glog | set fact false if glog is not installed
+  set_fact:
+    glog_exists="false"
+  when: stat_result.stat.exists == False
+
+- name: install_glog | set fact true if glog is installed
+  set_fact:
+    glog_exists="true"
+  when: stat_result.stat.exists == True
+
+- name: install_glog | skip glog installation
+  debug: msg="skipping glog installation as it is already installed"
+  when: glog_exists
+
+- name: install_glog | download glog
+  get_url: url="{{glog_url}}" dest=/tmp/{{ glog_url | basename }} timeout=120
+  when: not glog_exists
+
+- name: install_glog | unarchive glog tar.gz
+  unarchive: src=/tmp/{{ glog_url | basename }} dest=/tmp/ copy=no
+  when: not glog_exists
+
+- name: install_glog | install glog from src
+  shell: ./configure --prefix={{hbase_native_home}}; make; make install;
+  args:
+   chdir: /tmp/glog-{{glog_version}}
+  when: not glog_exists
+
+- name: install_glog | rm /tmp/glog-{{glog_version}}
+  sudo: yes
+  sudo_user: root
+  shell: rm -rf /tmp/glog-{{glog_version}}
+  when: not glog_exists
+
+- name: install_glog | rm /tmp/{{ glog_url | basename }}
+  sudo: yes
+  sudo_user: root
+  shell: rm -rf /tmp/{{ glog_url | basename }}
+  when: not glog_exists

@@ -162,3 +162,23 @@
   - include: install_hdpchanges.yml
     tags: install_hdpchanges
 
+  - include: install_gflags.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+
+  - include: install_glog.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+
+  - include: install_gtest.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+
+  - include: install_boost.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+
+  - include: install_folly.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+
+  - include: install_wangle.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+
+  - include: install_zookeeper.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
