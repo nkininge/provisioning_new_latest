@@ -81,7 +81,6 @@
       - quilt
       - libcairo2-dev
       - libpango1.0-dev
-      - libprotobuf-dev
       - libdbi0-dev
       - tcl-dev
       - liblua5.1-0-dev
@@ -100,6 +99,15 @@
       - fort77
       - devscripts
       - libpq-dev
+
+- name: Install_Libraries | Install Ubuntu Libraries and build Tools
+  sudo: yes
+  sudo_user: root
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+  apt: pkg={{item}} update_cache=yes state=latest force=yes
+  with_items:
+      - libprotobuf-dev
+      - libdouble-conversion-dev
 
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu non docker
   sudo: yes
