@@ -106,6 +106,13 @@
       - rsync
       - autoconf
       - automake
+      - centos-release-scl
+      - libevent-devel
+
+  - name: install_libraries | install devtoolset-6
+    sudo: yes
+    sudo_user: root
+    yum: name="devtoolset-6" state=present
 
   - name: install_libraries | install the 'Development tools' package group
     sudo: yes

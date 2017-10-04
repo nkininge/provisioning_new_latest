@@ -9,6 +9,7 @@
       - postgresql-devel
       - openblas-devel
       - python-argparse
+      - autoconf268.noarch
 
   - name: install_libraries | install asciidoc - centos6
     sudo: yes

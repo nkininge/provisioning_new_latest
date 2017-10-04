@@ -30,7 +30,13 @@
   shell: ./configure --prefix={{hbase_native_home}}; make; make install;
   args:
    chdir: /tmp/glog-{{glog_version}}
-  when: not glog_exists
+  when: not glog_exists and ansible_os_family != 'RedHat'
+
+- name: install_glog | install glog from src
+  shell: scl enable devtoolset-6 "./configure --prefix={{hbase_native_home}}; make; make install;"
+  args:
+   chdir: /tmp/glog-{{glog_version}}
+  when: not glog_exists and ansible_os_family == 'RedHat'
 
 - name: install_glog | rm /tmp/glog-{{glog_version}}
   sudo: yes

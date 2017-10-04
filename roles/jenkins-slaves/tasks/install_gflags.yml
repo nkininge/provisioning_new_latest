@@ -30,7 +30,13 @@
   shell: mkdir build; cd build; cmake .. -DCMAKE_INSTALL_PREFIX={{hbase_native_home}} -DBUILD_SHARED_LIBS=ON ; make; make install;
   args:
    chdir: /tmp/gflags-{{gflags_version}}
-  when: not gflags_exists
+  when: not gflags_exists and ansible_os_family != 'RedHat'
+
+- name: install_gflags | install gflags from src
+  shell: scl enable devtoolset-6 "mkdir build; cd build; cmake .. -DCMAKE_INSTALL_PREFIX={{hbase_native_home}} -DBUILD_SHARED_LIBS=ON ; make; make install;"
+  args:
+   chdir: /tmp/gflags-{{gflags_version}}
+  when: not gflags_exists and ansible_os_family == 'RedHat'
 
 - name: install_gflags | rm /tmp/gflags-{{gflags_version}}
   sudo: yes

@@ -27,10 +27,28 @@
   when: not folly_exists
 
 - name: install_folly | install folly from src
-  shell: export PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig:$PKG_CONFIG_PATH; export LD_LIBRARY_PATH={{hbase_native_home}}/lib:$LD_LIBRARY_PATH; autoreconf -ivf; LDFLAGS="-L{{hbase_native_home}}/lib" CPPFLAGS="-I{{hbase_native_home}}/include" ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;
+  shell: export PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig:$PKG_CONFIG_PATH; export LD_LIBRARY_PATH={{hbase_native_home}}/lib:$LD_LIBRARY_PATH; autoreconf -ivf; LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;
   args:
    chdir: /tmp/folly-{{folly_version}}/folly
-  when: not folly_exists
+  when: not folly_exists and ansible_os_family != 'RedHat'
+
+- name: install_folly | install folly from src
+  shell: scl enable devtoolset-6 "export PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig:$PKG_CONFIG_PATH; export LD_LIBRARY_PATH={{hbase_native_home}}/lib:$LD_LIBRARY_PATH; /usr/bin/autoreconf268 -ivf; LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;"
+  args:
+    chdir: /tmp/folly-{{folly_version}}/folly
+    when: not folly_exists and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == '6'
+
+- name: install_folly | install folly from src
+  shell: scl enable devtoolset-6 "export PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig:$PKG_CONFIG_PATH; export LD_LIBRARY_PATH={{hbase_native_home}}/lib:$LD_LIBRARY_PATH; /usr/bin/autoreconf -ivf; LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;"
+  args:
+    chdir: /tmp/folly-{{folly_version}}/folly
+    when: not folly_exists and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == '7'
+
+- name: install_folly | install folly from src
+  shell: scl enable devtoolset-6 "export PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig:$PKG_CONFIG_PATH; export LD_LIBRARY_PATH={{hbase_native_home}}/lib:$LD_LIBRARY_PATH; /usr/bin/autoreconf -ivf; LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;"
+  args:
+   chdir: /tmp/folly-{{folly_version}}/folly
+  when: not folly_exists and ansible_os_family == 'RedHat'
 
 - name: install_folly | rm /tmp/folly-{{folly_version}}
   sudo: yes

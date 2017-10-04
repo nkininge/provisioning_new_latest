@@ -26,7 +26,13 @@
   shell: cmake . -DCMAKE_INSTALL_PREFIX={{hbase_native_home}} -DBUILD_SHARED_LIBS=ON ; make; make install;
   args:
    chdir: /tmp/googletest-release-{{gtest_version}}
-  when: not gtest_exists
+  when: not gtest_exists and ansible_os_family != 'RedHat'
+
+- name: install_gtest | install gtest from src
+  shell: scl enable devtoolset-6 "cmake . -DCMAKE_INSTALL_PREFIX={{hbase_native_home}} -DBUILD_SHARED_LIBS=ON ; make; make install;"
+  args:
+   chdir: /tmp/googletest-release-{{gtest_version}}
+  when: not gtest_exists and ansible_os_family == 'RedHat'
 
 - name: install_gtest | rm /tmp/gtest-{{gtest_version}}
   sudo: yes

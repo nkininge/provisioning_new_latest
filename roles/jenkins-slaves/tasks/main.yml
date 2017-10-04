@@ -83,6 +83,8 @@
     tags: install_git
 
   - include: install_protobuf.yml
+      protobuf_version="2.5.0"
+      protobuf_home="/opt"
     tags: install_protobuf
 
   - include: install_ruby.yml
@@ -162,23 +164,35 @@
   - include: install_hdpchanges.yml
     tags: install_hdpchanges
 
+  - name: install_hbase_native_deps | set fact hbase_native_deps
+    set_fact:
+      hbase_native_deps: true
+    when: (ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16")
+
+  - include: install_protobuf.yml
+      protobuf_version="2.6.1"
+      protobuf_home="{{hbase_native_home}}"
+      hbase_native_deps="true"
+    when: hbase_native_deps is defined
+
   - include: install_gflags.yml
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+    when: hbase_native_deps is defined
 
   - include: install_glog.yml
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+    when: hbase_native_deps is defined
 
   - include: install_gtest.yml
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+    when: hbase_native_deps is defined
 
   - include: install_boost.yml
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+    when: hbase_native_deps is defined
 
   - include: install_folly.yml
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+    when: hbase_native_deps is defined
 
   - include: install_wangle.yml
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+    when: hbase_native_deps is defined
 
   - include: install_zookeeper.yml
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+    when: hbase_native_deps is defined

@@ -1,20 +1,34 @@
 ---
   - name: install_protobuf | check if protobuf is installed
-    command: /opt/bin/protoc --version
+    command: "{{ protobuf_home }}/bin/protoc --version"
     register: check_protobuf
     ignore_errors: yes
 
   # check if "check_protobuf" is defined and value is equal to desired protobuf version
-  - name: install_protobuf | "set fact if protobuf version is 2.5.0"
+  - name: install_protobuf | "set fact if protobuf version is {{ protobuf_version }}"
     set_fact: protobuf_exists="true"
-    when: check_protobuf.rc == 0 and check_protobuf.stdout.find('2.5.0') != -1
+    when: check_protobuf.rc == 0 and check_protobuf.stdout.find("protobuf_version") != -1
 
   - name: install_protobuf | skip protobuf installation
     debug: msg="skip protobuf installation as it is already installed"
     when: protobuf_exists is defined
 
+  - set_fact: protobuf_url={{ protobuf_2_5_0_url }}
+    when: protobuf_version == "2.5.0"
+
+  - set_fact: protobuf_url={{ protobuf_2_6_1_url }}
+    when: protobuf_version == "2.6.1"
+
+  - set_fact: protobuf_base={{ protobuf_url | basename }}
+
+  - set_fact: protobuf_base_dir={{ protobuf_base | regex_replace('\.tar\.gz','') }}
+    when: protobuf_base is defined
+
+  - name: install_protobuf | Debug protobuf URL
+    debug: msg="Print protobuf URL {{ protobuf_url }}"
+
   - name: install_protobuf | Download protobuf
-    get_url: url={{protobuf_url}} dest=/tmp/{{ protobuf_url | basename }} timeout=120
+    get_url: url={{ protobuf_url }} dest=/tmp/{{ protobuf_base }} timeout=120
     when: protobuf_exists is not defined
 
   - name: install_protobuf | rm protobuf
@@ -22,23 +36,29 @@
     when: protobuf_exists is not defined
 
   - name: install_protobuf | untar Protobuf
-    unarchive: copy=no src=/tmp/{{ protobuf_url | basename }} dest=/tmp/
+    unarchive: copy=no src=/tmp/{{ protobuf_base }} dest=/tmp/
     when: protobuf_exists is not defined
 
-  - name: install_protobuf | configure/make/make install
+  - name: install_protobuf | "configure/make/make install - protobuf {{protobuf_version}}"
     sudo: yes
     sudo_user: root
-    shell: cd /tmp/protobuf-2.5.0 ; ./configure --prefix=/opt ; make clean ; make install
-    when: protobuf_exists is not defined
+    shell: cd /tmp/{{ protobuf_base_dir }} ; ./configure --prefix={{ protobuf_home }}; make; sudo make install
+    when: protobuf_version == "2.5.0"
+
+  - name: install_protobuf | "configure/make/make install - protobuf {{ protobuf_version }}"
+    sudo: yes
+    sudo_user: root
+    shell: cd /tmp/{{ protobuf_base_dir }} ; scl enable devtoolset-6 "./configure --prefix={{ protobuf_home }}; make; make install"
+    when: protobuf_version == "2.6.1"
 
   - name: install_protobuf | delete protobuf from /tmp
     sudo: yes
     sudo_user: root
-    file: path=/tmp/protobuf-2.5.0 state=absent
+    file: path=/tmp/{{ protobuf_base_dir }} state=absent
     when: protobuf_exists is not defined
 
   - name: install_protobuf | delete protobuf tarball from /tmp
     sudo: yes
     sudo_user: root
-    file: path=/tmp/{{ protobuf_url | basename }} state=absent
+    file: path=/tmp/{{ protobuf_base }} state=absent
     when: protobuf_exists is not defined

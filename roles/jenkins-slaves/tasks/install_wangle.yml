@@ -30,7 +30,13 @@
   shell: cmake . -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX={{hbase_native_home}}; make; make install
   args:
    chdir: /tmp/wangle-{{wangle_version}}/wangle
-  when: not wangle_exists
+  when: not wangle_exists and ansible_os_family != 'RedHat'
+
+- name: install_wangle | install wangle from src
+  shell: scl enable devtoolset-6 "cmake . -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX={{hbase_native_home}}; make; make install"
+  args:
+   chdir: /tmp/wangle-{{wangle_version}}/wangle
+  when: not wangle_exists and ansible_os_family == 'RedHat'
 
 - name: install_wangle | rm /tmp/wangle-{{wangle_version}}
   sudo: yes
