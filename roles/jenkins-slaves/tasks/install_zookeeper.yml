@@ -30,13 +30,13 @@
   shell: export JAVA_HOME={{jdk8_home}}/jdk{{jdk8_version}}; {{tools_home}}/ant/apache-ant-{{ant_version}}/bin/ant mvn-install; cd src/c; ./configure --prefix={{hbase_native_home}}; make; make install
   args:
    chdir: /tmp/zookeeper-release-HDP-2.6.2.8-tag
-  when: not zookeeper_exists and ansible_os_family != 'RedHat'
+  when: ((not zookeeper_exists) and (ansible_os_family != 'RedHat'))
 
 - name: install_zookeeper | install zookeeper from src
   shell: export JAVA_HOME={{jdk8_home}}/jdk{{jdk8_version}}; export PATH=/usr/bin:$PATH; {{tools_home}}/ant/apache-ant-{{ant_version}}/bin/ant mvn-install; cd src/c; scl enable devtoolset-6 "PATH=/usr/bin:$PATH ./configure --prefix={{hbase_native_home}}; make; make install"
   args:
    chdir: /tmp/zookeeper-release-HDP-2.6.2.8-tag
-  when: not zookeeper_exists and ansible_os_family == 'RedHat'
+  when: ((not zookeeper_exists) and (ansible_os_family == 'RedHat'))
 
 - name: install_zookeeper | rm /tmp/zookeeper-{{zookeeper_version}}
   sudo: yes
