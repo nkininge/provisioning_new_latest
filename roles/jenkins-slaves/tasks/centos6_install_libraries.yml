@@ -9,7 +9,14 @@
       - postgresql-devel
       - openblas-devel
       - python-argparse
+
+  - name: install_libraries | yum install autoconf268 | centos6 only
+    sudo: yes
+    sudo_user: root
+    yum: pkg={{item}} state=latest
+    with_items:
       - autoconf268.noarch
+    when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | install asciidoc - centos6
     sudo: yes

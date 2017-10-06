@@ -173,26 +173,25 @@
   - include: install_protobuf.yml
       protobuf_version="2.6.1"
       protobuf_home="{{hbase_native_home}}"
-      hbase_native_deps="true"
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
 
   - include: install_gflags.yml
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
 
   - include: install_glog.yml
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
 
   - include: install_gtest.yml
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
 
   - include: install_boost.yml
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
 
   - include: install_folly.yml
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
 
   - include: install_wangle.yml
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
 
   - include: install_zookeeper.yml
-    when: hbase_native_deps is defined
+    when: hbase_native_deps
