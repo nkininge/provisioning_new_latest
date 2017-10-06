@@ -164,34 +164,36 @@
   - include: install_hdpchanges.yml
     tags: install_hdpchanges
 
-  - name: install_hbase_native_deps | set fact hbase_native_deps
-    set_fact:
-      hbase_native_deps: true
-    when: (ansible_distribution == "CentOS") or
-          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16")
-
   - include: install_protobuf.yml
       protobuf_version="2.6.1"
       protobuf_home="{{hbase_native_home}}"
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
   - include: install_gflags.yml
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
   - include: install_glog.yml
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
   - include: install_gtest.yml
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
   - include: install_boost.yml
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
   - include: install_folly.yml
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
   - include: install_wangle.yml
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
   - include: install_zookeeper.yml
-    when: hbase_native_deps
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))

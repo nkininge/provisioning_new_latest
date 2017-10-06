@@ -24,9 +24,6 @@
   - set_fact: protobuf_base_dir={{ protobuf_base | regex_replace('\.tar\.gz','') }}
     when: protobuf_base is defined
 
-  - name: install_protobuf | Debug protobuf URL
-    debug: msg="Print protobuf URL {{ protobuf_url }}"
-
   - name: install_protobuf | Download protobuf
     get_url: url={{ protobuf_url }} dest=/tmp/{{ protobuf_base }} timeout=120
     when: protobuf_exists is not defined
