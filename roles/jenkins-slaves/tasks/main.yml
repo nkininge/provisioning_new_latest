@@ -164,6 +164,9 @@
   - include: install_hdpchanges.yml
     tags: install_hdpchanges
 
+  - include: install_cyrus_sasl.yml
+    when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6")
+
   - include: install_protobuf.yml
       protobuf_version="2.6.1"
       protobuf_home="{{hbase_native_home}}"
@@ -185,6 +188,9 @@
   - include: install_boost.yml
     when: ((ansible_distribution == "CentOS") or
           (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
+
+  - include: install_double-conversion.yml
+    when: (ansible_distribution == "CentOS")
 
   - include: install_folly.yml
     when: ((ansible_distribution == "CentOS") or

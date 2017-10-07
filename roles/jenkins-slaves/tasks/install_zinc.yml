@@ -50,3 +50,4 @@
   sudo: yes
   sudo_user: root
   file: path=/tmp/{{ zinc_base }} state=absent
+  when: zinc_exists is not defined

@@ -30,7 +30,7 @@
 
   - name: install_protobuf | rm protobuf
     shell: rm -rf /opt/bin/protoc
-    when: protobuf_exists is not defined
+    when: ((protobuf_exists is not defined) and (protobuf_version == "2.5.0"))
 
   - name: install_protobuf | untar Protobuf
     unarchive: copy=no src=/tmp/{{ protobuf_base }} dest=/tmp/
