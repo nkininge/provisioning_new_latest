@@ -1,18 +1,12 @@
 ---
   - name: install_cyrus_sasl | check if cyrus_sasl is installed
-    command: "/usr/sbin/saslauthd -v"
+    command: "/usr/sbin/saslauthd -v 2>&1"
     register: check_cyrus_sasl
     ignore_errors: yes
 
-  - set_fact: installed_cyrus_sasl_version={{ check_cyrus_sasl.stderr }}
-    when: check_cyrus_sasl.rc == 0
-
-  - set_fact: installed_cyrus_sasl_version=0
-    when: check_cyrus_sasl.rc != 0
-
   - name: install_cyrus_sasl | "set fact if cyrus_sasl version is not 2.1.26"
-    set_fact: cyrus_sasl_exists="true"
-    when: check_cyrus_sasl.rc == 0 and {{ installed_cyrus_sasl_version | version_compare(cyrus_sasl_version, '>=') }}
+    set_fact: cyrus_sasl_exists=true
+    when: ((check_cyrus_sasl.rc == 0) and (check_cyrus_sasl.stdout.find('2.1.26') != -1))
 
   - name: install_cyrus_sasl | skip cyrus_sasl installation
     debug: msg="skipping cyrus_sasl installation as it is already installed"
