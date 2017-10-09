@@ -27,7 +27,7 @@
   when: not folly_exists
 
 - name: install_folly | install folly from src
-  shell: autoreconf -ivf; PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;
+  shell: autoreconf -ivf; PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig LD_LIBRARY_PATH={{ hbase_native_home }}/lib LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;
   args:
    chdir: /tmp/folly-{{folly_version}}/folly
   when: ((not folly_exists) and (ansible_os_family != 'RedHat'))
