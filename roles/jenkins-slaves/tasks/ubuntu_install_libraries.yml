@@ -106,7 +106,6 @@
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
-      - libprotobuf-dev
       - libdouble-conversion-dev
 
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu non docker
