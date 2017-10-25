@@ -108,6 +108,8 @@
       - automake
       - centos-release-scl
       - libevent-devel
+      - doxygen
+      - leveldb-devel
 
   - name: install_libraries | install devtoolset-6
     sudo: yes
@@ -157,15 +159,13 @@
     yum: name=R state=latest update_cache=yes
     tags: install_r
 
-  - name: install_libraries | centos7 | leveldb-devel, boost-devel
+  - name: install_libraries | centos7 | boost-devel
     sudo: yes
     sudo_user: root
     when: ansible_distribution_major_version|int == 7
     yum: pkg={{item}} state=latest
     with_items:
-      - leveldb-devel
       - boost-devel
       - cmake3
       - libuuid-devel
-      - doxygen
       - libcurl-devel

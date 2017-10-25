@@ -17,6 +17,7 @@
       - dpkg-dev
       - debhelper
       - devscripts
+      - doxygen
       - erlang-base
       - erlang-eunit
       - erlang-dev
@@ -58,6 +59,8 @@
       - libssl-dev
       - libtool
       - libxml-xpath-perl
+      - libboost-system1.49-dev
+      - libboost-filesystem1.49-dev
       - libz-dev
       - make
       - mingw32

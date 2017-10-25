@@ -185,6 +185,10 @@
     when: ((ansible_distribution == "CentOS") or
           (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
 
+  - include: install_rocksdb.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
+
   - include: install_boost.yml
     when: ((ansible_distribution == "CentOS") or
           (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))

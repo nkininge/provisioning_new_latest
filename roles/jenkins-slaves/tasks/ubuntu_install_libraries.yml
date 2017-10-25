@@ -16,6 +16,7 @@
       - dh-make
       - dpkg-dev
       - debhelper
+      - doxygen
       - erlang-base
       - erlang-eunit
       - erlang-dev
@@ -107,6 +108,8 @@
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
       - libdouble-conversion-dev
+      - liblz4-dev
+      - libzstd-dev
 
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu non docker
   sudo: yes

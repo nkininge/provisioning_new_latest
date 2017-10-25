@@ -1,0 +1,57 @@
+---
+- name: install_rocksdb | check if rocksdb is installed
+  stat:
+    path: "{{ hbase_native_home }}/lib/librocksdb.so"
+  register: stat_result
+
+- name: install_rocksdb | set fact false if rocksdb is not installed
+  set_fact:
+    rocksdb_exists: false
+  when: stat_result.stat.exists == False
+
+- name: install_rocksdb | set fact true if rocksdb is installed
+  set_fact:
+    rocksdb_exists: true
+  when: stat_result.stat.exists == True
+
+- name: install_rocksdb | skip rocksdb installation
+  debug: msg="skipping rocksdb installation as it is already installed"
+  when: rocksdb_exists
+
+- name: install_rocksdb | download rocksdb
+  get_url: url="{{rocksdb_url}}" dest=/tmp/{{ rocksdb_url | basename }} timeout=120
+  when: not rocksdb_exists
+
+- name: install_rocksdb | unarchive rocksdb tar.gz
+  unarchive: src=/tmp/{{ rocksdb_url | basename }} dest=/tmp/ copy=no
+  when: not rocksdb_exists
+
+- name: install_rocksdb | install rocksdb from src
+  shell: cmake . -DWITH_TESTS=OFF; make rocksdb rocksdb-shared;
+  args:
+   chdir: /tmp/rocksdb-{{rocksdb_version}}
+  when: not rocksdb_exists and ansible_os_family != 'RedHat'
+
+- name: install_rocksdb | install rocksdb from src
+  shell: scl enable devtoolset-6 "cmake . -DWITH_TESTS=OFF; make rocksdb rocksdb-shared;"
+  args:
+   chdir: /tmp/rocksdb-{{rocksdb_version}}
+  when: not rocksdb_exists and ansible_os_family == 'RedHat'
+
+- name: install_rocksdb | copy rocksdb library and include
+  shell: cp -r include/rocksdb {{ hbase_native_home }}/include; cp librocksdb.* {{ hbase_native_home }}/lib 
+  args:
+   chdir: /tmp/rocksdb-{{rocksdb_version}}
+  when: not rocksdb_exists
+
+- name: install_rocksdb | rm /tmp/rocksdb-{{rocksdb_version}}
+  sudo: yes
+  sudo_user: root
+  shell: rm -rf /tmp/rocksdb-{{rocksdb_version}}
+  when: not rocksdb_exists
+
+- name: install_rocksdb | rm /tmp/{{ rocksdb_url | basename }}
+  sudo: yes
+  sudo_user: root
+  shell: rm -rf /tmp/{{ rocksdb_url | basename }}
+  when: not rocksdb_exists
