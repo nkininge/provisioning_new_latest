@@ -1,6 +1,8 @@
 FROM REPLACE_BASE_IMAGE
 
-RUN pip install ansible==1.9.2 && ansible --version
+RUN pip install -i https://pypi.python.org/simple/ --upgrade pip
+RUN pip install -i https://pypi.python.org/simple/ cffi
+RUN pip install -i https://pypi.python.org/simple/ ansible==1.9.4 && ansible --version
 
 COPY . /root/ansible/
 

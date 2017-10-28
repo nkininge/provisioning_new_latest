@@ -22,7 +22,7 @@
   sudo: yes
   sudo_user: root
   when: ansible_os_family != 'RedHat'
-  easy_install: name={{item}}
+  shell: easy_install -i {{pypi_index_url}} {{item}}
   with_items:
   - pip
   - argparse
