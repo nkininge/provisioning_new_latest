@@ -41,6 +41,7 @@
     sudo_user: root
     yum: pkg={{item}} state=latest 
     with_items:
+      - cmake3
       - gd-devel
       - libpng-devel
       - libjpeg-devel
@@ -110,6 +111,8 @@
       - libevent-devel
       - doxygen
       - leveldb-devel
+      - libuuid-devel
+      - libcurl-devel
 
   - name: install_libraries | install devtoolset-6
     sudo: yes
@@ -166,6 +169,15 @@
     yum: pkg={{item}} state=latest
     with_items:
       - boost-devel
-      - cmake3
-      - libuuid-devel
-      - libcurl-devel
+      - boost-filesystem
+      - boost-system
+
+  - name: install_libraries | centos6 | boost-filesystem
+    sudo: yes
+    sudo_user: root
+    when: ansible_distribution_major_version|int == 6
+    yum: pkg={{item}} state=latest
+    with_items:
+      - boost148-devel
+      - boost148-filesystem
+      - boost148-system
