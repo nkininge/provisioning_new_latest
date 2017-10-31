@@ -110,6 +110,8 @@
       - libdouble-conversion-dev
       - liblz4-dev
       - libzstd-dev
+      - libboost-filesystem1.58-dev
+      - libboost-signals1.58-dev
 
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu non docker
   sudo: yes
