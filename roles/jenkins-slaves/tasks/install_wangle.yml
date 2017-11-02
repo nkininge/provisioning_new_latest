@@ -27,7 +27,7 @@
   when: not wangle_exists
 
 - name: install_wangle | install wangle from src
-  shell: cmake . -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX={{hbase_native_home}}; make; make install
+  shell: cmake . -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX={{hbase_native_home}} -DBOOST_ROOT={{hbase_native_home}}; make; make install
   args:
    chdir: /tmp/wangle-{{wangle_version}}/wangle
   when: ((not wangle_exists) and (ansible_os_family != 'RedHat'))
