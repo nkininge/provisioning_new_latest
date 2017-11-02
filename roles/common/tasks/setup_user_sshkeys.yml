@@ -33,48 +33,73 @@
     sudo_user: "{{ build_user }}"
     file: path={{build_user_home}}/.ssh owner={{ build_user }} group={{ build_group }} state=directory mode=700
 
+  - name: setup_user | check id_rsa file exists
+    stat:
+      path: "{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa"
+    register: id_rsa_stat_result
+
   - name: setup_user | ssh keys - id_rsa
     sudo: yes
     sudo_user: "{{ build_user }}"
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa" dest="{{ build_user_home }}/.ssh/id_rsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
-    ignore_errors: yes
+    when: id_rsa_stat_result.stat.exists == true
+
+  - name: setup_user | check id_rsa.pub file exists
+    stat:
+      path: "{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa.pub"
+    register: id_rsa_pub_stat_result
 
   - name: setup_user | ssh keys - id_rsa.pub
     sudo: yes
     sudo_user: "{{ build_user }}"
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa.pub" dest="{{ build_user_home }}/.ssh/id_rsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
-    ignore_errors: yes
+    when: id_rsa_pub_stat_result.stat.exists == true
+
+  - name: setup_user | check id_dsa file exists
+    stat:
+      path: "{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa"
+    register: id_dsa_stat_result
 
   - name: setup_user | ssh keys - id_dsa
     sudo: yes
     sudo_user: "{{ build_user }}"
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa" dest="{{ build_user_home }}/.ssh/id_dsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
-    ignore_errors: yes
+    when: id_dsa_stat_result.stat.exists == true
+
+  - name: setup_user | check id_dsa.pub file exists
+    stat:
+      path: "{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa.pub"
+    register: id_dsa_pub_stat_result
 
   - name: setup_user | ssh keys - id_dsa.pub
     sudo: yes
     sudo_user: "{{ build_user }}"
     copy: src="{{ build_user_home}}/{{ base_ssh_dir }}/id_dsa.pub" dest="{{ build_user_home }}/.ssh/id_dsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
-    ignore_errors: yes
+    when: id_dsa_pub_stat_result.stat.exists == true
 
-  - name: setup_user | check if "{{ build_user_home }}/{{ base_ssh_dir }}" exists
+  - name: setup_user | check if "{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys" exists
     stat:
-      path: "{{ build_user_home }}/{{ base_ssh_dir }}"
-    register: ssh_stat_result
+      path: "{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys"
+    register: ssh_auth_keys_stat_result
 
   - name: setup_user | ssh keys - authorized_keys
     sudo: yes
     sudo_user: "{{ build_user }}"
     ignore_errors: yes
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys" dest="{{ build_user_home }}/.ssh/authorized_keys" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
-    when: ssh_stat_result.stat.exists == True
+    when: ssh_auth_keys_stat_result.stat.exists == true
+
+  - name: setup_user | check if "{{ build_user_home }}/{{ base_ssh_dir }}/config" exists
+    stat:
+      path: "{{ build_user_home }}/{{ base_ssh_dir }}/config"
+    register: ssh_config_stat_result
 
   - name: setup_user | ssh keys - config
     sudo: yes
     sudo_user: "{{ build_user }}"
     ignore_errors: yes
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/config" dest="{{ build_user_home }}/.ssh/config" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
-    when: ssh_stat_result.stat.exists == True
+    when: ssh_config_stat_result.stat.exists == true
 
   - name: setup_user | root | autorized_keys
     sudo: yes
