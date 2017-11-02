@@ -1,6 +1,7 @@
 FROM REPLACE_BASE_IMAGE
 
 RUN yum install -y ansible
+RUN sed -i s/1024/2048/ /etc/security/limits.d/90-nproc.conf
 
 COPY . /root/ansible/
 

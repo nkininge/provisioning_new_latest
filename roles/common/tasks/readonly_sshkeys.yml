@@ -27,63 +27,55 @@
   - name: setup_user | create ssh directory
     sudo: yes
     sudo_user: "{{ build_user }}"
-    file: path={{build_user_home}}/.ssh state=directory mode=700
+    file: path="{{ build_user_home }}/.ssh" state=directory owner="{{ build_user }}" group="{{ build_group }}" mode=700
 
   - name: setup_user | ssh keys - id_rsa
     sudo: yes
     sudo_user: "{{ build_user }}"
-    command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_rsa {{build_user_home}}/.ssh/id_rsa
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa" dest="{{ build_user_home }}/.ssh/id_rsa" owner="{{ build_user }}" group="{{ build_group }}" mode=600
     ignore_errors: yes
 
   - name: setup_user | ssh keys - id_rsa.pub
     sudo: yes
     sudo_user: "{{ build_user }}"
-    command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_rsa.pub {{build_user_home}}/.ssh/id_rsa.pub
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa.pub" dest="{{ build_user_home }}/.ssh/id_rsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=644
     ignore_errors: yes
 
   - name: setup_user | ssh keys - id_dsa
     sudo: yes
     sudo_user: "{{ build_user }}"
-    command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_dsa {{build_user_home}}/.ssh/id_dsa
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa" dest="{{ build_user_home }}/.ssh/id_dsa" owner="{{ build_user }}" group="{{ build_group }}" mode=600
     ignore_errors: yes
 
   - name: setup_user | ssh keys - id_dsa.pub
     sudo: yes
     sudo_user: "{{ build_user }}"
-    command: cp {{build_user_home}}/{{ base_ssh_dir }}/id_dsa.pub {{build_user_home}}/.ssh/id_dsa.pub
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa.pub" dest="{{ build_user_home }}/.ssh/id_dsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=644
     ignore_errors: yes
+
+  - name: setup_user | check if "{{ build_user_home }}/{{ base_ssh_dir }}" exists
+    stat:
+      path: "{{ build_user_home }}/{{ base_ssh_dir }}"
+    register: ssh_stat_result
 
   - name: setup_user | ssh keys - authorized_keys
     sudo: yes
     sudo_user: "{{ build_user }}"
     ignore_errors: yes
-    command: cp {{build_user_home}}/{{ base_ssh_dir }}/authorized_keys {{build_user_home}}/.ssh/authorized_keys
-             removes={{build_user_home}}/{{ base_ssh_dir }}/
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys" dest="{{ build_user_home }}/.ssh/authorized_keys" owner="{{ build_user }}" group="{{ build_group }}" mode=600
+    when: ssh_stat_result.stat.exists == True
 
   - name: setup_user | ssh keys - config
     sudo: yes
     sudo_user: "{{ build_user }}"
     ignore_errors: yes
-    command: cp {{build_user_home}}/{{ base_ssh_dir }}/config {{build_user_home}}/.ssh/config
-             removes={{build_user_home}}/{{ base_ssh_dir }}/
-
-  - name: setup_user | ssh keys - file attributes for authorized keys
-    sudo: yes
-    sudo_user: "{{ build_user }}"
-    ignore_errors: yes
-    file: path={{build_user_home}}/.ssh/{{item.name}} mode={{item.attr}} state=file
-    with_items:
-     - {name: id_rsa, attr: 600}
-     - {name: id_rsa.pub,  attr: 644}
-     - {name: id_dsa, attr: 600}
-     - {name: id_dsa.pub,  attr: 644}
-     - {name: config,  attr: 644}
-     - {name: authorized_keys, attr: 600}
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/config" dest="{{ build_user_home }}/.ssh/config" owner="{{ build_user }}" group="{{ build_group }}" mode=644
+    when: ssh_stat_result.stat.exists == True
 
   - name: setup_user | copy hwx_secrets.conf file
     sudo: yes
     sudo_user: "{{ build_user }}"
     get_url: url={{non_jenkins_secrets_conf}} dest={{build_user_home}}/.ssh/{{ jenkins_secrets_conf | basename }} force=yes
-             timeout=120 url_password={{ url_download_key }} url_username=releng
+             timeout=120 url_password={{ url_download_key }} url_username=releng owner="{{ build_user }}" group="{{ build_group }}" mode=644
     tags: secrets_conf
     when: project == 're'
