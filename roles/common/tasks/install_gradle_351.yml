@@ -2,7 +2,7 @@
   - name: install_gradle_351 | capture gradle version
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/gradle/latest/bin/gradle --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/gradle/gradle-3.5.1/bin/gradle --version"
     register: check_gradle
     ignore_errors: yes
     tags: install_gradle_351
@@ -36,7 +36,7 @@
   - name: install_gradle_351 | capture gradle version
     sudo: yes
     sudo_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/gradle/latest/bin/gradle --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/gradle/gradle-3.5.1/bin/gradle --version"
     register: cmd_result
     tags: install_gradle_351
 
