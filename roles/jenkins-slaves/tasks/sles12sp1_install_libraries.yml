@@ -103,6 +103,8 @@
       - glib2-devel
       - ruby-devel
       - gcc-fortran
+      - libffi48-devel
+      - postgresql-devel
 
   - name: install_libraries | zypper in
     sudo: yes
