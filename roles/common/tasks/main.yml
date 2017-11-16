@@ -62,6 +62,9 @@
 - include: install_gradle.yml
   tags: install_gradle
 
+- include: install_gradle_351.yml
+  tags: install_gradle_351
+
 - include: install_maven.yml
   tags: install_maven
 
