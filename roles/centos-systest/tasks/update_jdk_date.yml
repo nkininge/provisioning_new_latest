@@ -1,4 +1,4 @@
 ---
   - name: update_jdk_timezone | update_jdk_timezone
-    sudo: True
+    become: True
     copy: src=hwqe.sh dest=/etc/profile.d/hwqe.sh mode=0755

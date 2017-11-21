@@ -1,7 +1,7 @@
 ---
   - name: install_libraries | uninstall 
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: pkg={{item}} state=absent
     with_items:
       - postgresql-libs
@@ -11,34 +11,34 @@
     ignore_errors: yes
 
   - name: centos7_repo_setup | install epel release
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: ansible_distribution_major_version|int == 7
     yum: name='http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/epel-release-7-9.noarch.rpm' state=present
 
   - name: get epel-repo rpm RHEL6
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/6/x86_64/
     when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | centos5 manual rpm install | epel && asciidoc
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: ansible_distribution_major_version|int == 5
     shell: rpm -Uvh {{item}}
     with_items:
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/epel-release-5-4.noarch.rpm
 
   - name: install_libraries | download s3tools repo file
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: ansible_distribution_major_version|int == 5
     get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/s3tools.repo dest=/etc/yum.repos.d/s3tools.repo timeout=120
 
   - name: install_libraries | centos
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: pkg={{item}} state=latest 
     with_items:
       - cmake3
@@ -116,31 +116,31 @@
       - libcurl-devel
 
   - name: install_libraries | install devtoolset-6
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: name="devtoolset-6" state=present
 
   - name: install_libraries | install the 'Development tools' package group
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: name="@Development tools" state=present
     when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | install alien
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: name=http://dev.hortonworks.com.s3.amazonaws.com/REJENKINS/alien-8.81-2.noarch.rpm state=present
     when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | install asciidoc - centos5
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: rpm -Uvh http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/centos5/asciidoc-8.6.9-1.el5.rf.noarch.rpm
     when: ansible_distribution_major_version|int == 5
 
   - name: install_libraries | non centos7 | pdsh, ant-nodeps
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: ansible_distribution_major_version|int != 7
     yum: pkg={{item}} state=latest
     with_items:
@@ -149,23 +149,23 @@
       - graphviz
 
   - name: install_libraries | install 7zip
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: pkg={{item}} state=latest
     with_items:
       - p7zip
       - p7zip-plugins
 
   - name: install_libraries | centos7 | install R
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: ansible_distribution_major_version|int == 7
     yum: name=R state=latest update_cache=yes
     tags: install_r
 
   - name: install_libraries | centos7 | boost-devel
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: ansible_distribution_major_version|int == 7
     yum: pkg={{item}} state=latest
     with_items:
@@ -174,8 +174,8 @@
       - boost-system
 
   - name: install_libraries | centos6 | boost-filesystem
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: ansible_distribution_major_version|int == 6
     yum: pkg={{item}} state=latest
     with_items:

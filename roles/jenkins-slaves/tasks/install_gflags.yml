@@ -39,13 +39,13 @@
   when: not gflags_exists and ansible_os_family == 'RedHat'
 
 - name: install_gflags | rm /tmp/gflags-{{gflags_version}}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/gflags-{{gflags_version}}
   when: not gflags_exists
 
 - name: install_gflags | rm /tmp/{{ gflags_url | basename }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ gflags_url | basename }}
   when: not gflags_exists

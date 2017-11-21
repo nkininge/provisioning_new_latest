@@ -6,31 +6,31 @@
   - set_fact: base_ssh_dir="{{ base_ssh_url.split('.')[0] }}"
 
   - name: setup_user | ssh keys - Download
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     when: project != 'dev'
     get_url: url={{ ssh_url }} dest={{build_user_home}}/{{ base_ssh_url }} force=yes timeout=120
              url_password={{ url_download_key }} url_username=releng
 
   - name: setup_user | ssh keys - Download
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     when: project == 'dev'
     copy: src={{ ssh_url }} dest={{build_user_home}}/{{ base_ssh_url }} owner={{ build_user }}  group={{ build_group }} mode=0644
 
   - name: setup_user | ssh keys - untar
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ base_ssh_url }} dest={{build_user_home}}/
 
   - name: setup_user | delete ssh keys tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{build_user_home}}/{{ base_ssh_url }} state=absent
 
   - name: setup_user | create ssh directory
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{build_user_home}}/.ssh owner={{ build_user }} group={{ build_group }} state=directory mode=700
 
   - name: setup_user | check id_rsa file exists
@@ -39,8 +39,8 @@
     register: id_rsa_stat_result
 
   - name: setup_user | ssh keys - id_rsa
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa" dest="{{ build_user_home }}/.ssh/id_rsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
     when: id_rsa_stat_result.stat.exists == true
 
@@ -50,8 +50,8 @@
     register: id_rsa_pub_stat_result
 
   - name: setup_user | ssh keys - id_rsa.pub
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa.pub" dest="{{ build_user_home }}/.ssh/id_rsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
     when: id_rsa_pub_stat_result.stat.exists == true
 
@@ -61,8 +61,8 @@
     register: id_dsa_stat_result
 
   - name: setup_user | ssh keys - id_dsa
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa" dest="{{ build_user_home }}/.ssh/id_dsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
     when: id_dsa_stat_result.stat.exists == true
 
@@ -72,8 +72,8 @@
     register: id_dsa_pub_stat_result
 
   - name: setup_user | ssh keys - id_dsa.pub
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     copy: src="{{ build_user_home}}/{{ base_ssh_dir }}/id_dsa.pub" dest="{{ build_user_home }}/.ssh/id_dsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
     when: id_dsa_pub_stat_result.stat.exists == true
 
@@ -83,8 +83,8 @@
     register: ssh_auth_keys_stat_result
 
   - name: setup_user | ssh keys - authorized_keys
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     ignore_errors: yes
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys" dest="{{ build_user_home }}/.ssh/authorized_keys" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
     when: ssh_auth_keys_stat_result.stat.exists == true
@@ -95,26 +95,26 @@
     register: ssh_config_stat_result
 
   - name: setup_user | ssh keys - config
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     ignore_errors: yes
     copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/config" dest="{{ build_user_home }}/.ssh/config" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
     when: ssh_config_stat_result.stat.exists == true
 
   - name: setup_user | root | autorized_keys
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     file: path=/root/.ssh state=directory
 
   - name: setup_user | root | autorized_keys
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     copy: src="authorized_keys" dest="/root/.ssh/authorized_keys" force=yes
     when: ansible_virtualization_type == "docker"
 
   - name: setup_user | add lines at EOF /etc/ssh/sshd_config
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     lineinfile: dest="/etc/ssh/sshd_config" line="{{item}}" insertafter=EOF
     with_items:
      - "PasswordAuthentication no"
@@ -123,7 +123,7 @@
     when: ansible_virtualization_type == "docker"
 
   - name: setup_user | disable PermitRootLogin
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     lineinfile: dest="/etc/ssh/sshd_config" regexp="PermitRootLogin yes" line="#PermitRootLogin yes"
     when: ansible_virtualization_type == "docker"

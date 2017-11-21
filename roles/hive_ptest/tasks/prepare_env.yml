@@ -1,7 +1,7 @@
 ---
   - name: prepare_env | install tools necessary for ansible exec - debian
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     apt: name={{item}} state=present update_cache=yes
     with_items:
     - zip
@@ -10,8 +10,8 @@
     when: ansible_os_family == "Debian"
 
   - name: prepare_env | install tools necessary for ansible exec - centos
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: name={{item}} state=present
     with_items:
     - zip

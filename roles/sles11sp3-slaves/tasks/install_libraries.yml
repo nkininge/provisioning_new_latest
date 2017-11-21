@@ -1,6 +1,6 @@
 ---
   - name: install_libraries | zypper in
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest 
     tags: install_libraries
     with_items:
@@ -9,12 +9,12 @@
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/asciidoc-8.6.8-8.1.noarch.rpm
 
   - name: install_libraries | easy_install python modules
-    sudo: yes
+    become: yes
     tags: install_libraries
     easy_install: name=virtualenv
  
   - name: install_libraries | zypper in
-    sudo: yes
+    become: yes
     tags: install_libraries
     zypper: pkg={{item}} disable_gpg_check=yes state=latest 
     with_items:
@@ -48,22 +48,22 @@
       - pcre-devel
 
   - name: install-python-argparse | install python spare libs
-    sudo: yes
+    become: yes
     easy_install: name=pip
     easy_install: name=argparse
     easy_install: name=requests
     tags:   install_argparse
   
   - name: Install_Libraries | Install Ruby Libraries and build Tools
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     apt: pkg={{item}} update_cache=yes state=latest
     tags: install_rubygems
     with_items:
         - rubygems
   
   - name: Install_Libraries | Install Ruby Libraries and Debian build Tools
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     gem:  name=gem2deb
     tags: install_rubygems

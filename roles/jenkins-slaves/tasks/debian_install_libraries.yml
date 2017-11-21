@@ -1,6 +1,6 @@
 - name: Install_Libraries | Install Debian Libraries and build Tools
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
       - ant
@@ -124,34 +124,34 @@
   
 
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   gem:  name={{item}}
   with_items:
    - gem2deb
    - json
 
 - name: install_libraries | setup hdp-utils on debian
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   apt_repository: repo='deb http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.20/repos/debian6 HDP-UTILS main' state=present
 
 - name: Install_Libraries | Install snappy
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
     - libsnappy1
     - libsnappy-dev
 
 - name: install_libraries | symlink gem | debian 7 only
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: src="/usr/bin/gem"  dest="/usr/local/bin/gem" state=link
 
 - name: install_Libraries | Install 7zip
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
     - p7zip
@@ -159,8 +159,8 @@
 
 # http://askubuntu.com/questions/101591/how-do-i-install-python-2-7-2-on-ubuntu
 - name: Install_Libraries | Install Debian Libraries and build Tools - debian 7 docker 
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
    - checkinstall

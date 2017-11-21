@@ -37,31 +37,31 @@
     when: protobuf_exists is not defined
 
   - name: install_protobuf | "configure/make/make install - protobuf {{protobuf_version}}"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: cd /tmp/{{ protobuf_base_dir }} ; ./configure --prefix={{ protobuf_home }}; make; sudo make install
     when: protobuf_version == "2.5.0"
 
   - name: install_protobuf | "configure/make/make install - protobuf {{ protobuf_version }}"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: cd /tmp/{{ protobuf_base_dir }} ; scl enable devtoolset-6 "./configure --prefix={{ protobuf_home }}; make; make install"
     when: protobuf_version == "2.6.1" and ansible_os_family == 'RedHat'
 
   - name: install_protobuf | "configure/make/make install - protobuf {{ protobuf_version }}"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: cd /tmp/{{ protobuf_base_dir }} ; ./configure --prefix={{ protobuf_home }}; make; make install
     when: protobuf_version == "2.6.1" and ansible_os_family != 'RedHat'
 
   - name: install_protobuf | delete protobuf from /tmp
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     file: path=/tmp/{{ protobuf_base_dir }} state=absent
     when: protobuf_exists is not defined
 
   - name: install_protobuf | delete protobuf tarball from /tmp
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     file: path=/tmp/{{ protobuf_base }} state=absent
     when: protobuf_exists is not defined

@@ -45,13 +45,13 @@
   when: not rocksdb_exists
 
 - name: install_rocksdb | rm /tmp/rocksdb-{{rocksdb_version}}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/rocksdb-{{rocksdb_version}}
   when: not rocksdb_exists
 
 - name: install_rocksdb | rm /tmp/{{ rocksdb_url | basename }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ rocksdb_url | basename }}
   when: not rocksdb_exists

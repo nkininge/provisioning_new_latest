@@ -1,18 +1,18 @@
 ---
 - name: Install Jenkins Plugins | create folder updates
-  sudo: yes
-  sudo_user: "{{jenkins_user}}"
+  become: yes
+  become_user: "{{jenkins_user}}"
   file: path={{jenkins_home}}/updates owner={{jenkins_user}} group={{jenkins_group}} mode=0755 state=directory
 
 - name: Install Jenkins Plugins | Update Jenkins plugin data.
-  sudo: yes
-  sudo_user: "{{jenkins_user}}"
+  become: yes
+  become_user: "{{jenkins_user}}"
   shell: curl -L http://updates.jenkins-ci.org/update-center.json | sed '1d;$d' > /{{jenkins_home}}/updates/default.json
       creates=/{{jenkins_home}}/updates/default.json
 
 - name: Install Jenkins Plugins | using Jenkins-cli
-  sudo: yes
-  sudo_user: "{{jenkins_user}}"
+  become: yes
+  become_user: "{{jenkins_user}}"
   command: java -jar {{jenkins_home}}/jenkins-cli.jar -s http://127.0.0.1:{{jenkins_http_port}}/ install-plugin {{item}} creates={{jenkins_home}}/plugins/{{item}}.jpi
   ignore_errors: yes
 #  notify: jenkins restart

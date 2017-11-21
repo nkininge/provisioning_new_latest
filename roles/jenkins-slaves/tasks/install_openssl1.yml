@@ -1,12 +1,12 @@
   - name: Removing libOpenSSl Libraries | suse11sp3
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=absent
     with_items:
       - libopenssl-devel
     tags: install_openssl1
 
   - name: Installing OpenSSl Libraries | suse11sp3
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
       - openssl1

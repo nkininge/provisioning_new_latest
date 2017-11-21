@@ -7,68 +7,68 @@
 # check if "check_python27whl" is defined and value is equal to desired python27whl version
 - name: install_python27whl | "set fact if python27whl version is {{python27_version}}"
   set_fact: python27whl_exists="true"
-  when: check_python27whl.rc == 0 and check_python27whl.stderr.find("{{python27_version}}") != -1
+  when: check_python27whl.rc == 0 and check_python27whl.stderr.find(python27_version) != -1
 
 - name: install_python27whl | skip python27whl installation
   debug: msg="skip python27whl installation as it is already installed"
   when: python27whl_exists is defined
 
 - name: install_tools | makedir python27whl
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path={{tools_home}}/python27whl state=directory
   when: python27whl_exists is not defined
 
 - name: install_tools | download python27whl
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/Python-{{python27_version}}.tgz  dest=/tmp/Python-{{python27_version}}.tgz  mode=0644 force=yes timeout=120
   when: python27whl_exists is not defined
 
 - name: install_tools | untar python27whl
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   unarchive: copy=no src=/tmp/Python-{{python27_version}}.tgz  dest=/tmp
   when: python27whl_exists is not defined
 
 - name: install_tools | configure python27whl
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   command:  ./configure --prefix {{tools_home}}/python27whl/Python-{{python27_version}} chdir=/tmp/Python-{{python27_version}}
   when: python27whl_exists is not defined
 
 - name: install_tools | compile python27whl
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   command:  make chdir=/tmp/Python-{{python27_version}}
   when: python27whl_exists is not defined
 
 - name: install_tools | install python27whl
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   command:  make install chdir=/tmp/Python-{{python27_version}}
   when: python27whl_exists is not defined
 
 - name: install_tools | pip install
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: "{{tools_home}}/python27whl/Python-{{python27_version}}/bin/python2.7 -m ensurepip"
   when: project == "re"
 
 - name: install_tools | pip install
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: "{{tools_home}}/python27whl/Python-{{python27_version}}/bin/python2.7 -m pip install wagon"
   when: project == "re"
 
 - name: install_tools | delete python27whl from /tmp
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path=/tmp/Python-{{python27_version}}.tgz state=absent
   when: python27whl_exists is not defined
 
 - name: install_tools | delete python27whl build from /tmp
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path=/tmp/Python-{{python27_version}} state=absent
   when: python27whl_exists is not defined

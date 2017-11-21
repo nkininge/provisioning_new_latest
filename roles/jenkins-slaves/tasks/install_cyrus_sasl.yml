@@ -27,13 +27,13 @@
     when: cyrus_sasl_exists is not defined
 
   - name: install_cyrus_sasl | "rm /tmp/cyrus_sasl tar.gz"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: rm -rf /tmp/cyrus_sasl-{{ cyrus_sasl_version }}
     when: cyrus_sasl_exists is not defined
 
   - name: install_cyrus_sasl | "rm /tmp/cyrus_sasl"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: rm -rf /tmp/{{ cyrus_sasl_url | basename }}
     when: cyrus_sasl_exists is not defined

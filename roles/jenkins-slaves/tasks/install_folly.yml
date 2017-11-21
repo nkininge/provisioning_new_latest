@@ -45,13 +45,13 @@
   when: ((not folly_exists) and (ansible_os_family == 'RedHat') and (ansible_distribution_major_version == '7'))
 
 - name: install_folly | rm /tmp/folly-{{folly_version}}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/folly-{{folly_version}}
   when: not folly_exists
 
 - name: install_folly | rm /tmp/{{ folly_url | basename }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ folly_url | basename }}
   when: not folly_exists

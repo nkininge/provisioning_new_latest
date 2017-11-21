@@ -1,79 +1,79 @@
 ---
   - name: install_tools | Download Eclipse
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{eclipse_url}} dest={{tools_home}}/eclipse.tar.gz mode=0744 timeout=120
     tags: install_eclipse
 
   - name: install_tools | Untar Eclipse
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/eclipse.tar.gz dest={{tools_home}}/
     tags: install_eclipse
 
   - name: install_tools | delete eclipse tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{tools_home}}/eclipse.tar.gz state=absent
     tags: install_eclipse
 
   - name: install_tools | Download Xerces
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{xerces_url}} dest={{tools_home}}/xerces.tar.gz mode=0744 timeout=120
     tags: install_xerces
 
   - name: install_tools | Untar Xerces
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/xerces.tar.gz dest={{tools_home}}/
     tags: install_xerces
 
   - name: install_tools | delete xerces tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{tools_home}}/xerces.tar.gz state=absent
     tags: install_xerces
 
   - name: install_tools | Download Forrest
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{forrest_url}} dest={{forrest_home}}/forrest.tar.gz mode=744 timeout=120
     tags: install_forrest
 
   - name: install_tools | Download Forrest dependency
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{forrest_dependency_url}} dest={{forrest_home}}/forrest_dependency.tar.gz mode=744 timeout=120
     tags: install_forrest
 
   - name: install_tools | Untar Forrest
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{forrest_home}}/forrest.tar.gz dest={{tools_home}}/forrest
     tags: install_forrest
 
   - name: install_tools | Untar Forrest dependency
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{forrest_home}}/forrest_dependency.tar.gz dest={{tools_home}}/forrest
     tags: install_forrest
 
   - name: install_tools | delete forrest tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{forrest_home}}/forrest.tar.gz state=absent
     tags: install_forrest
 
   - name: install_tools | delete forrest dependency tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{forrest_home}}/forrest_dependency.tar.gz state=absent
     tags: install_forrest
 
   - name: install_tools | symlink Forrest -> latest
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: src=apache-forrest-{{forrest_version}} dest={{forrest_home}}/latest state=link
     tags: install_forrest
 
@@ -81,8 +81,8 @@
     register: link_status
 
   - name: install_tools | symlink Forrest - ant -> latest
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: src={{tools_home}}/ant/latest dest={{forrest_home}}/apache-forrest-{{forrest_version}}/tools/ant state=link
     when: link_status.stat.exists is not defined
     tags: install_forrest

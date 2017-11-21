@@ -1,7 +1,7 @@
 ---
   - name: install_gradle_351 | capture gradle version
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/gradle/gradle-3.5.1/bin/gradle --version"
     register: check_gradle
     ignore_errors: yes
@@ -18,8 +18,8 @@
     tags: install_gradle_351
 
   - name: install_gradle_351 | Download gradle
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url=http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/gradle-3.5.1-bin.zip
       dest={{tools_home}}/gradle/gradle-3.5.1.zip mode=0744 force=yes timeout=120
     when: gradle_exists is not defined
@@ -27,15 +27,15 @@
 
     # check if "check_gradle" is defined and value is equal to desired gradle version
   - name: install_gradle_351 | Untar gradle
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{tools_home}}/gradle/gradle-3.5.1.zip dest={{tools_home}}/gradle
     when: gradle_exists is not defined
     tags: install_gradle_351
 
   - name: install_gradle_351 | capture gradle version
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/gradle/gradle-3.5.1/bin/gradle --version"
     register: cmd_result
     tags: install_gradle_351
@@ -48,8 +48,8 @@
     tags: install_gradle_351
 
   - name: install_gradle_351 | delete gradle tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{tools_home}}/gradle/gradle-3.5.1.zip state=absent
     when: gradle_exists is not defined
     tags: install_gradle_351

@@ -1,30 +1,30 @@
 ---
   - name: "Download Jdk6" 
-    sudo: yes
-    sudo_user: jenkins
+    become: yes
+    become_user: jenkins
     get_url: url={{jdk6_url}} dest={{jdk6_home}}/jdk6.tar.gz mode=744
 
   - name: "Download Jdk7" 
-    sudo: yes
-    sudo_user: jenkins
+    become: yes
+    become_user: jenkins
     get_url: url={{jdk7_url}} dest={{jdk7_home}}/jdk7.gz mode=744
 
   - name: "Install Jdk7"
-    sudo: yes
-    sudo_user: jenkins
+    become: yes
+    become_user: jenkins
     unarchive: copy=no src={{jdk7_home}}/jdk7.gz dest={{jdk7_home}}
 
   - name: "Symlink jdk7 -> latest"
-    sudo: yes
-    sudo_user: jenkins
+    become: yes
+    become_user: jenkins
     file: src=jdk1.7.0_21 dest={{jdk7_home}}/latest state=link 
     
   - name: "Install Jdk6"
-    sudo: yes
-    sudo_user: jenkins
+    become: yes
+    become_user: jenkins
     unarchive: copy=no src={{jdk6_home}}/jdk6.tar.gz dest={{jdk6_home}}
 
   - name: "Symlink jdk6 -> latest"
-    sudo: yes
-    sudo_user: jenkins
+    become: yes
+    become_user: jenkins
     file: src=jdk1.6.0_31 dest={{jdk6_home}}/latest state=link 

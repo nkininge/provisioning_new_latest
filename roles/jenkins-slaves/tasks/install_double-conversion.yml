@@ -39,13 +39,13 @@
   when: not double_conversion_exists and ansible_os_family == 'RedHat'
 
 - name: install_double-conversion | rm /tmp/double-conversion-{{double_conversion_version}}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/double-conversion-{{double_conversion_version}}
   when: not double_conversion_exists
 
 - name: install_double-conversion | rm /tmp/{{ double_conversion_url | basename }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ double_conversion_url | basename }}
   when: not double_conversion_exists

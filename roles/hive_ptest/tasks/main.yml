@@ -22,8 +22,8 @@
   tags: install_git
 
 - name: centos5 | yum install python-devel
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
   tags: install_libraries
   yum: name={{item}} state=present

@@ -7,61 +7,61 @@
   # check if "check_jdk7" is defined and value is equal to desired jdk7 version
   - name: install_jdk7 | "set fact if jdk7 version is {{jdk7_version}}"
     set_fact: jdk7_exists="true"
-    when: check_jdk7.rc == 0 and check_jdk7.stderr.find("{{jdk7_version}}") != -1
+    when: check_jdk7.rc == 0 and check_jdk7.stderr.find(jdk7_version) != -1
 
   - name: install_jdk7 | skip jdk7 installation
     debug: msg="skip jdk7 installation as it is already installed"
     when: jdk7_exists is defined
 
   - name: install_jdk7 | "Download Jdk7" 
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{jdk7_url}} dest={{jdk7_home}}/{{ jdk7_url | basename }} mode=744 timeout=120
     when: jdk7_exists is not defined
 
   - name: install_jdk7 | "Install Jdk7"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{jdk7_home}}/{{ jdk7_url | basename }} dest={{jdk7_home}}
     when: jdk7_exists is not defined
 
   - name: install_jdk7 | "Symlink jdk7 -> latest"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: src="jdk{{jdk7_version}}" dest={{jdk7_home}}/latest state=link 
     when: jdk7_exists is not defined
 
   - name: install_jdk7 | Install JCE Policy files for JDK7 | Download tar
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK7.zip" dest={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip mode=744 timeout=120
 
   - name: install_jdk7 | "unzip JCE Policy files"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip dest={{jdk7_home}}
 
   - name: install_jdk7 | Create lib/security for jdk7
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{ jdk7_home }}/jdk1.7.0_21/lib/security state=directory
 
   - name: install_jdk7 | "Install Jdk7"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip dest={{jdk7_home}}/
 
   - name: install_jdk7 | "copy JCE Policy files for JDK7"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     shell: cp -r {{jdk7_home}}/UnlimitedJCEPolicy/*.jar {{jdk7_home}}/jdk1.7.0_21/lib/security/
 
   - name: install_jdk7 | delete jdk tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{jdk7_home}}/{{ jdk7_url | basename }} state=absent
 
   - name: install_jdk7 | delete JCE Policy files tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{jdk7_home}}/UnlimitedJCEPolicyJDK7.zip state=absent

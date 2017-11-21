@@ -1,25 +1,30 @@
 ---
   - name: Download .m2 | create repository
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: dest={{build_user_home}}/.m2/ state=directory
 
   - name: Download .m2
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/RLENG/repository.tar.gz  dest={{build_user_home}}/.m2/ mode=744
 
   - name: Download .m2 | untar
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/.m2/repository.tar.gz dest={{build_user_home}}/.m2/
 
   - name: Download .m2 | change ownership
-    sudo: yes
-    sudo_user: "root"
-    shell: chown -R {{ build_user }}:{{ build_group }} {{build_user_home}}/.m2/
+    become: yes
+    become_user: "root"
+    file:
+      path: "{{ build_user_home }}/.m2"
+      state: directory
+      owner:  "{{ build_user }}"
+      group: "{{ build_group }}"
+      recurse: yes
 
   - name: Download .m2 | remove .m2 tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{build_user_home}}/.m2/repository.tar.gz state=absent

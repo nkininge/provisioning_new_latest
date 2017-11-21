@@ -27,8 +27,8 @@
     when: npm_exists is not defined
 
   - name: install_node_js | untar node js
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     unarchive: copy=no src=/tmp/{{ node_js_url | basename }} dest=/usr/local
     when: npm_exists is not defined
 
@@ -37,8 +37,8 @@
     when: npm_exists is not defined
 
   - name: install_node_js | symlink node and npm
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     file: src={{item.src_path}}  dest={{item.dest}} state=link
     with_items:
       - { src_path: '/usr/local/node-v{{node_version}}-linux-x64/bin/npm', dest: '/usr/local/bin/npm' }
@@ -46,35 +46,35 @@
     when: npm_exists is not defined
 
   - name: install_node_js | brunch install
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: /usr/local/bin/npm install -g brunch@1.8.5
 
   - name: run npm set secure | npm install
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     command: "/usr/local/bin/npm config set unsafe-perm true"
     tags: npm_config
 
   - name: run npm set registry | npm install
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     command: "/usr/local/bin/npm config set registry {{ npm_registry }}"
     tags: npm_config
 
   - name: run npm set proxy | npm install
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     command: "/usr/local/bin/npm config set proxy {{ cache_proxy }}"
     tags: npm_config
 
   - name: run npm set https-proxy | npm install
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     command: "/usr/local/bin/npm config set https-proxy {{ cache_proxy }}"
     tags: npm_config
 
   - name: install_node_js | delete node.tar.gz from /tmp
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     file: path=/tmp/{{ node_js_url | basename }} state=absent

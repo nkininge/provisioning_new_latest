@@ -1,7 +1,7 @@
 ---
 - name: install-python-argparse | install python spare libs
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
   easy_install: name={{item}}
   with_items: 
@@ -10,8 +10,8 @@
   - requests
 
 - name: install-python-argparse | install python spare libs
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
   easy_install: name={{item}}
   with_items:
@@ -19,8 +19,8 @@
   - argparse
 
 - name: install-python-argparse | install python spare libs
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   when: ansible_os_family != 'RedHat'
   shell: easy_install -i {{pypi_index_url}} {{item}}
   with_items:

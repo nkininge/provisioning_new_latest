@@ -1,12 +1,12 @@
 - name: Install_Libraries | Install Debian Libraries and build Tools
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   apt: pkg={{item}} update_cache=yes state=latest
   with_items:
     - debian-keyring
     - debian-archive-keyring
 
 - name: install_libraries | add deb squeeze repo
-  sudo: yes
+  become: yes
   apt_repository: repo='deb http://ftp.us.debian.org/debian squeeze main'
     state=present

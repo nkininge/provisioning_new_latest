@@ -1,9 +1,9 @@
   - name: install_libraries | install HDP-utils zypper repo 
-    sudo: yes
+    become: yes
     zypper_repository: name="HDP-UTILS" repo="http://s3.amazonaws.com/dev.hortonworks.com/HDP-UTILS-1.1.0.17/repos/suse11" state=present
 
   - name: Installing Libraries | sles11sp1
-    sudo: yes
+    become: yes
     when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
@@ -11,7 +11,7 @@
       - python-devel
 
   - name: "Installing Libraries"
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=installed
     with_items:
       - createrepo
@@ -74,7 +74,7 @@
       - libart_lgpl-devel
 
   - name: install_libraries | zypper in
-    sudo: yes
+    become: yes
     zypper: name={{item}} disable_gpg_check=yes state=present
     with_items:
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-1.7.0-16.1.x86_64.rpm
@@ -83,7 +83,7 @@
     ignore_errors: yes
 
   - name: install_libraries | zypper in
-    sudo: yes
+    become: yes
     zypper: name={{item}} disable_gpg_check=yes state=present
     with_items:
       - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/asciidoc-8.6.8-8.1.noarch.rpm

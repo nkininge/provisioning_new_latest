@@ -1,5 +1,5 @@
   - name: install_libraries | zypper in
-    sudo: yes
+    become: yes
     tags: install_libraries
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
@@ -13,7 +13,7 @@
     tags: install_libraries
 
   - name: "Installing Libraries"
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     tags: install_libraries
     with_items:
@@ -82,7 +82,7 @@
       - python-dateutil
 
   - name: install-python-argparse | install python spare libs
-    sudo: yes
+    become: yes
     easy_install: name=pip
     easy_install: name=argparse
     easy_install: name=virtualenv
@@ -90,21 +90,21 @@
     tags: argparse
 
   - name: install_libraries | download s3cmd zip
-    sudo: yes
+    become: yes
     get_url: url="https://github.com/s3tools/s3cmd/archive/master.zip" dest=/tmp/master.zip
 
   - name: install_libraries | unarchive s3cmd
-    sudo: yes
+    become: yes
     unarchive: src=/tmp/master.zip dest=/tmp/ copy=no
 
   - name: install_libraries | s3cmd setup install
-    sudo: yes
+    become: yes
     shell: python setup.py install
     args:
       chdir: /tmp/s3cmd-master
 
   - name: install_libraries | fakeroot
-    sudo: yes
+    become: yes
     tags: install_libraries
     zypper: name="{{item}}" state=present
     with_items:

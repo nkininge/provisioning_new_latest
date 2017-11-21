@@ -7,12 +7,12 @@
   when: sles11sp1_default_repo.stat.exists
 
 - name: sles11sp1_setup_env | install cd1
-  sudo: yes
+  become: yes
   tags: install_libraries
   zypper_repository: name="TD-sles11" repo="http://{{ec2_hosted_repo_ip}}/TD-repo/" state=present refresh=yes
 
 - name: sles11sp1_setup_env | update rpmmacros
-  sudo: yes
+  become: yes
   copy: src=rpmmacros dest={{ build_user_home }}/.rpmmacros
       owner={{build_user}} group=users
   tags: 

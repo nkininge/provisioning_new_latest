@@ -1,4 +1,4 @@
 ---
   - name: stop_IP_tables | stopip
-    sudo: True
+    become: True
     shell:  "/etc/init.d/iptables stop"

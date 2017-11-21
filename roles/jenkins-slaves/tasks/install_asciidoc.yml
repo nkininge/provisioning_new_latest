@@ -7,7 +7,7 @@
 # check if "check_asciidoc" is defined and value is equal to desired asciidoc version
 - name: install_asciidoc | "set fact if asciidoc version is {{ asciidoc_version }}"
   set_fact: asciidoc_exists="true"
-  when: check_asciidoc.rc == 0 and check_asciidoc.stdout.find("{{asciidoc_version}}") != -1
+  when: check_asciidoc.rc == 0 and check_asciidoc.stdout.find(asciidoc_version) != -1
 
 - name: install_asciidoc | skip asciidoc installation
   debug: msg="skipping asciidoc installation as it is already installed"
@@ -31,15 +31,15 @@
   when: asciidoc_base_dir is not defined and asciidoc_exists is not defined
 
 - name: install_libraries | install asciidoc from src
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: ./configure ; make && make install;
   args:
    chdir: /tmp/{{ asciidoc_base_dir }}
   when: asciidoc_exists is not defined
 
 - name: install_libraries | rm /tmp/{{ asciidoc_base_dir }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ asciidoc_base_dir }}*
   when: asciidoc_exists is not defined

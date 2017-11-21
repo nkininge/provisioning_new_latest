@@ -6,24 +6,24 @@
     when: project == "re" and build_user == "nobody"
 
   - name: "Update limits.conf"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     copy: src=limits.conf dest=/etc/security/limits.conf
 
   - name: "Copy env file"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     copy: src=jenkins_env.sh dest={{tools_home}}/env.sh mode=755
 
   - name: "rm s3cfg"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     shell: rm -rf {{build_user_home}}/.s3cfg
     tags: s3cmd_config
 
   - name: "setup s3cfg"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes
              timeout=120  url_password={{ url_download_key }} url_username=releng
     tags: s3cmd_config
@@ -33,69 +33,69 @@
     when: project == "re" and build_user == "nobody"
 
   - name: "setup ./m2 settings.xml"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml timeout=120
              mode=744 force=yes url_password={{ url_download_key }} url_username=releng
     tags: nexus_settings
 
   - name: "setup ./gradle/gradle.properties"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties timeout=120
              mode=744 force=yes url_password={{ url_download_key }} url_username=releng
     tags: gradle_properties
 
   - name: "setup ./gradle/gradle.properites | update gradle.properties if user is not jenkins"
     shell: sed -i "s;0\/jenkins;0\/{{ build_user }};" "{{ build_user_home }}/.gradle/gradle.properties"
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     tags: gradle_properties
 
   - name: "copy hw-caching-proxy.sh file"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     copy: src="hw-caching-proxy.sh" dest="/etc/profile.d/hw-caching-proxy.sh" force=yes
     tags: update_caching_proxy
 
   - name: setup_user | copy hwx_secrets.conf file
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{non_jenkins_secrets_conf}} dest={{build_user_home}}/.ssh/{{ jenkins_secrets_conf | basename }}
              force=yes timeout=120 url_password={{ url_download_key }} url_username=releng
     tags: secrets_conf
 
   - name: setup_user_configs | Download gpg keys
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{ devci_gpgkeys_url }} url_password={{ url_download_key }} url_username=releng
             dest={{ build_user_home }}/{{ gpgkeys_url | basename }} timeout=120
 
   - name: setup_user_configs | Untar gpg keys archive
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/{{ gpgkeys_url | basename }}
         dest={{build_user_home}}/
 
   - name: setup_user_configs | delete gpg keys tarball
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{build_user_home}}/{{ devci_gpgkeys_url }} state=absent
 
   - name: setup_user_configs | delete gpg secret and key
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     shell: "gpg --batch --yes --delete-secret-and-public-key DF52ED4F7A3A5882C0994C66B9733A7A07513CAD"
     ignore_errors: yes
 
   - name: setup_user_configs | Import gpg pub
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     shell: "gpg --import {{build_user_home}}/devci-gpg-keys/devci_pub.gpg"
     ignore_errors: yes
 
   - name: setup_user_configs | Import gpg secret
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     shell: "gpg --allow-secret-key-import --import {{build_user_home}}/devci-gpg-keys/devci_sec.gpg"
     ignore_errors: yes

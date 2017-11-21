@@ -39,13 +39,13 @@
   when: ((not wangle_exists) and (ansible_os_family == 'RedHat'))
 
 - name: install_wangle | rm /tmp/wangle-{{wangle_version}}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/wangle-{{wangle_version}}
   when: not wangle_exists
 
 - name: install_wangle | rm /tmp/{{ wangle_url | basename }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ wangle_url | basename }}
   when: not wangle_exists

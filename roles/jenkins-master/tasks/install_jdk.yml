@@ -1,7 +1,7 @@
 ---
   - name: "Add Oracle Jdk apt repo"
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     apt_repository: 
        repo='{{item}} http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main' 
        state=present
@@ -13,6 +13,6 @@
     shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 
   - name: "Install Oracle JDK7"
-    sudo: yes 
-    sudo_user: root
+    become: yes
+    become_user: root
     apt: pkg=oracle-java7-installer state=present force=yes

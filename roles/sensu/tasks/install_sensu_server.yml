@@ -15,12 +15,12 @@
   #   register: mergatroid
   - name: Update apt-cache
     tags:  updatecache
-    sudo: yes
+    become: yes
     apt:  update_cache=yes
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: Install compiler, etc.
     tags:  install_compilers
-    sudo: yes
+    become: yes
     apt:  name={{item}}
     with_items:
       - gcc
@@ -34,127 +34,127 @@
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   - name: install Ruby 2.0 (wget)
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (tar)
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (configure)
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     command:  ./configure chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (make)
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     command:  make chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: install Ruby 2.0 (make install)
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     command:  make install chdir=/opt/ruby-2.0.0-p598 creates=/usr/local/bin/ruby 
   - name: Install Sensu Support RPMs (erlang-nox).
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     apt:  name=erlang-nox
   - name: Install Sensu Support RPMs (rabbitmq)
-    sudo: yes
+    become: yes
     apt:  name=rabbitmq-server
   - name: init RabbitMQ server
-    sudo: yes
+    become: yes
     command:  update-rc.d rabbitmq-server defaults
   - name: Start RabbitMQ server
-    sudo: yes
+    become: yes
     service:  name=rabbitmq-server state=started
   - name: Make SSL certificate work for now, to keep clean.
     tags: ssl_certs
-    sudo: yes
+    become: yes
     file: path=/etc/rabbitmq/ssl state=directory
   - name: Make SSL certificate work for now, to keep clean.
-    sudo: yes
+    become: yes
     tags: ssl_certs
     file: path=/etc/sensu/ssl state=directory
   - name: Copy in Sensu SSL certificates
-    sudo: yes
+    become: yes
     tags: ssl_certs
     copy:  src=ssl_certs/server/{{item}}   dest=/etc/rabbitmq/ssl/{{item}}
     with_items:
       - cert.pem
       - key.pem
   - name: Copy in Sensu SSL certificates to /etc/sensu/ssl also.
-    sudo: yes
+    become: yes
     tags: ssl_certs
     copy:  src=ssl_certs/client/{{item}}   dest=/etc/sensu/ssl/{{item}}
     with_items:
       - cert.pem
       - key.pem
   - name: Copy in Sensu SSL certificates - 2
-    sudo: yes
+    become: yes
     tags: ssl_certs
     copy:  src=ssl_certs/sensu_ca/{{item}}   dest=/etc/rabbitmq/ssl/{{item}}
     with_items:
       - cacert.pem
   - name: Configure Sensu SSL directory in /etc/
-    sudo: yes
+    become: yes
     copy:  dest=/etc/rabbitmq/rabbitmq.config src=rabbitmq.config
   - name: Restart RabbitMQ server
-    sudo: yes
+    become: yes
     service:  name=rabbitmq-server state=restarted
   - name: see if /sensu exists.
-    sudo: yes
+    become: yes
     shell: rabbitmqctl list_vhosts | (grep /sensu ; exit 0)
     register: sensuexists
   - name: Create credentials - an add_vhost command.
-    sudo: yes
+    become: yes
     command: rabbitmqctl add_vhost /sensu
-    when: not ( "{{sensuexists.stdout}}" == "/sensu" )
+    when: not ( sensuexists.stdout == "/sensu" )
   - name: See if user=sensu exists.
-    sudo: yes
+    become: yes
     shell: rabbitmqctl list_users | (grep '^sensu' ; exit 0) | cut -f1
     register: sensuuserexists
   - name: See if user=admin exists.
-    sudo: yes
+    become: yes
     shell: rabbitmqctl list_users | (egrep '^admin';exit 0) | cut -f1
     register: adminuserexists
   - name: Create credentials - a new rabbitMQ user.
-    sudo: yes
+    become: yes
     command:  rabbitmqctl add_user sensu xpassword
-    when: not ( "{{sensuuserexists.stdout}}" == "sensu" )
+    when: not ( sensuuserexists.stdout == "sensu" )
   - name: find admin user
     debug: "{{adminuserexists.stdout}}"
   - name: Create credentials - a new rabbitMQ user (admin).
-    sudo: yes
+    become: yes
     command:  rabbitmqctl add_user admin "{{admin_password}}"
-    when: not ( "{{adminuserexists.stdout}}" == "admin" )
+    when: not ( adminuserexists.stdout == "admin" )
   - name: Create credentials - give new user permissions.
-    sudo: yes
+    become: yes
     command:  rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"
   - name: Install redis
-    sudo: yes
+    become: yes
     apt:  name=redis-server
   - name: Install sensu-repo signing key.
-    sudo: yes
+    become: yes
     apt_key: url=http://repos.sensuapp.org/apt/pubkey.gpg   state=present
   - name: Install sensu-repo repository entry.
-    sudo: yes
+    become: yes
     apt_repository: repo='deb  http://repos.sensuapp.org/apt sensu main' state=present
   - name: Install sensu itself
-    sudo: yes
+    become: yes
     apt:  name=sensu
   - name: install hipchat gem for Ruby2.0
-    sudo: yes
+    become: yes
     tags: install_checkscripts
     shell: /usr/local/bin/gem install hipchat
   - name: make sensu conf.d dir
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     file: path=/etc/sensu/conf.d state=directory
   - name: make sensu handlers dir
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     file: path=/etc/sensu/handlers state=directory
   - name: Copy in Sensu Rabbitmq configs and redis configs and API configs.
     tags: install_checkscripts
-    sudo: yes
+    become: yes
     template:  src=conf.d/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}}
     with_items:
       - rabbitmq.json
@@ -162,7 +162,7 @@
       - redis.json
       - api.json
   - name: delete existing copies of alert/trigger scripts.
-    sudo: yes
+    become: yes
     tags: install_checkscripts
     file:  path=/etc/sensu/conf.d/{{item}} state=absent
     with_items:
@@ -179,7 +179,7 @@
       - check-maven-nexus-ping.json
       - check-2.1-maint-build-status.json
   - name: copy in alert/trigger scripts.
-    sudo: yes
+    become: yes
     tags: install_checkscripts
     template:  src=plug-ins/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}} force=yes
     with_items:
@@ -195,21 +195,21 @@
       - check-maven-nexus-ping.json
       - check-2.1-maint-build-status.json
   - name: copy in handlers.
-    sudo: yes
+    become: yes
     tags: install_checkscripts
     template:  src=handlers/{{item}}.j2   dest=/etc/sensu/handlers/{{item}} force=yes mode=0755
     with_items:
       - file.rb
       - hipchat.rb
   - name: copy in handler definition.
-    sudo: yes
+    become: yes
     tags: install_checkscripts
     template:  src=handlers/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}} force=yes  mode=0644
     with_items:
       - handler_file.json
       - hipchat.json
   - name: configure services
-    sudo: yes
+    become: yes
     tags: sensu_services
     shell:  update-rc.d "{{item}}" defaults 
     with_items:
@@ -217,7 +217,7 @@
       - sensu-api
       - sensu-client
   - name: make sure services are stopped before starting...
-    sudo: yes
+    become: yes
     tags: sensu_services
     service:  name="{{item}}" state=stopped
     with_items:
@@ -225,7 +225,7 @@
       - sensu-api
       - sensu-client
   - name: start services
-    sudo: yes
+    become: yes
     tags: sensu_services
     service:  name="{{item}}" state=started
     with_items:
@@ -233,15 +233,15 @@
       - sensu-api
       - sensu-client
   - name: Install uchiwa dashboard
-    sudo: yes
+    become: yes
     apt:  name=uchiwa
   - name: configure uchiwa dashboard
-    sudo: yes
+    become: yes
     tags: uchiwa-dashboard
     template:  src=uchiwa.json.j2 dest=/etc/sensu/uchiwa.json
   - name: Start uchiwa dashboard
-    sudo: yes
+    become: yes
     command:  update-rc.d uchiwa defaults
   - name: Start uchiwa dashboard
-    sudo: yes
+    become: yes
     service:  name=uchiwa state=started

@@ -1,5 +1,5 @@
   - name: Installing Libraries | suse11sp3
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
       - gcc
@@ -20,7 +20,7 @@
       - libzip-devel
 
   - name: Installing Libraries | suse11sp3
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     when: ansible_virtualization_type == "docker"
     with_items:
@@ -37,20 +37,20 @@
     debug: msg="{{gcc_rpm_check.stdout.find('gcc-c++')}}"
 
   - name: download gcc-c++ tarball | suse11sp3
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: gcc_rpm_check.stdout.find('gcc-c++') == -1
     get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/gcc-suse11sp3.tar.gz" dest=/tmp/gcc-suse11sp3.tar.gz timeout=120
 
   - name: unarchive gcc-c++ tarball | suse11sp3
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: gcc_rpm_check.stdout.find('gcc-c++') == -1
     unarchive: copy=no src=/tmp/gcc-suse11sp3.tar.gz dest=/tmp/
 
   - name: install gcc-c++ | suse11sp3
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     when: gcc_rpm_check.stdout.find('gcc-c++') == -1
     shell: rpm -ivh {{item}}
     register: shell_result
@@ -58,14 +58,14 @@
       - /tmp/gcc-suse11sp3/gcc-c++-4.3-62.12.x86_64.rpm
 
   - name: install 7zip | suse11sp3
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     zypper: name={{item}} disable_gpg_check=yes state=present
     with_items:
       - http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/p7zip-9.20.1-24.9.x86_64.rpm
 
   - name: Installing Libraries | suse11sp3 | install gcc-fortran
-    sudo: yes
+    become: yes
     zypper: pkg={{item}} disable_gpg_check=yes state=latest
     with_items:
       - gcc-fortran

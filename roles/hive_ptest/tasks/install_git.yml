@@ -7,7 +7,7 @@
    # check if "check_git" is defined and value is equal to desired git version
   - name: install_git | "set fact if git version is {{git_version}}"
     set_fact: git_exists="true"
-    when: check_git.rc == 0 and check_git.stdout.find("{{git_version}}") != -1
+    when: check_git.rc == 0 and check_git.stdout.find(git_version) != -1
 
   - debug: msg="{{ check_git.rc }}"
   - debug: msg="{{ check_git.stdout }}"
@@ -17,14 +17,14 @@
     when: git_exists is defined
 
   - name: slave setup | download git
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     get_url: url={{git_url}} dest=/tmp/{{ git_url | basename }} mode=0770
     when: git_exists is not defined
 
   - name: slave setup | untar git
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     unarchive: copy=no src=/tmp/{{ git_url | basename }} dest=/tmp/
     when: git_exists is not defined
 
@@ -36,19 +36,19 @@
     when: git_base_dir is not defined
 
   - name: slave setup | install git
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     shell: "cd /tmp/{{git_base_dir}} ; ./configure  --prefix=/usr && make && make install"
     when: git_exists is not defined
 
   - name: setup git-completion | download
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url="http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash" dest={{build_user_home}}/git-completion.bash mode="a+x"
     when: git_exists is not defined
 
   - name: setup git-completion | setup
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     lineinfile: dest="{{build_user_home}}/.bashrc" regexp='.*git-completion.bash' line="source {{build_user_home}}/git-completion.bash" mode="a+x" state=present
     when: git_exists is not defined

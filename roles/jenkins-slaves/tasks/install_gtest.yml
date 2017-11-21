@@ -35,13 +35,13 @@
   when: not gtest_exists and ansible_os_family == 'RedHat'
 
 - name: install_gtest | rm /tmp/gtest-{{gtest_version}}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/gtest-{{gtest_version}}
   when: not gtest_exists
 
 - name: install_gtest | rm /tmp/{{ gtest_url | basename }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ gtest_url | basename }}
   when: not gtest_exists

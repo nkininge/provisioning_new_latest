@@ -1,7 +1,7 @@
 ---
   - name: prepare_env | create all the tools folders
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     file: path={{item}} state=directory owner="{{ build_user }}"
     with_items:
       - "{{tools_home}}/ant"
@@ -16,8 +16,8 @@
       - "{{build_user_home}}/.ssh/"
 
   - name: prepare_env | create all the tools folders
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     when: project == "re"
     file: path={{item}} state=directory owner="{{ build_user }}"
     with_items:
@@ -26,8 +26,8 @@
       - "{{build_user_home}}/profiles/devci/"
 
   - name: prepare_env | install tools necessary for ansible exec - debian
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     apt: name={{item}} state=present update_cache=yes
     ignore_errors: yes
     with_items:
@@ -37,8 +37,8 @@
     when: ansible_os_family == "Debian"
 
   - name: prepare_env | install tools necessary for ansible exec - centos
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: name={{item}} state=present
     with_items:
     - zip

@@ -1,7 +1,7 @@
 ---
   - name: install_libraries | yum install
-    sudo: yes
-    sudo_user: root
+    become: yes
+    become_user: root
     yum: pkg={{item}} state=latest
     with_items:
       - python26

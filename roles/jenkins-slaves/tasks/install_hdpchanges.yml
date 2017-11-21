@@ -1,6 +1,6 @@
 ---
   - name: install_hdpchanges | Download hdpchanges
-    sudo: yes
-    sudo_user: "{{ build_user }}"
+    become: yes
+    become_user: "{{ build_user }}"
     get_url: url={{hdpchanges_url}} dest={{tools_home}}/{{ hdpchanges_url | basename }} mode=744 timeout=120
 

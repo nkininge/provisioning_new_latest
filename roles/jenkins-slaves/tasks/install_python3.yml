@@ -7,74 +7,74 @@
 # check if "check_python3" is defined and value is equal to desired python3 version
 - name: install_python3 | "set fact if python3 version is {{python3_version}}"
   set_fact: python3_exists="true"
-  when: check_python3.rc == 0 and check_python3.stdout.find("{{python3_version}}") != -1
+  when: check_python3.rc == 0 and check_python3.stdout.find(python3_version) != -1
 
 - name: install_python3 | skip python3 installation
   debug: msg="skipping python3 installation as it is already installed"
   when: python3_exists is defined
 
 - name: install_tools | Download python3
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/Python-{{python3_version}}.tgz  dest=/tmp/Python-{{python3_version}}.tgz  mode=0644 force=yes timeout=120
   when: python3_exists is not defined
 
 - name: install_tools | Untar python3
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   unarchive: copy=no src=/tmp/Python-{{python3_version}}.tgz  dest=/tmp
   when: python3_exists is not defined
 
 - name: install_tools | delete python3 tarball
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path=/tmp/Python-{{python3_version}}.tgz state=absent
   when: python3_exists is not defined
 
 - name: install_tools | Configure python3
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   command:  ./configure --prefix {{tools_home}}/python3/Python-{{python3_version}} chdir=/tmp/Python-{{python3_version}}
   when: python3_exists is not defined
 
 - name: install_tools | Compile python3
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   command:  make chdir=/tmp/Python-{{python3_version}}
   when: python3_exists is not defined
 
 - name: install_tools | Install python3
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   command:  make install chdir=/tmp/Python-{{python3_version}}
   when: python3_exists is not defined
 
 - name: install_tools | Remove symlink for python3
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path=/usr/local/bin/python3 state=absent
   when: python3_exists is not defined
 
 - name: install_tools | Symlink python3
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file:  src={{tools_home}}/python3/Python-{{python3_version}}/bin/python3  dest=/usr/local/bin/python3  mode=0755 state=link force=yes
   when: python3_exists is not defined
 
 - name: install_tools | Symlink pyvenv-3.4
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file:  src={{tools_home}}/python3/Python-{{python3_version}}/bin/pyvenv-3.4  dest=/usr/local/bin/pyvenv-3.4  mode=0755 state=link force=yes
   when: python3_exists is not defined
 
 - name: install_tools | pip install | RedHat except centos5
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: "/usr/local/bin/python3 -m ensurepip"
   when: project == "re" and ( ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5' )
 
 - name: install_tools | delete python3 from /tmp
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path=/tmp/Python-{{python3_version}} state=absent
   when: python3_exists is not defined

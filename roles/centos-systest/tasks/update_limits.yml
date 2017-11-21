@@ -1,4 +1,4 @@
 ---
   - name: update_limits | updatelimits
-    sudo: True
+    become: True
     copy: src=hwqe.conf dest=/etc/security/limits.d/hwqe.conf

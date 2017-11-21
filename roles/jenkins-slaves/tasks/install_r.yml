@@ -24,30 +24,30 @@
 
 - name: install_R | Download R
   get_url: url={{r_url}} dest=/tmp/{{ r_base }} timeout=120
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   when: r_exists is not defined
 
 - name: install_R | untar R
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   unarchive: copy=no src=/tmp/{{ r_url | basename }} dest=/tmp/
   when: r_exists is not defined
 
 - name: install_R | R configure/make/make install
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: cd /tmp/{{ r_base_dir }} ; ./configure --with-x=no --with-readline=no --prefix={{ tools_home }}/R/{{ r_version }}/ ; make ; make install
   when: r_exists is not defined
 
 - name: install_R | delete R from /tmp
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path=/tmp/{{ r_base_dir }} state=absent
   when: r_exists is not defined
 
 - name: install_R | delete R tarball from /tmp
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   file: path=/tmp/{{ r_base }} state=absent
   when: r_exists is not defined

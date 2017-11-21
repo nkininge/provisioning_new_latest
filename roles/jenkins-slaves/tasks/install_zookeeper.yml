@@ -39,13 +39,13 @@
   when: ((not zookeeper_exists) and (ansible_os_family == 'RedHat'))
 
 - name: install_zookeeper | rm /tmp/zookeeper-{{zookeeper_version}}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/zookeeper-{{zookeeper_version}}
   when: not zookeeper_exists
 
 - name: install_zookeeper | rm /tmp/{{ zookeeper_url | basename }}
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   shell: rm -rf /tmp/{{ zookeeper_url | basename }}
   when: not zookeeper_exists

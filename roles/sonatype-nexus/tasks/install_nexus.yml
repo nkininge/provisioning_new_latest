@@ -1,6 +1,6 @@
 ---
   - name: install_nexus | zypper in
-    sudo: yes
+    become: yes
     tags: install_nexus
     get_url: url=http://www.sonatype.org/downloads/nexus-latest-bundle.zip dest=/usr/local/nexus.zip
 
