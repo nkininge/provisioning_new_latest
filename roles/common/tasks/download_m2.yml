@@ -14,6 +14,11 @@
     sudo_user: "{{ build_user }}"
     unarchive: copy=no src={{build_user_home}}/.m2/repository.tar.gz dest={{build_user_home}}/.m2/
 
+  - name: Download .m2 | change ownership
+    sudo: yes
+    sudo_user: "root"
+    shell: chown -R {{ build_user }}:{{ build_group }} {{build_user_home}}/.m2/
+
   - name: Download .m2 | remove .m2 tarball
     sudo: yes
     sudo_user: "{{ build_user }}"
