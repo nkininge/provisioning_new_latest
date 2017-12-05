@@ -109,6 +109,7 @@
       - automake
       - centos-release-scl
       - libevent-devel
+      - bison
       - doxygen
       - leveldb-devel
       - libuuid-devel
