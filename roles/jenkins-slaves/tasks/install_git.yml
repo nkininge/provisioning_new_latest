@@ -62,9 +62,21 @@
     lineinfile: dest="{{build_user_home}}/.bashrc" regexp='.*git-completion.bash' line="source {{build_user_home}}/git-completion.bash" mode="a+x" state=present
     when: git_exists is not defined
 
+  - name: slave setup | get gerrit public key
+    command: ssh-keyscan -p 29418 -H gerrit.eng.hortonworks.com
+    register: ssh_keyscan_gerrit_result
+    changed_when: False
+    failed_when: ssh_keyscan_gerrit_result.stdout == ""
+    when: project == "re"
+    tags: gerrit_setup
+
   - name: slave setup | add gerrit to known hosts
     become: yes
     become_user: "{{ build_user }}"
-    shell: ssh-keyscan -p 29418 -H gerrit.eng.hortonworks.com >> "{{ build_user_home }}/.ssh/known_hosts"
+    lineinfile:
+      path: "{{ build_user_home }}/.ssh/known_hosts"
+      line: "{{ ssh_keyscan_gerrit_result.stdout }}"
+      mode: 0644
+      create: yes
     when: project == "re"
     tags: gerrit_setup
