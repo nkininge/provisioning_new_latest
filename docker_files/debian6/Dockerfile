@@ -1,7 +1,7 @@
 FROM registry.eng.hortonworks.com/sseethana/base-debian6:0.1
 
 RUN apt-get install gcc
-RUN pip install ansible==1.9.2 && ansible --version
+RUN pip install ansible==2.4.1 && ansible --version
 
 COPY . /root/ansible/
 
