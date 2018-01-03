@@ -21,23 +21,27 @@
   - name: "setup s3cfg"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes timeout=120
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     when: project != "re"
     tags: s3cmd_config
 
   - name: "setup s3cfg"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg mode=744 force=yes
-             timeout=120  url_password={{ url_download_key }} url_username=releng
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/.s3cfg
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     when: project == "re"
     tags: s3cmd_config
 
   - name: "setup s3cfg"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{s3cfg_url}} dest={{build_user_home}}/profiles/jenkins/.s3cfg mode=744
-             force=yes timeout=120  url_password={{ url_download_key }} url_username=releng
+    get_url: url={{s3cfg_url}} dest={{build_user_home}}/profiles/jenkins/.s3cfg
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     when: project == "re"
     tags: s3cmd_config
 
@@ -46,22 +50,25 @@
     become_user: "{{ build_user }}"
     get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml
              mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     tags: nexus_settings
     when: project != "re"
 
   - name: "setup ./m2 settings.xml"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml timeout=120
-             mode=744 force=yes url_password={{ url_download_key }} url_username=releng
+    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     tags: nexus_settings
     when: project == "re"
 
   - name: "setup ./m2 settings.xml"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/main_settings.xml timeout=120
-             mode=744 force=yes url_password={{ url_download_key }} url_username=releng
+    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/main_settings.xml
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     tags:
       - nexus_settings
       - new_nexus_settings
@@ -70,8 +77,9 @@
   - name: "setup ./m2 settings.xml"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{template_settings_url}} dest={{build_user_home}}/.m2/template_settings.xml timeout=120
-             mode=744 force=yes url_password={{ url_download_key }} url_username=releng
+    get_url: url={{template_settings_url}} dest={{build_user_home}}/.m2/template_settings.xml
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     tags:
       - nexus_settings
       - new_nexus_settings
@@ -80,16 +88,18 @@
   - name: "setup ./m2 settings.xml"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{settings_url}} dest={{build_user_home}}/profiles/jenkins/settings.xml timeout=120
-             mode=744 force=yes url_password={{ url_download_key }} url_username=releng
+    get_url: url={{settings_url}} dest={{build_user_home}}/profiles/jenkins/settings.xml
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     when: project == "re"
     tags: nexus_settings
 
   - name: "setup ./gradle/gradle.properties"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties timeout=120
-             mode=744 force=yes url_password={{ url_download_key }} url_username=releng
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     tags: gradle_properties
     when: project == "re"
 
@@ -103,16 +113,18 @@
   - name: "setup ./gradle/gradle.properties"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties timeout=120
-             mode=744 force=yes
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/.gradle/gradle.properties
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     tags: gradle_properties
     when: project != "re"
 
   - name: "setup ./gradle/gradle.properties"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/profiles/jenkins/gradle.properties timeout=120
-             mode=744 force=yes url_password={{ url_download_key }} url_username=releng
+    get_url: url={{gradle_properties_url}} dest={{build_user_home}}/profiles/jenkins/gradle.properties
+             mode=744 force=yes timeout=120
+             url_password={{ url_download_key }} url_username=releng
     when: project == "re"
     tags: gradle_properties
 
