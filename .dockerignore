@@ -1,0 +1,6 @@
+ansible.log
+docker_files/
+!docker_files/docker_hosts
+.git/
+.gitignore
+grid/
