@@ -169,3 +169,50 @@
     file: path={{tools_home}}/maven/maven.{{mvn339_version}}.tar.gz state=absent
     when: maven339_exists is not defined
     tags: maven339
+
+  - name: install_maven 3.5.2 | capture maven 3.5.2 version
+    become: yes
+    become_user: "{{ build_user }}"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn352_version }}/bin/mvn --version"
+    register: check_maven352
+    ignore_errors: yes
+    tags: maven352
+
+  - name: install_maven 3.5.2 | "set fact if maven version is {{mvn352_version}}"
+    set_fact: maven352_exists="true"
+    when: check_maven352.rc == 0 and check_maven352.stdout.find(mvn352_version) != -1
+    when: maven352_exists is defined
+    tags: maven352
+
+  - name: install_maven 3.5.2 | skip maven 3.5.2 installation
+    debug: msg="skipping maven 3.5.2installation as it is already installed"
+    when: maven352_exists is defined
+    tags: maven352
+
+  - name: install_maven 3.5.2 | mkdirs for Maven 3.5.2
+    file: path={{tools_home}}/maven state=directory mode=0755
+    become: yes
+    become_user: "{{ build_user }}"
+    when: maven352_exists is not defined
+    tags: maven352
+
+  - name: install_maven 3.5.2 | Download Maven 3.5.2
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url={{maven352_url}} dest={{tools_home}}/maven/maven.{{mvn352_version}}.tar.gz mode=0644 timeout=120
+    when: maven352_exists is not defined
+    tags: maven352
+
+  - name: install_maven 3.5.2 | Untar Maven 3.5.2
+    become: yes
+    become_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn352_version}}.tar.gz dest={{tools_home}}/maven
+    when: maven352_exists is not defined
+    tags: maven352
+
+  - name: install_maven 3.5.2 | Remove .tar.gz artifact from Maven install.
+    become: yes
+    become_user: "{{ build_user }}"
+    file: path={{tools_home}}/maven/maven.{{mvn352_version}}.tar.gz state=absent
+    when: maven352_exists is not defined
+    tags: maven352
