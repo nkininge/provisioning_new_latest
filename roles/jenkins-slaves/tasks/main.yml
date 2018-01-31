@@ -207,3 +207,7 @@
   - include: install_zookeeper.yml
     when: ((ansible_distribution == "CentOS") or
           (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
+
+  - include: install_bison.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'

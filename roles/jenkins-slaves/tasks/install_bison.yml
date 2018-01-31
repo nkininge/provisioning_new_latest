@@ -1,0 +1,45 @@
+---
+- name: install_bison | check if bison is installed
+  command: "{{ tools_home }}/bison/{{ bison_version }}/bin/bison --version"
+  register: check_bison
+  ignore_errors: yes
+
+# check if "check_bison" is defined and value is equal to desired bison version
+- name: install_bison | "set fact if bison version is {{ bison_version }}"
+  set_fact: bison_exists="true"
+  when: check_bison.rc == 0 and check_bison.stdout.find(bison_version) != -1
+
+- name: install_bison | skip bison installation
+  debug: msg="skipping bison installation as it is already installed"
+  when: bison_exists is defined
+
+- name: install_libraries | download bison
+  get_url: url="{{bison_url}}" dest=/tmp/{{ bison_url | basename }} timeout=120
+  when: bison_exists is not defined
+
+- name: install_libraries | unarchive bison tar.xz
+  unarchive: src=/tmp/{{ bison_url | basename }} dest=/tmp/ copy=no
+  when: bison_exists is not defined
+
+- set_fact: bison_base={{ bison_url | basename }}
+  when: bison_exists is not defined
+
+- set_fact: bison_base_dir={{ bison_base | regex_replace('\.tar\.xz','') }}
+  when: bison_exists is not defined
+
+- set_fact: bison_base_dir={{ bison_base | regex_replace('\.tgz','') }}
+  when: bison_base_dir is not defined and bison_exists is not defined
+
+- name: install_libraries | install bison from src
+  become: yes
+  become_user: root
+  shell: ./configure --prefix={{tools_home}}/bison/{{bison_version}} 2>&1 >/dev/null; make 2>&1 >/dev/null; make install 2>&1 >/dev/null;
+  args:
+   chdir: /tmp/{{ bison_base_dir }}
+  when: bison_exists is not defined
+
+- name: install_libraries | rm /tmp/{{ bison_base_dir }}
+  become: yes
+  become_user: root
+  shell: rm -rf /tmp/{{ bison_base_dir }}*
+  when: bison_exists is not defined

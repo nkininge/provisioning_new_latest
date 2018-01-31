@@ -105,6 +105,16 @@
       - gcc-fortran
       - libffi48-devel
       - postgresql-devel
+      - libuuid1
+      - libuuid-devel
+      - libcurl-devel
+      - libpcap-devel
+      - openssl-devel
+      - libusb-devel
+      - flex
+      - python3-devel
+      - doxygen
+      - xz-devel
 
   - name: install_libraries | zypper in
     become: yes
