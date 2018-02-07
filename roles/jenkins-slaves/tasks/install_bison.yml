@@ -3,6 +3,7 @@
   command: "{{ tools_home }}/bison/{{ bison_version }}/bin/bison --version"
   register: check_bison
   ignore_errors: yes
+  changed_when: False
 
 # check if "check_bison" is defined and value is equal to desired bison version
 - name: install_bison | "set fact if bison version is {{ bison_version }}"
@@ -14,32 +15,33 @@
   when: bison_exists is defined
 
 - name: install_libraries | download bison
-  get_url: url="{{bison_url}}" dest=/tmp/{{ bison_url | basename }} timeout=120
+  get_url: url="{{ bison_url }}" dest=/tmp/{{ bison_url | basename }} timeout=120
   when: bison_exists is not defined
 
 - name: install_libraries | unarchive bison tar.xz
   unarchive: src=/tmp/{{ bison_url | basename }} dest=/tmp/ copy=no
   when: bison_exists is not defined
 
-- set_fact: bison_base={{ bison_url | basename }}
+- name: install_libraries | "getting bison base name"
+  set_fact: bison_base={{ bison_url | basename }}
   when: bison_exists is not defined
 
-- set_fact: bison_base_dir={{ bison_base | regex_replace('\.tar\.xz','') }}
+- name: install_libraries | "getting bison base directory"
+  set_fact: bison_base_dir={{ bison_base | regex_replace('\.tar\.xz','') }}
   when: bison_exists is not defined
-
-- set_fact: bison_base_dir={{ bison_base | regex_replace('\.tgz','') }}
-  when: bison_base_dir is not defined and bison_exists is not defined
 
 - name: install_libraries | install bison from src
   become: yes
   become_user: root
-  shell: ./configure --prefix={{tools_home}}/bison/{{bison_version}} 2>&1 >/dev/null; make 2>&1 >/dev/null; make install 2>&1 >/dev/null;
+  shell: ./configure --prefix={{ tools_home }}/bison/{{ bison_version }} 2>&1 >/dev/null; make 2>&1 >/dev/null; make install 2>&1 >/dev/null;
   args:
-   chdir: /tmp/{{ bison_base_dir }}
+    chdir: /tmp/{{ bison_base_dir }}
   when: bison_exists is not defined
 
-- name: install_libraries | rm /tmp/{{ bison_base_dir }}
+- name: install_libraries | "remove /tmp/{{ bison_base_dir }}"
   become: yes
   become_user: root
-  shell: rm -rf /tmp/{{ bison_base_dir }}*
+  file:
+    name: /tmp/{{ bison_base_dir }}
+    state: absent
   when: bison_exists is not defined
