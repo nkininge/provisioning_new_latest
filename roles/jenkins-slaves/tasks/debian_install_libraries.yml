@@ -88,27 +88,27 @@
       - sharutils
       - texlive-latex-base
       - xmlto
-      - libperl-dev 
+      - libperl-dev
       - libpng-dev
       - hardening-wrapper
       - rubygems
       - groff
-      - dh-autoreconf 
-      - quilt 
-      - libcairo2-dev 
-      - libpango1.0-dev 
-      - libdbi0-dev 
+      - dh-autoreconf
+      - quilt
+      - libcairo2-dev
+      - libpango1.0-dev
+      - libdbi0-dev
       - tcl-dev
       - liblua5.1-0-dev
       - lua5.1
-      - libperl-dev 
-      - libpng12-dev 
+      - libperl-dev
+      - libpng12-dev
       - dpatch
       - ruby1.9.1
       - ruby1.9.1-dev
       - librrd2-dev
-      - libapr1-dev 
-      - libconfuse-dev 
+      - libapr1-dev
+      - libconfuse-dev
       - libpcre3-dev
       - libbz2-dev
       - rubygems
@@ -121,7 +121,7 @@
       - libpq-dev
       - libblas-dev
       - liblapack-dev
-  
+
 
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
   become: yes
@@ -158,7 +158,7 @@
     - p7zip-full
 
 # http://askubuntu.com/questions/101591/how-do-i-install-python-2-7-2-on-ubuntu
-- name: Install_Libraries | Install Debian Libraries and build Tools - debian 7 docker 
+- name: Install_Libraries | Install Debian Libraries and build Tools - debian 7 docker
   become: yes
   become_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
