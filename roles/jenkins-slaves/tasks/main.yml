@@ -7,7 +7,13 @@
     tags:
       - install_libraries
       - debian_libraries
-    when: ansible_distribution == 'Debian'
+    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+
+  - include: debian9_install_libraries.yml
+    tags:
+      - install_libraries
+      - debian_libraries
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
 
   - include: ubuntu_install_libraries.yml
     tags:
@@ -81,6 +87,10 @@
 
   - include: install_git.yml
     tags: install_git
+    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+
+  - include: install_gerrit.yml
+    tags: install_git
 
   - include: install_protobuf.yml
       protobuf_version="2.5.0"
@@ -89,6 +99,7 @@
 
   - include: install_ruby.yml
     tags: install_ruby
+    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
 
   - include: install_autoconf.yml
     when: ansible_os_family == 'RedHat'
@@ -156,6 +167,7 @@
     tags:
       - install_python27whl
       - install_python
+    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
 
   - include: configure_clamav.yml
     tags: configure_clamav
