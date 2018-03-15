@@ -129,6 +129,13 @@
     tags:
       - install_python3
       - install_python
+    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+
+  - include: install_python35.yml
+    tags:
+      - install_python3
+      - install_python
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
 
   - include: install_ansible.yml
     when: ansible_virtualization_type != "docker"
