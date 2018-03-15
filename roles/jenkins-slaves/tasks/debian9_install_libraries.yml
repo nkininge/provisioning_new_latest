@@ -170,3 +170,8 @@
    - liblzma-dev
    - git-core
   when: ansible_virtualization_type == "docker"
+
+- name: Install_Libraries | Symlink git
+  sudo: yes
+  sudo_user: root
+  file:  src=/usr/bin/git  dest=/usr/local/bin/git  mode=0755 state=link force=yes
