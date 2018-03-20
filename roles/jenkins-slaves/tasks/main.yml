@@ -87,7 +87,7 @@
 
   - include: install_git.yml
     tags: install_git
-    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
 
   - include: install_gerrit.yml
     tags: install_git
@@ -99,7 +99,7 @@
 
   - include: install_ruby.yml
     tags: install_ruby
-    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
 
   - include: install_autoconf.yml
     when: ansible_os_family == 'RedHat'
@@ -129,13 +129,13 @@
     tags:
       - install_python3
       - install_python
-    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
 
   - include: install_python35.yml
     tags:
       - install_python3
       - install_python
-    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
 
   - include: install_ansible.yml
     when: ansible_virtualization_type != "docker"
@@ -174,7 +174,7 @@
     tags:
       - install_python27whl
       - install_python
-    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
 
   - include: configure_clamav.yml
     tags: configure_clamav
