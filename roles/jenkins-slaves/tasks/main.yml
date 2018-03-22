@@ -55,11 +55,15 @@
 
   - include: centos_env_setup.yml
     tags: centos_rpm_gpg
-    when: project != "dev" and ansible_os_family == 'RedHat'
+    when: project != "dev" and ansible_os_family == 'RedHat' and ansible_distribution != "Amazon"
+
+  - include: al2_install_libraries.yml
+    tags: al2_rpm_gpg
+    when: ansible_distribution == "Amazon" and ansible_lsb.major_release == '2'
 
   - include: centos_install_libraries.yml
     tags: install_libraries
-    when: ansible_os_family == 'RedHat'
+    when: ansible_os_family == 'RedHat'  and ansible_distribution != "Amazon"
 
   - include: centos5_install_libraries.yml
     tags: install_libraries
@@ -73,7 +77,7 @@
     tags:
       - install_libraries
       - centos6_libraries
-    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5'
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5'  and ansible_distribution != "Amazon"
 
   - include: centos7_install_libraries.yml
     tags: install_libraries
@@ -175,6 +179,10 @@
       - install_python27whl
       - install_python
     when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
+
+  - include: install_clamav.yml
+    tags: configure_clamav
+    when: ansible_distribution == 'Amazon' and ansible_os_family == 'RedHat'
 
   - include: configure_clamav.yml
     tags: configure_clamav

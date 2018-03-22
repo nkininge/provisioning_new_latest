@@ -5,6 +5,7 @@
             "depends-on": [
                 "images_hwx_base@centos6.8@registry.eng.hortonworks.com/hortonworks/base-centos6:0.1.0.0-LATEST@centos6",
                 "images_hwx_base@centos7.2@registry.eng.hortonworks.com/hortonworks/base-centos7:0.1.0.0-LATEST@centos7",
+                "images_hwx_base@amazonlinux2@registry.eng.hortonworks.com/hortonworks/base-amazonlinux2:0.1.0.0-LATEST@amazonlinux2",
                 "images_hwx_base@debian7@registry.eng.hortonworks.com/hortonworks/base-debian7:0.1.0.0-LATEST@debian7",
                 "images_hwx_base@debian9.3@registry.eng.hortonworks.com/hortonworks/base-debian9.3:0.1.0.0-LATEST@debian9",
                 "images_hwx_base@sles11sp3@registry.eng.hortonworks.com/hortonworks/base-sles11sp3:0.1.0.0-LATEST@suse11sp3",
@@ -32,7 +33,8 @@
              "suse11sp3",
              "sles12",
              "ubuntu16",
-             "ubuntu12"
+             "ubuntu12",
+             "amazonlinux2"
         ]
     },
     "remotes":{
