@@ -2,5 +2,6 @@
 python27_version: "2.7.9"
 python3_version: "3.4.3"
 python35_version: "3.5.5"
+python36_version: "3.6.4"
 ruby_version: "1.9.3"
 fortify_sca_version: "16.11"
