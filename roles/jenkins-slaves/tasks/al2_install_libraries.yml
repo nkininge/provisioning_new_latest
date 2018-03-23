@@ -99,3 +99,6 @@
       - libxslt-devel
       - rpm-sign
       - asciidoc
+      - bzip2-devel
+      - ncurses-devel
+      - readline-devel
