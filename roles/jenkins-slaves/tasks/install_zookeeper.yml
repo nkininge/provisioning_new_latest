@@ -19,7 +19,7 @@
   when: zookeeper_exists
 
 - name: install_zookeeper | download zookeeper
-  get_url: url="{{zookeeper_url}}" dest=/tmp/{{ zookeeper_url | basename }} timeout=120
+  get_url: url="{{zookeeper_url}}" dest=/tmp/{{ zookeeper_url | basename }} timeout=120 validate_certs=no
   when: not zookeeper_exists
 
 - name: install_zookeeper | unarchive zookeeper tar.gz
