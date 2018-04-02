@@ -21,7 +21,7 @@
 - name: install-python-argparse | install python spare libs
   become: yes
   become_user: root
-  when: ansible_os_family != 'RedHat'
+  when: not (ansible_os_family == 'RedHat' and ansible_distribution == 'Suse' and ansible_distribution == 'SLES')
   shell: easy_install -i {{pypi_index_url}} {{item}}
   with_items:
   - pip
