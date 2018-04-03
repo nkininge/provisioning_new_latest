@@ -55,7 +55,7 @@
 
   - include: centos_env_setup.yml
     tags: centos_rpm_gpg
-    when: project != "dev" and ansible_os_family == 'RedHat' and ansible_distribution != "Amazon"
+    when: project != "dev" and ansible_os_family == 'RedHat'
 
   - include: al2_install_libraries.yml
     tags: al2_rpm_gpg
