@@ -102,3 +102,4 @@
       - bzip2-devel
       - ncurses-devel
       - readline-devel
+      - postgresql-devel
