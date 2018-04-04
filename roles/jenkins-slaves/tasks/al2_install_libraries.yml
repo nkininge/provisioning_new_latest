@@ -103,3 +103,25 @@
       - ncurses-devel
       - readline-devel
       - postgresql-devel
+
+  - name: install_libraries | download epel
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=present
+    with_items:
+      - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+  - name: install_libraries | install 7zip
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=present
+    with_items:
+      - p7zip
+      - p7zip-plugins
+
+  - name: install_libraries | uninstall epel
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=absent
+    with_items:
+      - epel-release
