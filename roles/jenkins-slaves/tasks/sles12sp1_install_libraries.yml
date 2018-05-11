@@ -15,6 +15,7 @@
       - p7zip
       - rpmbuild
       - rsync
+      - yasm
 
   - name: Installing Libraries | sles12sp1 | gcc gcc-c++
     become: yes

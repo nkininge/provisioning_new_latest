@@ -122,6 +122,7 @@
       - libblas-dev
       - liblapack-dev
       - libz-dev
+      - yasm
   
 
 - name: install_libraries | Install Ruby Libraries and Debian build Tools

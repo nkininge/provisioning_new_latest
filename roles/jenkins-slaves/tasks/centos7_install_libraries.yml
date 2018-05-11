@@ -6,6 +6,7 @@
     with_items:
      - rpm-sign
      - libxslt-devel
+     - yasm
 
   - name: install_libraries | install asciidoc - centos7
     become: yes
