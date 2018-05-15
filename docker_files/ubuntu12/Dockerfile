@@ -1,6 +1,6 @@
 FROM REPLACE_BASE_IMAGE
- 
-RUN pip install -i https://pypi.python.org/simple/ --upgrade pip
+
+RUN pip install -i https://pypi.python.org/simple/ --upgrade pip==9.0.3
 RUN pip install -i https://pypi.python.org/simple/ cffi
 RUN pip install -i https://pypi.python.org/simple/ ansible==2.4.1 && ansible --version
 

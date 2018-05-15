@@ -125,3 +125,6 @@
     yum: pkg={{item}} state=absent
     with_items:
       - epel-release
+
+  - name: install_libraries | install yasm v{{ yasm_version }}
+    include: install_yasm.yml

@@ -1,0 +1,49 @@
+---
+- name: install_libraries | check if yasm is installed
+  command: "/usr/local/bin/yasm --version"
+  register: check_yasm
+  ignore_errors: yes
+  check_mode: no
+
+- name: install_libraries | set fact if yasm version is {{ yasm_version }}
+  set_fact: yasm_exists="true"
+  when: check_yasm.rc == 0 and check_yasm.stdout.find('1.2.0') != -1
+
+- name: install_libraries | skip yasm installation
+  debug: msg="Skipping yasm installation as it is already installed"
+  when: yasm_exists is defined
+
+- set_fact: yasm_base={{ yasm_url | basename }}
+  when: yasm_exists is not defined
+
+- set_fact: yasm_base_dir={{ yasm_base | regex_replace('\.tar\.gz','') }}
+  when: yasm_exists is not defined
+
+- set_fact: yasm_base_dir={{ yasm_base | regex_replace('\.tar\.gz','') }}
+  when: yasm_base_dir is not defined and yasm_exists is not defined
+
+- name: install_yasm | download yasm
+  get_url: url={{ yasm_url }} dest=/tmp/{{ yasm_base }} timeout=120
+  when: yasm_exists is not defined
+
+- name: install_yasm | unarchive yasm tar.gz
+  unarchive: src=/tmp/{{ yasm_base }} dest=/tmp/ copy=no
+  when: yasm_exists is not defined
+
+- name: install_yasm | install yasm from src
+  shell: ./configure; make; make install;
+  args:
+   chdir: /tmp/{{ yasm_base_dir }}
+  when: yasm_exists is not defined
+
+- name: install_yasm | rm /tmp/{{ yasm_base }}
+  become: yes
+  become_user: root
+  shell: rm -rf /tmp/{{ yasm_base }}
+  when: yasm_exists is not defined
+
+- name: install_yasm | rm /tmp/{{ yasm_base_dir }}
+  become: yes
+  become_user: root
+  shell: rm -rf /tmp/{{ yasm_base_dir }}
+  when: yasm_exists is not defined
