@@ -56,6 +56,21 @@
     get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/git-completion.bash" dest={{build_user_home}}/git-completion.bash mode="a+x" timeout=120
     when: git_exists is not defined
 
+  - name: setup git-completion | check .bashrc file exists
+    stat:
+      path: "{{build_user_home}}/.bashrc"
+    register: bashrc_stat_result
+
+  - name: setup git-completion | create .bashrc file
+    copy:
+      content: ""
+      dest: "{{build_user_home}}/.bashrc"
+      force: no
+      group: "{{ build_group }}"
+      owner: "{{ build_user }}"
+      mode: 0755
+    when: bashrc_stat_result.stat.exists == false
+
   - name: setup git-completion | setup
     become: yes
     become_user: "{{ build_user }}"
