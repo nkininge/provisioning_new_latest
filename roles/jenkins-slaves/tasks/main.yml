@@ -244,3 +244,15 @@
   - include: install_bison.yml
     tags: install_libraries
     when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
+
+  - include: install_protobuf.yml
+      protobuf_version="3.5.1"
+      protobuf_home="{{ protobuf_351_home }}/{{ protobuf_version }}"
+    tags: install_protobuf_351
+    when: not ((ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6") or
+               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "9"))
+
+  - include: install_thrift.yml
+    tags: install_thrift
+    when: not ((ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6" ) or
+               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "9"))

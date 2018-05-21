@@ -172,6 +172,7 @@
       - boost-devel
       - boost-filesystem
       - boost-system
+      - boost-static
 
   - name: install_libraries | centos6 | boost-filesystem
     become: yes
