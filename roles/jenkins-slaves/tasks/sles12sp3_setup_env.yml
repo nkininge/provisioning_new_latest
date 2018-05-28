@@ -1,0 +1,16 @@
+---
+- name: install_libraries | install sles12 sp3 zypper repo | sles12
+  become: yes
+  zypper_repository: name="HOSTED_SLES12_SP3" repo="http://172.22.77.245/sles12sp3" state=present disable_gpg_check=yes
+
+- name: sles12sp3_setup_env | get hostname
+  shell: 'x=`cat /etc/hostname`; echo $x'
+  register: host_name
+  tags: set_hostname
+
+- name: sles12sp3_setup_env | set hostname
+  become: yes
+  become_user: root
+  shell: "hostname {{host_name.stdout}}"
+  when: ansible_virtualization_type != "docker"
+  tags: set_hostname

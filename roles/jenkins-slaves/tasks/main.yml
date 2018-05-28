@@ -37,6 +37,14 @@
     tags: install_libraries
     when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
 
+  - include: sles12sp3_setup_env.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'SLES' and ansible_distribution_major_version == '12' and ansible_distribution_release == '1')
+
+  - include: sles12sp3_install_libraries.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'SLES' and ansible_distribution_major_version == '12' and ansible_distribution_release == '1')
+
   - include: install_openssl1.yml
     tags: install_openssl1
     when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
@@ -250,9 +258,13 @@
       protobuf_home="{{ protobuf_351_home }}/{{ protobuf_version }}"
     tags: install_protobuf_351
     when: not ((ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6") or
-               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "9"))
+               (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "12") or
+               ((ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3') or
+               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"))
 
   - include: install_thrift.yml
     tags: install_thrift
     when: not ((ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6" ) or
-               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "9"))
+               (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "12") or
+               ((ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3') or
+               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"))

@@ -48,7 +48,7 @@ double_conversion_version: "2.0.1"
 cyrus_sasl_version: "2.1.26"
 bison_version: "3.0.4"
 yasm_version: "1.2.0"
-thrift_version: "0.9.3"
+thrift_version: "0.11.0"
 
 pypi_index_url: "https://pypi.python.org/simple"
 maven_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-{{ mvn_version }}-bin.tar.gz"

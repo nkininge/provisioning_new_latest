@@ -50,6 +50,7 @@
       - libcurl4-openssl-dev
       - libevent-dev
       - libfuse-dev
+      - libglib2.0-0
       - libglib2.0-dev
       - libjpeg8-dev
       - liblzo2-dev
