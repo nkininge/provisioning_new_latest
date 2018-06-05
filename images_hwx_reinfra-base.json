@@ -34,6 +34,7 @@
              "sles12",
              "ubuntu16",
              "ubuntu12",
+             "ubuntu14",
              "amazonlinux2"
         ]
     },
