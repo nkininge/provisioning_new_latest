@@ -255,7 +255,7 @@
 
   - include: install_protobuf.yml
       protobuf_version="3.5.1"
-      protobuf_home="{{ protobuf_351_home }}/{{ protobuf_version }}"
+      protobuf_home="{{ protobuf_351_home }}"
     tags: install_protobuf_351
     when: not ((ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6") or
                (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "12") or
