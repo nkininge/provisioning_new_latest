@@ -13,6 +13,7 @@ hbase_native_home: "{{tools_home}}/native"
 bison_home: "{{tools_home}}/bison"
 thrift_home: "{{tools_home}}/thrift"
 protobuf_351_home: "{{tools_home}}/protobuf/3.5.1"
+tool_utils: "{{tools_home}}/utils"
 
 autoconf_version: "2.63"
 mvn_version: "3.1.1"
