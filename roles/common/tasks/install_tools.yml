@@ -87,13 +87,13 @@
     when: link_status.stat.exists is not defined
     tags: install_forrest
 
-- name: install_tools | Creating tools utils dir
+  - name: install_tools | Creating tools utils dir
     become: yes
     become_user: "{{ build_user }}"
     file: path={{tool_utils}} state=directory mode=0755
     tags: install_generate_256sha
 
-- name: install_tools | generating sha256 file
+  - name: install_tools | generating sha256 file
     become: yes
     become_user: "{{ build_user }}"
     copy: src=generate_256sha.sh dest={{tool_utils}}
