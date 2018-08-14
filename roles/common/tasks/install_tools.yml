@@ -96,5 +96,5 @@
   - name: install_tools | generating sha256 file
     become: yes
     become_user: "{{ build_user }}"
-    copy: src=generate_256sha.sh dest={{tool_utils}}
+    copy: src=generate_256sha.sh dest={{tool_utils}} mode=0755
     tags: install_generate_256sha
