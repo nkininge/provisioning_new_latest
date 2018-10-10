@@ -116,6 +116,7 @@
       - python3-devel
       - doxygen
       - xz-devel
+      - pam-devel
 
   - name: install_libraries | zypper in
     become: yes
