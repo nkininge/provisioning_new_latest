@@ -65,6 +65,9 @@
 - include: install_gradle_351.yml
   tags: install_gradle_351
 
+- include: install_gradle_48.yml
+  tags: install_gradle_48
+
 - include: install_gradle_4102.yml
   tags: install_gradle_4102
 
