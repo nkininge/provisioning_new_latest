@@ -9,6 +9,7 @@
       - "{{tools_home}}/jdk64_31"
       - "{{tools_home}}/jdk7"
       - "{{tools_home}}/jdk8"
+      - "{{tools_home}}/jdk10"
       - "{{tools_home}}/forrest"
       - "{{build_user_home}}/.m2/"
       - "{{build_user_home}}/.gradle/"
