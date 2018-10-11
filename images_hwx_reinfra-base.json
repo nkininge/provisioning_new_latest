@@ -11,9 +11,9 @@
                 "images_hwx_base@sles11sp3@registry.eng.hortonworks.com/hortonworks/base-sles11sp3:0.1.0.0-LATEST@suse11sp3",
                 "images_hwx_base@sles12sp1@registry.eng.hortonworks.com/hortonworks/base-sles12sp1:0.1.0.0-LATEST@sles12",
                 "images_hwx_base@ubuntu16@registry.eng.hortonworks.com/hortonworks/base-ubuntu16:0.1.0.0-LATEST@ubuntu16",
+                "images_hwx_base@ubuntu16@registry.eng.hortonworks.com/hortonworks/base-ubuntu18:0.1.0.0-LATEST@ubuntu18",
                 "images_hwx_base@ubuntu14@registry.eng.hortonworks.com/hortonworks/base-ubuntu14:0.1.0.0-LATEST@ubuntu14",
                 "images_hwx_base@ubuntu12@registry.eng.hortonworks.com/hortonworks/base-ubuntu12:0.1.0.0-LATEST@ubuntu12"
-
             ],
             "internal-repo-name": "provisioning"
         },
@@ -33,6 +33,7 @@
              "suse11sp3",
              "sles12",
              "ubuntu16",
+             "ubuntu18",
              "ubuntu12",
              "ubuntu14",
              "amazonlinux2"

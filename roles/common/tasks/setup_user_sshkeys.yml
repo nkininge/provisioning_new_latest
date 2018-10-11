@@ -41,7 +41,7 @@
   - name: setup_user | ssh keys - id_rsa
     become: yes
     become_user: "{{ build_user }}"
-    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa" dest="{{ build_user_home }}/.ssh/id_rsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa" dest="{{ build_user_home }}/.ssh/id_rsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600 remote_src=true
     when: id_rsa_stat_result.stat.exists == true
 
   - name: setup_user | check id_rsa.pub file exists
@@ -52,7 +52,7 @@
   - name: setup_user | ssh keys - id_rsa.pub
     become: yes
     become_user: "{{ build_user }}"
-    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa.pub" dest="{{ build_user_home }}/.ssh/id_rsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_rsa.pub" dest="{{ build_user_home }}/.ssh/id_rsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644 remote_src=true
     when: id_rsa_pub_stat_result.stat.exists == true
 
   - name: setup_user | check id_dsa file exists
@@ -63,7 +63,7 @@
   - name: setup_user | ssh keys - id_dsa
     become: yes
     become_user: "{{ build_user }}"
-    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa" dest="{{ build_user_home }}/.ssh/id_dsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/id_dsa" dest="{{ build_user_home }}/.ssh/id_dsa" owner="{{ build_user }}" group="{{ build_group }}" mode=0600 remote_src=true
     when: id_dsa_stat_result.stat.exists == true
 
   - name: setup_user | check id_dsa.pub file exists
@@ -74,7 +74,7 @@
   - name: setup_user | ssh keys - id_dsa.pub
     become: yes
     become_user: "{{ build_user }}"
-    copy: src="{{ build_user_home}}/{{ base_ssh_dir }}/id_dsa.pub" dest="{{ build_user_home }}/.ssh/id_dsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
+    copy: src="{{ build_user_home}}/{{ base_ssh_dir }}/id_dsa.pub" dest="{{ build_user_home }}/.ssh/id_dsa.pub" owner="{{ build_user }}" group="{{ build_group }}" mode=0644 remote_src=true
     when: id_dsa_pub_stat_result.stat.exists == true
 
   - name: setup_user | check if "{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys" exists
@@ -86,7 +86,7 @@
     become: yes
     become_user: "{{ build_user }}"
     ignore_errors: yes
-    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys" dest="{{ build_user_home }}/.ssh/authorized_keys" owner="{{ build_user }}" group="{{ build_group }}" mode=0600
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/authorized_keys" dest="{{ build_user_home }}/.ssh/authorized_keys" owner="{{ build_user }}" group="{{ build_group }}" mode=0600 remote_src=true
     when: ssh_auth_keys_stat_result.stat.exists == true
 
   - name: setup_user | check if "{{ build_user_home }}/{{ base_ssh_dir }}/config" exists
@@ -98,7 +98,7 @@
     become: yes
     become_user: "{{ build_user }}"
     ignore_errors: yes
-    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/config" dest="{{ build_user_home }}/.ssh/config" owner="{{ build_user }}" group="{{ build_group }}" mode=0644
+    copy: src="{{ build_user_home }}/{{ base_ssh_dir }}/config" dest="{{ build_user_home }}/.ssh/config" owner="{{ build_user }}" group="{{ build_group }}" mode=0644 remote_src=true
     when: ssh_config_stat_result.stat.exists == true
 
   - name: setup_user | root | autorized_keys
@@ -109,7 +109,7 @@
   - name: setup_user | root | autorized_keys
     become: yes
     become_user: root
-    copy: src="authorized_keys" dest="/root/.ssh/authorized_keys" force=yes
+    copy: src="authorized_keys" dest="/root/.ssh/authorized_keys" force=yes 
     when: ansible_virtualization_type == "docker"
 
   - name: setup_user | add lines at EOF /etc/ssh/sshd_config

@@ -16,6 +16,9 @@
     - secrets_conf
     - docker_slave_setup
 
+- include_vars: "ubuntu18.yml"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "18"
+ 
 - include: setup_user_sshkeys.yml
   when: ssh_url is defined
   tags:
