@@ -42,3 +42,15 @@
     become: yes
     become_user: "{{ build_user }}"
     copy: content="{{ docker_password_json }}" dest={{ build_user_home }}/.docker/config.json force=yes
+
+  - name: install_docker | install docker-machine
+    become: yes
+    become_user: root
+    get_url: url="https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-{{ ansible_system }}-{{ ansible_userspace_architecture }}" dest=/usr/local/bin/docker-machine mode=744 timeout=120
+    when: ansible_virtualization_type == "docker"
+
+  - name: install_docker | make docker-machine executable
+    become: yes
+    become_user: root
+    file: dest=/usr/local/bin/docker-machine mode=a+x
+    when: ansible_virtualization_type == "docker"
