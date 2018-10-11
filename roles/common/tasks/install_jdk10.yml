@@ -1,6 +1,6 @@
 ---
   - name: install_jdk10 | "Check if jdk10 is installed"
-    command: "{{jdk10_home}}/jdk{{jdk10_version}}/bin/java -version"
+    command: "{{jdk10_home}}/jdk-{{jdk10_version}}/bin/java -version"
     register: check_jdk10
     changed_when: False
     ignore_errors: yes
@@ -34,7 +34,7 @@
   - name: install_jdk10 | "Symlink jdk10 -> latest"
     become: yes
     become_user: "{{ build_user }}"
-    file: src="jdk{{jdk10_version}}" dest={{jdk10_home}}/latest state=link
+    file: src="jdk-{{jdk10_version}}" dest={{jdk10_home}}/latest state=link
     when: jdk10_exists is not defined
 
   - name: install_jdk10 | "Unzip JCE Policy files"
@@ -45,7 +45,7 @@
   - name: install_jdk10 | "Create lib/security for jdk10"
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{ jdk10_home }}/jdk{{jdk10_version}}/lib/security state=directory
+    file: path={{ jdk10_home }}/jdk-{{jdk10_version}}/lib/security state=directory
 
   - name: install_jdk10 | "Install UnlimitedJCEPolicyJDK8"
     become: yes
@@ -55,7 +55,7 @@
   - name: install_jdk10 | "Copy JCE Policy files for JDK8"
     become: yes
     become_user: "{{ build_user }}"
-    shell: cp -r {{jdk10_home}}/UnlimitedJCEPolicyJDK/*.jar {{jdk10_home}}/jdk{{jdk10_version}}/lib/security/
+    shell: cp -r {{jdk10_home}}/UnlimitedJCEPolicyJDK/*.jar {{jdk10_home}}/jdk-{{jdk10_version}}/lib/security/
 
   - name: install_jdk10 | delete jdk tarball
     become: yes
