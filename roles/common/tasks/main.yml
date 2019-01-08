@@ -43,6 +43,11 @@
     - install_jdk8
     - install_jdk
 
+- include: install_jdk8_171.yml
+  tags:
+    - install_jdk8_171
+    - install_jdk
+
 - include: install_jdk7.yml
   tags:
     - install_jdk7
