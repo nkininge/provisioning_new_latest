@@ -84,6 +84,9 @@
 - include: install_gradle_4102.yml
   tags: install_gradle_4102
 
+- include: install_gradle_50.yml
+  tags: install_gradle_50
+
 - include: install_maven.yml
   tags: install_maven
 
