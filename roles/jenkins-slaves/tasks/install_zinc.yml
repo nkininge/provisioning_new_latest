@@ -3,7 +3,6 @@
   command: "{{ tools_home }}/zinc/zinc-{{ zinc_version }}/bin/zinc -version"
   register: check_zinc
   ignore_errors: yes
-  always_run: yes
 
 - name: install_libraries | "set fact if zinc version is 0.3.9"
   set_fact: zinc_exists="true"

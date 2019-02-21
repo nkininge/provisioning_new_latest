@@ -8,7 +8,6 @@
     command: "/usr/local/bin/yasm --version"
     register: check_yasm
     ignore_errors: yes
-    always_run: yes
     when: yasm_stat_result.stat.exists == true
 
   - name: install_yasm | set fact if yasm version is {{ yasm_version }}

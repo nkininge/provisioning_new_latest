@@ -3,7 +3,6 @@
     command: cmake --version
     register: check_cmake
     ignore_errors: yes
-    always_run: yes
 
   - set_fact: installed_cmake_version={{ check_cmake.stdout.split('\n')[0].split()[2] }}
     when: check_cmake.rc == 0
