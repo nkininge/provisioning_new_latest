@@ -114,6 +114,8 @@
       - leveldb-devel
       - libuuid-devel
       - libcurl-devel
+      - ccache
+      - pigz
 
   - name: install_libraries | install devtoolset-6
     become: yes

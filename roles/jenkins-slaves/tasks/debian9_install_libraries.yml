@@ -172,6 +172,8 @@
    - libbz2-dev
    - liblzma-dev
    - git-core
+   - ccache
+   - pigz
   when: ansible_virtualization_type == "docker"
 
 - name: Install_Libraries | Symlink git

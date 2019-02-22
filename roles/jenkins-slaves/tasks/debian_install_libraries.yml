@@ -122,6 +122,8 @@
       - libpq-dev
       - libblas-dev
       - liblapack-dev
+      - ccache
+      - pigz
 
 
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
@@ -174,4 +176,6 @@
    - libc6-dev
    - libbz2-dev
    - liblzma-dev
+   - ccache
+   - pigz
   when: ansible_virtualization_type == "docker"

@@ -230,5 +230,7 @@
    - libc6-dev
    - libbz2-dev
    - liblzma-dev
+   - ccache
+   - pigz
   when: ansible_virtualization_type == "docker"
 
