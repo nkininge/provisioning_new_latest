@@ -123,6 +123,8 @@
       - liblapack-dev
       - libz-dev
       - yasm
+      - libzstd1
+      - libzstd-dev
   
 
 - name: install_libraries | Install Ruby Libraries and Debian build Tools

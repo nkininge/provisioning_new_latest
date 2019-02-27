@@ -104,6 +104,8 @@
       - ncurses-devel
       - readline-devel
       - postgresql-devel
+      - libzstd
+      - libzstd-devel
 
   - name: install_libraries | download epel
     become: yes

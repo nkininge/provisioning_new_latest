@@ -7,6 +7,8 @@
      - rpm-sign
      - libxslt-devel
      - yasm
+     - libzstd
+     - libzstd-devel
 
   - name: install_libraries | install asciidoc - centos7
     become: yes

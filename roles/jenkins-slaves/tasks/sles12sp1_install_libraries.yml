@@ -117,6 +117,8 @@
       - doxygen
       - xz-devel
       - pam-devel
+      - libzstd1
+      - libzstd-devel
 
   - name: install_libraries | zypper in
     become: yes
