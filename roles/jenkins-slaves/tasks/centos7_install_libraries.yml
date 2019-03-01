@@ -6,6 +6,7 @@
     with_items:
      - rpm-sign
      - libxslt-devel
+     - gmp-devel
      - yasm
      - libzstd
      - libzstd-devel

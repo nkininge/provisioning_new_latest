@@ -9,6 +9,7 @@
       - bzip2
       - libbz2-1
       - libbz2-devel
+      - gmp-devel
       - libzip-devel
       - bzip2-doc
       - libzip-devel
