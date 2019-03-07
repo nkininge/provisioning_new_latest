@@ -185,3 +185,10 @@
       - boost148-devel
       - boost148-filesystem
       - boost148-system
+
+  - name: install_libraries | centos7 | install oracle_11g_instantclient
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 7
+    yum: name=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/oracle/oracle_11g_instantclient-1.0-1.0-3.noarch.rpm state=present
+    tags: install_oracle_11g_instantclient
