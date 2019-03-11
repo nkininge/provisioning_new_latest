@@ -53,6 +53,7 @@
       - pango-devel
       - xulrunner-devel
       - openssl-devel 
+      - openssl-static 
       - intltool 
       - cairo-devel 
       - libxml2-devel 
