@@ -106,8 +106,6 @@
       - postgresql-devel
       - libzstd
       - libzstd-devel
-      - ccache
-      - pigz
 
   - name: install_libraries | download epel
     become: yes

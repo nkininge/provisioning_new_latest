@@ -72,8 +72,6 @@
       - docbook5-xsl-stylesheets
       - docbook-utils
       - libart_lgpl-devel
-      - ccache
-      - pigz
 
   - name: install_libraries | zypper in
     become: yes
