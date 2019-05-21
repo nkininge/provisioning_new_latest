@@ -134,6 +134,7 @@
       - libboost-filesystem1.58-dev
       - libboost-signals1.58-dev
       - yasm
+      - dpkg-sig
 
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu18
   become: yes
@@ -147,6 +148,7 @@
       - libboost-filesystem1.65-dev
       - libboost-signals1.65-dev
       - yasm
+      - dpkg-sig
 
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu non docker
   become: yes
