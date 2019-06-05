@@ -10,9 +10,9 @@
     ignore_errors: yes
 
   # check if "check_node_js" is defined and value is equal to desired node_js version
-  - name: install_node_js | "set fact if npm version is 1.4.9 and node version is 0.10.28"
+  - name: install_node_js | "set fact if npm version is 6.9.0 and node version is 10.16.0"
     set_fact: npm_exists="true"
-    when: (check_npm.rc == 0 and check_npm.stdout.find('1.4.9') != -1) and (check_node.rc == 0 and check_node.stdout.find('0.10.28') != -1)
+    when: (check_npm.rc == 0 and check_npm.stdout.find('6.9.0') != -1) and (check_node.rc == 0 and check_node.stdout.find('10.16.0') != -1)
 
   - name: install_node_js | skip node_js installation
     debug: msg="skip node_js installation as it is already installed"
