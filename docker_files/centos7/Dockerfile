@@ -1,4 +1,4 @@
-FROM REPLACE_BASE_IMAGE
+FROM registry.eng.hortonworks.com/hortonworks/base-centos7:0.1.0.0-82
 
 RUN rpm --rebuilddb
 RUN touch /var/lib/rpm/*
