@@ -45,6 +45,13 @@
       - { src_path: '/usr/local/node-v{{node_version}}-linux-x64/bin/node', dest: '/usr/local/bin/node' }
     when: npm_exists is not defined
 
+  - name: install_node_js | symlink node
+    become: yes
+    become_user: root
+    file: src={{item.src_path}}  dest={{item.dest}} state=link
+    with_items:
+      - { src_path: '/usr/local/node-v{{node_version}}-linux-x64/bin/node', dest: '/usr/bin/node' }
+
   - name: install_node_js | brunch install
     become: yes
     become_user: root
