@@ -17,6 +17,7 @@
       - rpmbuild
       - rsync
       - yasm
+      - swig
 
   - name: Installing Libraries | sles12sp1 | gcc gcc-c++
     become: yes
@@ -118,6 +119,7 @@
       - doxygen
       - xz-devel
       - pam-devel
+      - swig
 
   - name: install_libraries | zypper in
     become: yes

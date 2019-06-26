@@ -1,6 +1,8 @@
 ---
   - set_fact: base_ssh_url="{{ readonly_ssh_url | basename }}"
   - set_fact: base_ssh_dir="{{ base_ssh_url.split('.')[0] }}"
+  - set_fact: base_kube_url="{{ jenkins_k8s_conf_url | basename }}"
+
 
   - name: setup_user | readonly ssh keys - Download
     become: yes
@@ -104,3 +106,15 @@
              timeout=120 url_password={{ url_download_key }} url_username=releng owner="{{ build_user }}" group="{{ build_group }}" mode=644
     tags: secrets_conf
     when: project == 're'
+
+  - name: setup_user | create kube directory
+    become: yes
+    become_user: "{{ build_user }}"
+    file: path="{{ build_user_home }}/.kube" state=directory owner="{{ build_user }}" group="{{ build_group }}" mode=700
+
+  - name: setup_user | ssh keys - config
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url={{jenkins_k8s_conf_url}} dest={{build_user_home}}/.kube/config force=yes
+             timeout=120 url_password={{ url_download_key }} url_username=releng owner="{{ build_user }}" group="{{ build_group }}" mode=644
+    tags: secrets_conf

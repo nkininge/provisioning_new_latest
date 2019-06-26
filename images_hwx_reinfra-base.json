@@ -18,24 +18,17 @@
             "internal-repo-name": "provisioning"
         },
         "PROVISIONING": {
-              "branch": "master",
+              "branch": "cdpd-master",
               "internal-repo-name": "provisioning"
           }
     },
     "hwx": {
-        "stack-version": "0.1.0.0",
+        "stack-version": "0.2.0.0",
         "poll-frequency": "360",
         "platforms": [
-             "centos6",
              "centos7",
-             "debian7",
              "debian9",
-             "suse11sp3",
-             "sles12",
-             "ubuntu16",
              "ubuntu18",
-             "ubuntu12",
-             "ubuntu14",
              "amazonlinux2"
         ]
     },

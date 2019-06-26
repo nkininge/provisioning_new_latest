@@ -117,6 +117,7 @@
       - libcurl-devel
       - ccache
       - pigz
+      - swig
 
   - name: install_libraries | install devtoolset-6
     become: yes
@@ -193,3 +194,21 @@
     when: ansible_distribution_major_version|int == 7
     yum: name=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/oracle/oracle_11g_instantclient-1.0-1.0-3.noarch.rpm state=present
     tags: install_oracle_11g_instantclient
+
+  - name: install_libraries | centos7 | install sbt
+    become: yes
+    become_user: root
+    yum: name=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/sbt/sbt-0.13.5.rpm state=present
+    tags: install_sbt
+
+  - name: install_libraries | Download kubectl
+    become: yes
+    become_user: root
+    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/kubectl/v1.15.0/kubectl dest=/usr/local/bin/kubectl mode=0755 timeout=120
+    tags: install_kubectl
+
+
+
+
+
+

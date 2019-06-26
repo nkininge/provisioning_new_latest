@@ -18,6 +18,7 @@
       - bzip2-doc
       - libzip1
       - libzip-devel
+      - swig
 
   - name: Installing Libraries | suse11sp3
     become: yes

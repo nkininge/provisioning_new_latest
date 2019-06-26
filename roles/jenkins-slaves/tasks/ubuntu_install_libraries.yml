@@ -98,6 +98,7 @@
       - fort77
       - devscripts
       - libpq-dev
+      - swig
 
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu18
   become: yes

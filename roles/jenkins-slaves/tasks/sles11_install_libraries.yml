@@ -72,6 +72,7 @@
       - docbook5-xsl-stylesheets
       - docbook-utils
       - libart_lgpl-devel
+      - swig
 
   - name: install_libraries | zypper in
     become: yes
