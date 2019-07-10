@@ -80,6 +80,7 @@
       - python-boto
       - python-dev
       - python-setuptools
+      - libpython3-dev
 #      - python-support
       - re2c
       - reprepro
