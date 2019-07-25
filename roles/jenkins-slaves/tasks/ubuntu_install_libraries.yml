@@ -235,5 +235,7 @@
    - liblzma-dev
    - ccache
    - pigz
+   - default-libmysqlclient-dev
+   - virtualenv
   when: ansible_virtualization_type == "docker"
 
