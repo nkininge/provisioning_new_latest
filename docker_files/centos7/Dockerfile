@@ -1,4 +1,4 @@
-FROM registry.eng.hortonworks.com/hortonworks/base-centos7:0.1.0.0-82
+FROM docker-private.infra.cloudera.com/releng/base-centos7.6:0.2.0.0-3
 
 RUN rpm --rebuilddb
 RUN touch /var/lib/rpm/*
