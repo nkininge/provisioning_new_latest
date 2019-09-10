@@ -1,0 +1,51 @@
+---
+  - debug:
+      msg: "helm version {{ helm_version }}"
+
+  - debug:
+      msg: "helm home {{ helm_home }}"
+
+  - stat:
+      path: "{{ helm_home }}/helm"
+    register: status
+    ignore_errors: yes
+
+  - name: install_helm | "set fact if helm is present"
+    set_fact: helm_exists="true"
+    when: status.stat.exists == True
+
+  - name: install_helm | skip helm installation
+    debug: msg="skip helm installation as it is already installed"
+    when: helm_exists is defined
+
+  - set_fact: helm_base={{ helm_url | basename }}
+
+  - name: install_helm | Download helm
+    get_url: url={{ helm_url }} dest=/tmp/{{ helm_base }} timeout=360
+    when: helm_exists is not defined
+
+  - name: install_helm | create {{ helm_home }}/{{ helm_version }}
+    file:
+      path: "{{ helm_home }}/{{ helm_version }}"
+      state: directory
+      owner: "{{ build_user }}"
+      group: "{{ build_group }}"
+      recurse: yes
+
+  - name: install_helm | untar helm
+    become: yes
+    become_user: "{{ build_user }}"
+    command: "tar --strip-components=1 -C {{ helm_home }}/{{ helm_version }} -zxvf /tmp/{{ helm_base }}"
+    when: helm_exists is not defined
+
+  - name: install_helm | delete helm tarball from /tmp
+    become: yes
+    become_user: root
+    file: path=/tmp/{{ helm_base }} state=absent
+    when: helm_exists is not defined
+
+  - name: install_helm | initialize helm
+    command: "{{ helm_home }}/{{ helm_version }}/helm init -c"
+    args:
+      chdir: "{{ helm_home }}/{{ helm_version }}"
+    when: helm_exists is not defined
