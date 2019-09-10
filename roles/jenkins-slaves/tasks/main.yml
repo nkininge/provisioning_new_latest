@@ -193,6 +193,11 @@
   - include: install_hdpchanges.yml
     tags: install_hdpchanges
 
+  - include: install_helm.yml
+    tags:
+      - install_helm
+      - install_libraries
+
   - include: install_cyrus_sasl.yml
     when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6")
 
