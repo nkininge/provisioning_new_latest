@@ -21,7 +21,7 @@
   - set_fact: helm_base={{ helm_url | basename }}
 
   - name: install_helm | Download helm
-    get_url: url={{ helm_url }} dest=/tmp/{{ helm_base }} timeout=120
+    get_url: url={{ helm_url }} dest=/tmp/{{ helm_base }} timeout=360
     when: helm_exists is not defined
 
   - name: install_helm | create {{ helm_home }}/{{ helm_version }}
@@ -33,7 +33,9 @@
       recurse: yes
 
   - name: install_helm | untar helm
-    unarchive: copy=no src=/tmp/{{ helm_base }} dest={{ helm_home }}/{{ helm_version }} extra_opts=[--strip-components=1]
+    become: yes
+    become_user: "{{ build_user }}"
+    command: "tar --strip-components=1 -C {{ helm_home }}/{{ helm_version }} -zxvf /tmp/{{ helm_base }}"
     when: helm_exists is not defined
 
   - name: install_helm | delete helm tarball from /tmp
@@ -43,7 +45,7 @@
     when: helm_exists is not defined
 
   - name: install_helm | initialize helm
-    command: "helm init -c" 
+    command: "{{ helm_home }}/{{ helm_version }}/helm init -c"
     args:
       chdir: "{{ helm_home }}/{{ helm_version }}"
     when: helm_exists is not defined
