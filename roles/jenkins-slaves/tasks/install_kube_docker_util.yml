@@ -1,0 +1,18 @@
+---
+  - name: install_kube_docker_util | Download kubectl
+    become: yes
+    become_user: root
+    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/kubectl/v1.15.0/kubectl dest=/usr/local/bin/kubectl mode=0755 timeout=120
+    tags: install_kube_docker_util
+
+  - name: install_kube_docker_util | Download docker-compose
+    become: yes
+    become_user: root
+    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/docker/docker-compose-Linux-x86_64 dest=/usr/local/bin/docker-compose mode=0755 timeout=120
+    tags: install_kube_docker_util
+
+  - name: install_kube_docker_util | Download yq
+    become: yes
+    become_user: root
+    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/yq/2.1.2/yq_linux_amd64 dest=/usr/local/bin/yq mode=0755 timeout=120
+    tags: install_kube_docker_util

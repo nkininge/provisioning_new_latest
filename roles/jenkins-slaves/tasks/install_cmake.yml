@@ -46,7 +46,7 @@
     when: cmake_exists is not defined
 
   - name: install_cmake | configure cmake
-    shell: chdir={{cmake_base_dir}} {{ cmake_base_dir }}/configure --prefix={{install_dir}}
+    shell: chdir={{cmake_base_dir}} {{ cmake_base_dir }}/configure --prefix={{install_dir}} --system-curl
     become: yes
     become_user: "{{ build_user }}"
     when: cmake_exists is not defined
