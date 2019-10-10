@@ -216,3 +216,43 @@
     file: path={{tools_home}}/maven/maven.{{mvn352_version}}.tar.gz state=absent
     when: maven352_exists is not defined
     tags: maven352
+
+  - name: install_maven 3.6.2 | "set fact if maven version is {{mvn362_version}}"
+    set_fact: maven362_exists="true"
+    when: check_maven362.rc == 0 and check_maven362.stdout.find(mvn362_version) != -1
+    when: maven362_exists is defined
+    tags: maven362
+
+  - name: install_maven 3.6.2 | skip maven 3.6.2 installation
+    debug: msg="skipping maven 3.6.2installation as it is already installed"
+    when: maven362_exists is defined
+    tags: maven362
+
+  - name: install_maven 3.6.2 | mkdirs for Maven 3.6.2
+    file: path={{tools_home}}/maven state=directory mode=0755
+    become: yes
+    become_user: "{{ build_user }}"
+    when: maven362_exists is not defined
+    tags: maven362
+
+  - name: install_maven 3.6.2 | Download Maven 3.6.2
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url={{maven362_url}} dest={{tools_home}}/maven/maven.{{mvn362_version}}.tar.gz mode=0644 timeout=120
+    when: maven362_exists is not defined
+    tags: maven362
+
+  - name: install_maven 3.6.2 | Untar Maven 3.6.2
+    become: yes
+    become_user: "{{ build_user }}"
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn362_version}}.tar.gz dest={{tools_home}}/maven
+    when: maven362_exists is not defined
+    tags: maven362
+
+  - name: install_maven 3.6.2 | Remove .tar.gz artifact from Maven install.
+    become: yes
+    become_user: "{{ build_user }}"
+    file: path={{tools_home}}/maven/maven.{{mvn362_version}}.tar.gz state=absent
+    when: maven362_exists is not defined
+    tags: maven362
+
