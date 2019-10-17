@@ -1,4 +1,4 @@
-FROM docker-private.infra.cloudera.com/releng/base-centos7.6:0.2.0.0-3
+FROM docker-private.infra.cloudera.com/releng/base-centos7.5:0.2.0.0-6
 
 RUN rpm --rebuilddb
 RUN touch /var/lib/rpm/*
