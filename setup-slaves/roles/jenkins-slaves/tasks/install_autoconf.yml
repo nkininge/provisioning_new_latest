@@ -1,0 +1,26 @@
+---
+  - name: install_autoconf | check if autoconf is installed
+    command: /usr/bin/autoconf --version
+    register: check_autoconf
+    ignore_errors: yes
+
+  # check if "check_autoconf" is defined and value is equal to desired autoconf version
+  - name: install_autoconf | set fact if autoconf version is {{ autoconf_version }}
+    set_fact: autoconf_exists="true"
+    when: check_autoconf.rc == 0 and check_autoconf.stdout.find('2.69') != -1
+
+  - name: install_autoconf | skip autoconf installation
+    debug: msg="skipping autoconf installation as it is already installed"
+    when: autoconf_exists is defined
+
+  - name: install_autoconf | Download autoconf
+    get_url: url={{autoconf_url}} dest=/tmp/{{ autoconf_url | basename }} timeout=120
+    when: autoconf_exists is not defined
+
+  - name: install_autoconf | untar autoconf
+    unarchive: copy=no src=/tmp/{{ autoconf_url | basename }} dest=/tmp/
+    when: autoconf_exists is not defined
+
+  - name: install_autoconf | autoconf configure/make/make install
+    shell: cd /tmp/autoconf-{{ autoconf_version }} ; ./configure ; make clean ; make install
+    when: autoconf_exists is not defined

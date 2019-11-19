@@ -1,6 +1,0 @@
----
-  - name: resetHostname | reset-host
-    shell:  /etc/init.d/hostname.sh start
-    when: False
-    shell:  /etc/init.d/hostname restart
-    when: False

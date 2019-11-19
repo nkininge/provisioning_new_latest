@@ -1,0 +1,7 @@
+---
+ruby_version: "2.4.4"
+git_version: "2.13.0"
+git_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/git-2.13.0.tar.gz"
+ruby_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/ruby-2.4.4.tar.gz"
+zookeeper_url: "https://github.com/hortonworks/zookeeper-release/archive/HDP-3.0.1.0-187-tag.tar.gz"
+zookeeper_version: "3.0.1.0-187"

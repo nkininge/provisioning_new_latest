@@ -1,0 +1,122 @@
+---
+  - name: install_gcc | check if gcc is installed
+    command: "cc -dumpversion"
+    register: check_gcc
+    ignore_errors: yes
+
+  - set_fact: installed_gcc_version={{ check_gcc.stdout }}
+    when: check_gcc.rc == 0
+
+  - set_fact: installed_gcc_version=0
+    when: check_gcc.rc != 0
+
+   # check if "check_gcc" is defined and value is greater than to desired gcc version
+  - name: install_gcc | "set fact if gcc version is {{ installed_gcc_version }} >= {{gcc_version}}"
+    set_fact: gcc_exists="true"
+    when: check_gcc.rc == 0
+   # when: check_gcc.rc == 0 and installed_gcc_version | version_compare(gcc_version, '>=')
+
+  - name: install_gcc | skip gcc installation
+    debug: msg="skipping gcc installation as it is already installed"
+    when: gcc_exists is defined
+
+  - set_fact: gcc_base=/tmp/{{ gcc_url | basename }}
+
+  - set_fact: gcc_base_dir={{ gcc_base | regex_replace('\.tar\.gz','') }}
+    when: gcc_base is defined
+
+  - set_fact: install_base_dir={{tools_home}}/gcc
+
+  - set_fact: install_dir={{install_base_dir}}/{{ gcc_version }}
+
+  - set_fact: gcc_base={{install_base_dir}}/{{ gcc_url | basename }}
+
+  - set_fact: gcc_base_dir={{ gcc_base | regex_replace('\.tar\.gz','') }}
+    when: gcc_base is defined
+
+  - set_fact: gcc_build_dir={{install_base_dir}}/objdir
+
+  - name: install_gcc | Make gcc tools folder
+    file: path={{ install_base_dir }} state=directory
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | download gcc
+    get_url: url={{gcc_url}} dest={{ gcc_base }} mode=0770 timeout=120
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | untar gcc
+    unarchive: copy=no src={{ gcc_base }} dest={{ install_base_dir }}
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | Make gcc build folder
+    file: path={{ gcc_build_dir }} state=directory
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | GCC download_prerequisites
+    shell: chdir={{ gcc_base_dir }}/ ./contrib/download_prerequisites
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  # REF: https://gcc.gnu.org/ml/gcc-help/2014-04/msg00084.html
+  - name: install_gcc | fix for GMP bug https://gmplib.org/list-archives/gmp-bugs/2008-August/001114.html
+    shell: chdir={{ gcc_base_dir }} find -name "configure*" -exec sed -i -e 's#M4=m4-not-needed#M4=m4#' '{}' ';'
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | configure GCC
+    command: chdir={{gcc_build_dir}} {{ gcc_base_dir }}/configure --prefix={{install_dir}} --enable-languages=c,c++ --disable-multilib
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | make GCC
+    command: chdir={{gcc_build_dir}} make -j4
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | install GCC
+    command: chdir={{gcc_build_dir}} make install
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | symlink for cc -> gcc
+    file: src={{install_dir}}/bin/gcc dest={{install_dir}}/bin/cc state=link
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | Symlink <version> -> latest
+    file: src={{ install_dir }} dest={{ tools_home }}/gcc/latest state=link
+    become: yes
+    become_user: "{{ build_user }}"
+    when: gcc_exists is not defined
+
+  - name: install_gcc | delete gcc tarball from {{ gcc_base }}
+    become: yes
+    become_user: root
+    file: path={{ gcc_base }} state=absent
+    when: gcc_exists is not defined
+
+  - name: install_gcc | delete gcc source directory from {{ gcc_base_dir }}
+    become: yes
+    become_user: root
+    file: path={{ gcc_base_dir }} state=absent
+    when: gcc_exists is not defined
+
+  - name: install_gcc | delete gcc build directory from {{ gcc_build_dir }}
+    become: yes
+    become_user: root
+    file: path={{ gcc_build_dir }} state=absent
+    when: gcc_exists is not defined

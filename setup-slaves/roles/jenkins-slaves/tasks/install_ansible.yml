@@ -1,0 +1,7 @@
+---
+- name: install_tools | pip install ansible
+  become: yes
+  become_user: root
+  shell: "/usr/local/bin/pip2.7 install ansible==2.9.0"
+  tags: install_ansible
+  when: project == "re" and ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' )

@@ -1,6 +1,0 @@
-- name: Write out host-names, external
-  tags: install_hostname_dhcp1
-  lineinfile: line='DHCLIENT_SET_HOSTNAME="yes"' dest=/etc/sysconfig/network/dhcp state=absent
-- name: Write out host-names, external
-  tags: install_hostname_dhcp2
-  lineinfile: line='DHCLIENT_SET_HOSTNAME="no"' dest=/etc/sysconfig/network/dhcp state=present   insertafter=EOF

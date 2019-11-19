@@ -1,0 +1,152 @@
+---
+- name: install_libraries | install install_kube_docker_util
+  include:  install_kube_docker_util.yml
+- name: install_libraries | install install_gerrit
+  include:  install_gerrit.yml
+- name: install_libraries | install centos5_install_libraries
+  include:  centos5_install_libraries.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+- name: install_libraries | install install_python27
+  include:  install_python27.yml
+- name: install_libraries | install yum_cache_clean
+  include:  yum_cache_clean.yml
+  when: project == "re"
+
+- name: install_libraries | install install_python35
+  include:  install_python35.yml
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+
+- name: install_libraries | install debian9_install_libraries
+  include:  debian9_install_libraries.yml
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+
+- name: install_libraries | install debian_install_libraries
+  include:  debian_install_libraries.yml
+  when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+
+- name: install_libraries | install install_python36
+  include:  install_python36.yml
+
+- name: install_libraries | install centos_install_libraries
+  include:  centos_install_libraries.yml
+  when: ansible_os_family == 'RedHat'  and ansible_distribution != "Amazon"
+
+- name: install_libraries | install centos7_install_libraries
+  include:  centos7_install_libraries.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+
+- name: install_libraries | install install_ansible
+  include:  install_ansible.yml
+
+- name: install_libraries | install install_clamav
+  include:  install_clamav.yml
+  when: ansible_distribution == 'Amazon' and ansible_os_family == 'RedHat'
+
+- name: install_libraries | install sles11sp3_setup_env
+  include:  sles11sp3_setup_env.yml
+  when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+
+- name: install_libraries | install sles12sp3_install_libraries
+  include:  sles12sp3_install_libraries.yml
+  when: (ansible_distribution == 'SLES' and ansible_distribution_major_version == '12' and ansible_distribution_release == '1')
+
+- name: install_libraries | install install_fortify_sca
+  include:  install_fortify_sca.yml
+
+- name: install_libraries | install install_node_js
+  include:  install_node_js.yml
+
+- name: install_libraries | install install_awscli
+  include:  install_awscli.yml
+  when: project != "dev" and build_user != "nobody"
+
+- name: install_libraries | install sles12sp1_install_libraries
+  include:  sles12sp1_install_libraries.yml
+  when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
+
+- name: install_libraries | install al2_install_libraries
+  include:  al2_install_libraries.yml
+  when: ansible_distribution == "Amazon" and ansible_lsb.major_release == '2'
+
+- name: install_libraries | install sles12sp1_setup_env
+  include:  sles12sp1_setup_env.yml
+  when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
+
+- name: install_libraries | install ubuntu_install_libraries
+  include:  ubuntu_install_libraries.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- name: install_libraries | install squeeze_repo_setup
+  include:  squeeze_repo_setup.yml
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'squeeze'
+
+- name: install_libraries | install install_python27whl
+  include:  install_python27whl.yml
+  when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
+
+- name: install_libraries | install install_helm
+  include:  install_helm.yml
+
+- name: install_libraries | install sles11_install_libraries
+  include:  sles11_install_libraries.yml
+  when: (ansible_distribution == 'Suse' or  ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1' or ansible_distribution_release == '3'
+
+- name: install_libraries | install install_cmake
+  include:  install_cmake.yml
+
+- name: install_libraries | install install_ruby_libs
+  include:  install_ruby_libs.yml
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version != "14"
+
+- name: install_libraries | install replace_gpg_key
+  include:  replace_gpg_key.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' and project != "dev" and build_user != "nobody"
+
+- name: install_libraries | install install_python_libs
+  include:  install_python_libs.yml
+
+- name: install_libraries | install sles12sp3_setup_env
+  include:  sles12sp3_setup_env.yml
+  when: (ansible_distribution == 'SLES' and ansible_distribution_major_version == '12' and ansible_distribution_release == '1')
+
+- name: install_libraries | install sles11sp1_setup_env
+  include:  sles11sp1_setup_env.yml
+  when: ansible_distribution == 'SLES' and ansible_distribution_major_version == '11' and ansible_distribution_release|int == 1
+
+- name: install_libraries | install sles11sp3_install_libraries
+  include:  sles11sp3_install_libraries.yml
+  when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+
+- name: install_libraries | install centos5_repo_setup
+  include:  centos5_repo_setup.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+
+- name: install_libraries | install centos6_install_libraries
+  include:  centos6_install_libraries.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5'  and ansible_distribution != "Amazon"
+
+- name: install_libraries | install install_openssl1
+  include:  install_openssl1.yml
+  when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+
+- name: install_libraries | install install_python3
+  include:  install_python3.yml
+  when: not ((ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' ) or (ansible_distribution == "Amazon") or (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '18'))
+
+- name: install_libraries | install install_boost
+  include:  install_boost.yml
+  when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+- name: install_libraries | install update_ulimit
+  include:  update_ulimit.yml
+
+- name: install_libraries | install devci_profiles
+  include:  devci_profiles.yml
+  when: project == "re" and build_user != "nobody"
+
+- name: install_libraries | install install_zinc
+  include:  install_zinc.yml
+
+- name: install_libraries | install install_hdpchanges
+  include:  install_hdpchanges.yml

@@ -1,0 +1,281 @@
+---
+  - include: squeeze_repo_setup.yml
+    tags: debian_repo_setup
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'squeeze'
+
+  - include: debian_install_libraries.yml
+    tags:
+      - install_libraries
+      - debian_libraries
+    when: ansible_distribution == 'Debian' and ansible_distribution_release != 'stretch'
+
+  - include: debian9_install_libraries.yml
+    tags:
+      - install_libraries
+      - debian_libraries
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+
+  - include: ubuntu_install_libraries.yml
+    tags:
+      - install_libraries
+      - ubuntu_libraries
+    when: ansible_distribution == 'Ubuntu'
+
+  - include: sles11sp3_setup_env.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+
+  - include: sles11sp3_install_libraries.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+
+  - include: sles12sp1_setup_env.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
+
+  - include: sles12sp1_install_libraries.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
+
+  - include: sles12sp3_setup_env.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'SLES' and ansible_distribution_major_version == '12' and ansible_distribution_release == '1')
+
+  - include: sles12sp3_install_libraries.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'SLES' and ansible_distribution_major_version == '12' and ansible_distribution_release == '1')
+
+  - include: install_openssl1.yml
+    tags: install_openssl1
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3'
+
+  - include: sles11sp1_setup_env.yml
+    tags: install_libraries
+    when: ansible_distribution == 'SLES' and ansible_distribution_major_version == '11' and ansible_distribution_release|int == 1
+
+  - include: sles11_install_libraries.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or  ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1' or ansible_distribution_release == '3'
+
+  - include: sles11sp1_install_libraries.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or  ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1'
+
+  - include: centos_env_setup.yml
+    tags: centos_rpm_gpg
+    when: project != "dev" and ansible_os_family == 'RedHat'
+
+  - include: al2_install_libraries.yml
+    tags: al2_rpm_gpg
+    when: ansible_distribution == "Amazon" and ansible_lsb.major_release == '2'
+
+  - include: centos_install_libraries.yml
+    tags: install_libraries
+    when: ansible_os_family == 'RedHat'  and ansible_distribution != "Amazon"
+
+  - include: centos5_install_libraries.yml
+    tags: install_libraries
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+
+  - include: install_r.yml
+    tags: install_r
+    when: not ((ansible_distribution == 'Suse' or  ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '1')
+
+  - include: centos6_install_libraries.yml
+    tags:
+      - install_libraries
+      - centos6_libraries
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5'  and ansible_distribution != "Amazon"
+
+  - include: centos7_install_libraries.yml
+    tags: install_libraries
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+
+  - include: install_gcc.yml
+    tags: install_gcc
+
+  - include: install_cmake.yml
+    tags: install_cmake
+
+  - include: install_git.yml
+    tags: install_git
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
+
+  - include: install_gerrit.yml
+    tags: install_git
+
+  - include: install_protobuf.yml
+      protobuf_version="2.5.0"
+      protobuf_home="/opt"
+    tags: install_protobuf
+
+  - include: install_ruby.yml
+    tags: install_ruby
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
+
+  - include: install_autoconf.yml
+    when: ansible_os_family == 'RedHat'
+    tags: install_autoconf
+
+  - include: install_node_js.yml
+    tags: install_nodejs
+
+  - include: update_ulimit.yml
+    tags: update_ulimit
+
+  - include: install_ruby_libs.yml
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version != "14"
+    tags: install_ruby
+
+  - include: install_python_libs.yml
+    tags:
+      - install_python
+      - pip_conf
+
+  - include: install_python27.yml
+    tags:
+      - install_python27
+      - install_python
+
+  - include: install_python3.yml
+    tags:
+      - install_python3
+      - install_python
+    when: not ((ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' ) or (ansible_distribution == "Amazon") or (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '18'))
+
+  - include: install_python35.yml
+    tags:
+      - install_python3
+      - install_python
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+
+  - include: install_python36.yml
+    tags:
+      - install_python3
+      - install_python
+      - install_python36
+
+  - include: install_ansible.yml
+    when: ansible_virtualization_type != "docker"
+    tags: install_ansible
+
+  - include: replace_gpg_key.yml
+    tags:
+      - replace_gpg_key
+      - docker_slave_setup
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' and project != "dev" and build_user != "nobody"
+
+  - include: centos5_install_tar.yml
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 5
+
+  - include: install_asciidoc.yml
+    tags: install_asciidoc
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - include: install_awscli.yml
+    tags: install_awscli
+    when: project != "dev" and build_user != "nobody"
+
+  - include: devci_profiles.yml
+    when: project == "re" and build_user != "nobody"
+    tags:
+      - devci_profiles
+      - docker_slave_setup
+
+  - include: install_zinc.yml
+    tags: install_zinc
+
+  - include: yum_cache_clean.yml
+    when: project == "re"
+
+  - include: install_python27whl.yml
+    tags:
+      - install_python27whl
+      - install_python
+    when: not (ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' )
+
+  - include: install_clamav.yml
+    tags: configure_clamav
+    when: ansible_distribution == 'Amazon' and ansible_os_family == 'RedHat'
+
+  - include: configure_clamav.yml
+    tags: configure_clamav
+    when: project == "re" and build_user != "nobody"
+
+  - include: install_hdpchanges.yml
+    tags: install_hdpchanges
+
+  - include: install_helm.yml
+    tags:
+      - install_helm
+      - install_libraries
+
+  - include: install_cyrus_sasl.yml
+    when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6")
+
+  - include: install_protobuf.yml
+      protobuf_version="2.6.1"
+      protobuf_home="{{hbase_native_home}}"
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_gflags.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_glog.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_gtest.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_rocksdb.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_boost.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_double-conversion.yml
+    when: (ansible_distribution == "CentOS")
+
+  - include: install_folly.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_wangle.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"))
+
+  - include: install_zookeeper.yml
+    when: ((ansible_distribution == "CentOS") or
+          (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"))
+
+  - include: install_bison.yml
+    tags: install_libraries
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
+
+  - include: install_protobuf.yml
+      protobuf_version="3.5.1"
+      protobuf_home="{{ protobuf_351_home }}"
+    tags: install_protobuf_351
+    when: not ((ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6") or
+               (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "12") or
+               ((ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3') or
+               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"))
+
+  - include: install_thrift.yml
+    tags: install_thrift
+    when: not ((ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6" ) or
+               (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "12") or
+               ((ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '11' and ansible_distribution_release == '3') or
+               (ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"))
+
+  - include: install_kube_docker_util.yml
+    tags: install_kube_docker_util
+
+  - include: install_minimal_packge.yml
+    tags: install_minimal_packge
