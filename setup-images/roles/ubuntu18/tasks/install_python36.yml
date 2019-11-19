@@ -7,7 +7,8 @@
 # check if "check_python36" is defined and value is equal to desired python36 version
 - name: install_python36 | "set fact if python36 version is {{python36_version}}"
   set_fact: python36_exists="true"
-  when: check_python36.rc == 0 and check_python36.stdout.find(python36_version) != -1
+  when: check_python36.rc == 0
+  #when: check_python36.rc == 0 and check_python36.stdout.find(python36_version) != -1
 
 - name: install_python36 | skip python36 installation
   debug: msg="skipping python36 installation as it is already installed"

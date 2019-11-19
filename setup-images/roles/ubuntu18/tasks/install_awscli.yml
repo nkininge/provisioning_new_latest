@@ -1,5 +1,5 @@
 ---
-  - include_vars: ../../common/vars/{{project}}_secrets.yml
+  - include_vars: /root/ansible/setup-images/roles/ubuntu18/vars/{{project}}_secrets.yml
 
   - name: install_aws | Download awscli
     become: yes

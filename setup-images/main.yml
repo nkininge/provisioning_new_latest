@@ -24,4 +24,5 @@
     ec2_hosted_repo_ip: 172.22.77.245
     tar_url: http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/tar-1.28.tar.gz
   roles:
-    - centos7
+          #- centos7
+    - ubuntu18

@@ -1,5 +1,5 @@
 ---
-  - include_vars: ../../common/vars/{{project}}_secrets.yml
+  - include_vars: /root/setup-images/roles/ubuntu18/vars/{{project}}_secrets.yml
     when: project != 'dev'
 
   - name: Replace gpg key | Pre clean up
