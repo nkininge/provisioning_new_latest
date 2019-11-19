@@ -1,0 +1,35 @@
+---
+- name: install-python-argparse | install python spare libs
+  become: yes
+  become_user: root
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+  easy_install: name={{item}}
+  with_items:
+  - pip
+  - argparse
+  - requests
+
+- name: install-python-argparse | install python spare libs
+  become: yes
+  become_user: root
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
+  easy_install: name={{item}}
+  with_items:
+  - pip
+  - argparse
+
+- name: install-python-argparse | install python spare libs
+  become: yes
+  become_user: root
+  when: ansible_distribution == 'Debian' or (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version != "18" )
+  shell: easy_install -i {{pypi_index_url}} {{item}}
+  with_items:
+  - pip
+  - argparse
+  - requests
+
+- name: create .pip directory | install python libs
+  file: path={{build_user_home}}/.pip state=directory
+
+- name: copy pip config file | install python libs
+  copy: src=pip.conf dest={{build_user_home}}/.pip/pip.conf

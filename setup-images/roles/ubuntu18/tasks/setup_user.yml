@@ -1,0 +1,36 @@
+---
+  - name: setup_user | install sudo for debian
+    apt: pkg=sudo update_cache=yes state=latest force=yes
+    when: ansible_distribution == 'Debian'
+
+  - name: setup_user | install sudo for suse
+    zypper: name=sudo state=present
+    when: ansible_distribution == 'Suse' or ansible_distribution == 'SLES'
+
+  - name: setup_user | Add group
+    become: yes
+    become_user: root
+    group: name="{{item}}" state=present
+    with_items:
+      - "{{build_group}}"
+    when: build_user != current_user
+
+  - name: setup_user | create {{build_user_home}} base dir
+    become: yes
+    become_user: root
+    file: path="{{home_base_dir}}" state=directory 
+
+  - name: setup_fact | set build_user_uid to 99 if nobody user
+    set_fact: build_user_uid="99"
+    when: build_user == "nobody"
+
+  - name: setup_fact | set build_group to nobody if nobody user
+    set_fact: build_group="nobody"
+    when: build_user == "nobody"
+
+  - name: setup_user | Add user
+    become: yes
+    become_user: root
+    user: name="{{ build_user }}" home={{build_user_home}} uid="{{ build_user_uid }}"
+      group={{build_group}} shell="/bin/bash"
+    when: build_user != current_user
