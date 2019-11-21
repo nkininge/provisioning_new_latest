@@ -1,0 +1,53 @@
+---
+- name: install_libraries | check if R is installed
+  command: "{{ tools_home }}/R/{{ r_version }}/bin/R --version"
+  register: check_r
+  ignore_errors: yes
+
+# check if "check_autoconf" is defined and value is equal to desired autoconf version
+- name: install_libraries | "set fact if R version is 3.2.2"
+  set_fact: r_exists="true"
+  when: check_r.rc == 0 and check_r.stdout.find('3.2.2') != -1
+
+- name: install_libraries | skip R installation
+  debug: msg="skipping R installation as it is already installed"
+  when: r_exists is defined
+
+- set_fact: r_base={{ r_url | basename }}
+  when: r_exists is not defined
+
+- set_fact: r_base_dir={{ r_base | regex_replace('\.tar\.gz','') }}
+  when: r_exists is not defined
+
+- set_fact: r_base_dir={{ r_base | regex_replace('\.tgz','') }}
+  when: r_base_dir is not defined and r_exists is not defined
+
+- name: install_R | Download R
+  get_url: url={{r_url}} dest=/tmp/{{ r_base }} timeout=120
+  become: yes
+  become_user: root
+  when: r_exists is not defined
+
+- name: install_R | untar R
+  become: yes
+  become_user: root
+  unarchive: copy=no src=/tmp/{{ r_url | basename }} dest=/tmp/
+  when: r_exists is not defined
+
+- name: install_R | R configure/make/make install
+  become: yes
+  become_user: root
+  shell: cd /tmp/{{ r_base_dir }} ; ./configure --with-x=no --with-readline=no --prefix={{ tools_home }}/R/{{ r_version }}/ ; make ; make install
+  when: r_exists is not defined
+
+- name: install_R | delete R from /tmp
+  become: yes
+  become_user: root
+  file: path=/tmp/{{ r_base_dir }} state=absent
+  when: r_exists is not defined
+
+- name: install_R | delete R tarball from /tmp
+  become: yes
+  become_user: root
+  file: path=/tmp/{{ r_base }} state=absent
+  when: r_exists is not defined

@@ -25,4 +25,5 @@
     tar_url: http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/tar-1.28.tar.gz
   roles:
           #- centos7
-    - ubuntu18
+          #- ubuntu18
+    - debian9

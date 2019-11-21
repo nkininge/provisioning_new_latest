@@ -1,2 +1,102 @@
 ---
-# tasks file for debian9
+- name: check if build_user is set
+  fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
+  when: build_user is not defined
+
+- include: setup_user.yml
+
+- include: npm_cleanup.yml
+
+
+- include_vars: "{{ secret_profile_file }}"
+
+- include: setup_user_sshkeys.yml
+  when: ssh_url is defined
+
+
+- include: readonly_sshkeys.yml
+  when: readonly_ssh is defined
+
+- include: prepare_env.yml
+
+
+- include: install_jdk10.yml
+
+
+- include: install_jdk8.yml
+
+- include: install_jdk8_171.yml
+
+
+- include: install_gradle_50.yml
+
+
+- include: install_maven.yml
+
+
+- include: install_ant.yml
+
+
+- include: install_sonar_ant_task.yml
+
+
+- include: install_tools.yml
+
+
+- include: setup_user_configs.yml
+  when: project != 'dev' and build_user != "nobody"
+
+
+- include: update_configs.yml
+  when: build_user != "nobody"
+
+
+- include: re_readonly_update_configs.yml
+  when: project == "re" and build_user == "nobody"
+
+
+- include: mvn-gpg-nexus-password.yml
+  when: project != 'dev'
+
+
+- include: download_m2.yml
+  when: project == "re"
+
+
+- include: squeeze_repo_setup.yml
+
+- include: debian_install_libraries.yml
+
+- include: debian9_install_libraries.yml
+- include: install_r.yml
+
+- include: install_gcc.yml
+- include: install_cmake.yml
+
+- include: install_gerrit.yml
+- include: install_protobuf.yml
+    protobuf_version="2.5.0"
+    protobuf_home="/opt"
+
+- include: install_node_js.yml
+- include: update_ulimit.yml
+- include: install_python_libs.yml
+- include: install_python36.yml
+- include: install_ansible.yml
+  when: ansible_virtualization_type != "docker"
+- include: replace_gpg_key.yml
+- include: install_asciidoc.yml
+- include: install_awscli.yml
+  when: project != "dev" and build_user != "nobody"
+- include: devci_profiles.yml
+  when: project == "re" and build_user != "nobody"
+- include: install_zinc.yml
+  tags: install_zinc
+- include: yum_cache_clean.yml
+  when: project == "re"
+
+- include: configure_clamav.yml
+  when: project == "re" and build_user != "nobody"
+- include: install_hdpchanges.yml
+- include: install_helm.yml
+- include: install_kube_docker_util.yml
