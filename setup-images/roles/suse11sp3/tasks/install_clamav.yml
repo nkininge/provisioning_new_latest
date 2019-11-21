@@ -1,0 +1,21 @@
+---
+  - name: install_clamav | download epel
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=present
+    with_items:
+      - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+  - name: install_clamav | install clamav
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=present
+    with_items:
+      - clamav
+
+  - name: install_clamav | uninstall epel
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=absent
+    with_items:
+      - epel-release

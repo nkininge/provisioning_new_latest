@@ -1,0 +1,78 @@
+---
+  - name: install_git | check if git is installed
+    command: "git --version"
+    register: check_git
+    ignore_errors: yes
+
+   # check if "check_git" is defined and value is equal to desired git version
+  - name: install_git | "set fact if git version is {{git_version}}"
+    set_fact: git_exists="true"
+    when: check_git.rc == 0 and check_git.stdout.find(git_version) != -1
+
+  - name: install_git | skip git installation
+    debug: msg="skipping git installation as it is already installed"
+    when: git_exists is defined
+
+  - name: slave setup | download git
+    become: yes
+    become_user: root
+    get_url: url={{git_url}} dest=/tmp/{{ git_url | basename }} mode=0770 timeout=120
+    when: git_exists is not defined
+
+  - name: slave setup | untar git
+    become: yes
+    become_user: root
+    unarchive: copy=no src=/tmp/{{ git_url | basename }} dest=/tmp/
+    when: git_exists is not defined
+
+  - set_fact: git_base={{ git_url | basename }}
+
+  - set_fact: git_base_dir={{ git_base | regex_replace('\.tar\.gz','') }}
+
+  - set_fact: git_base_dir={{ git_base | regex_replace('\.tgz','') }}
+    when: git_base_dir is not defined
+
+  - name: slave setup | install git
+    become: yes
+    become_user: root
+    shell: "cd /tmp/{{git_base_dir}} ; ./configure --with-openssl --with-curl --with-expat  && make && make install"
+    when: git_exists is not defined
+
+  - name: slave setup | delete git from /tmp
+    become: yes
+    become_user: root
+    file: path=/tmp/{{ git_base_dir }} state=absent
+    when: git_exists is not defined
+
+  - name: slave setup | delete git from /tmp
+    become: yes
+    become_user: root
+    file: path=/tmp/{{ git_url | basename }} state=absent
+    when: git_exists is not defined
+
+  - name: setup git-completion | download
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/git-completion.bash" dest={{build_user_home}}/git-completion.bash mode="a+x" timeout=120
+    when: git_exists is not defined
+
+  - name: setup git-completion | check .bashrc file exists
+    stat:
+      path: "{{build_user_home}}/.bashrc"
+    register: bashrc_stat_result
+
+  - name: setup git-completion | create .bashrc file
+    copy:
+      content: ""
+      dest: "{{build_user_home}}/.bashrc"
+      force: no
+      group: "{{ build_group }}"
+      owner: "{{ build_user }}"
+      mode: 0755
+    when: bashrc_stat_result.stat.exists == false
+
+  - name: setup git-completion | setup
+    become: yes
+    become_user: "{{ build_user }}"
+    lineinfile: dest="{{build_user_home}}/.bashrc" regexp='.*git-completion.bash' line="source {{build_user_home}}/git-completion.bash" mode="a+x" state=present
+    when: git_exists is not defined

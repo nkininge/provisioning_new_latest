@@ -1,0 +1,4 @@
+- name: update_ulimit | Update pam.d
+  become: yes
+  become_user: root
+  replace: dest=/etc/pam.d/su regexp='^# session    required   pam_limits.so' replace='session    required   pam_limits.so'

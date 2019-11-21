@@ -1,0 +1,71 @@
+  - name: Installing Libraries | suse11sp3
+    become: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    with_items:
+      - gcc
+      - gcc43
+      - gcc43-c++
+      - cyrus-sasl-devel
+      - openldap2-devel
+      - libmysqlclient-devel
+      - python-devel-2.6.8
+      - curl-devel
+      - bzip2
+      - libbz2-1
+      - libbz2-devel
+      - libzip-devel
+      - libzip1
+      - bzip2-doc
+      - libzip1
+      - libzip-devel
+
+  - name: Installing Libraries | suse11sp3
+    become: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    when: ansible_virtualization_type == "docker"
+    with_items:
+     - glibc-locale
+     - rsync
+     - patch
+
+  - name: Check if gcc-c++.rpm is installed
+    command: rpm -qa | grep gcc-c++
+    ignore_errors: yes
+    register: gcc_rpm_check
+
+  - name: check the status of gcc_rpm_check
+    debug: msg="{{gcc_rpm_check.stdout.find('gcc-c++')}}"
+
+  - name: download gcc-c++ tarball | suse11sp3
+    become: yes
+    become_user: root
+    when: gcc_rpm_check.stdout.find('gcc-c++') == -1
+    get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/gcc-suse11sp3.tar.gz" dest=/tmp/gcc-suse11sp3.tar.gz timeout=120
+
+  - name: unarchive gcc-c++ tarball | suse11sp3
+    become: yes
+    become_user: root
+    when: gcc_rpm_check.stdout.find('gcc-c++') == -1
+    unarchive: copy=no src=/tmp/gcc-suse11sp3.tar.gz dest=/tmp/
+
+  - name: install gcc-c++ | suse11sp3
+    become: yes
+    become_user: root
+    when: gcc_rpm_check.stdout.find('gcc-c++') == -1
+    shell: rpm -ivh {{item}}
+    register: shell_result
+    with_items:
+      - /tmp/gcc-suse11sp3/gcc-c++-4.3-62.12.x86_64.rpm
+
+  - name: install 7zip | suse11sp3
+    become: yes
+    become_user: root
+    zypper: name={{item}} disable_gpg_check=yes state=present
+    with_items:
+      - http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/suse11sp3/p7zip-9.20.1-24.9.x86_64.rpm
+
+  - name: Installing Libraries | suse11sp3 | install gcc-fortran
+    become: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest
+    with_items:
+      - gcc-fortran
