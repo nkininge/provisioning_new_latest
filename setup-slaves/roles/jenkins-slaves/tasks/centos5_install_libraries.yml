@@ -1,8 +1,0 @@
----
-  - name: install_libraries | yum install
-    become: yes
-    become_user: root
-    yum: pkg={{item}} state=latest
-    with_items:
-      - python26
-      - python26-devel

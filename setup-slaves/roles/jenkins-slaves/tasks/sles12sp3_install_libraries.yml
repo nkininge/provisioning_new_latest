@@ -1,6 +1,0 @@
-  - name: Installing Libraries | sles12sp3
-    become: yes
-    zypper: pkg={{item}} disable_gpg_check=yes state=latest
-    with_items:
-      - libglib-2_0-0
-      - libgobject-2_0-0

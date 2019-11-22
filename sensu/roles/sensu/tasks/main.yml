@@ -1,6 +1,0 @@
----
-  - include: install_sensu_server.yml
-    when:  sensu_server
-
-  - include: generic_install_sensu_client.yml
-    when: sensu_client 

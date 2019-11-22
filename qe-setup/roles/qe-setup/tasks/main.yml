@@ -1,4 +1,0 @@
----
-  - include: common.yml
-  - include: centos6.yml
-    when: ansible_os_family == 'RedHat' and ansible_lsb.major_release == '6'

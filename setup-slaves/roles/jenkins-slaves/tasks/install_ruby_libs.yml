@@ -1,8 +1,0 @@
----
-- name: install_ruby_libs.yml | Install Ruby Libraries and Debian build Tools
-  become: yes
-  become_user: root
-  gem:  name={{item}} executable=/usr/local/bin/gem
-  with_items: 
-  - gem2deb
-  - json
