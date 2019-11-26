@@ -1,0 +1,9 @@
+---
+  - name: Download ruby
+    get_url: url={{ruby_url}} dest=/tmp/ruby.tar.gz
+
+  - name: untar ruby
+    unarchive: copy=no src=/tmp/ruby.tar.gz dest=/tmp/
+
+  - name: ruby configure/make/make install
+    shell: cd /tmp/ruby-1.9.3-p484 ; ./configure ; make clean ; make install

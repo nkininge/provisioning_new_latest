@@ -1,0 +1,7 @@
+---
+  - name: update-app-cache | update-apps
+    apt: update_cache
+    when: false
+  - name: update-app-cache | update-apps-yum
+    yum: name=* state=latest
+    when: true

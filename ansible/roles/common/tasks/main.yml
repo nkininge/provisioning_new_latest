@@ -1,0 +1,124 @@
+---
+- name: check if build_user is set
+  fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
+  when: build_user is not defined
+
+- include: setup_user.yml
+  tags: setup_user
+
+- include: npm_cleanup.yml
+  tags: npm_cleanup
+
+- include_vars: "{{ secret_profile_file }}"
+  tags:
+    - setup_user
+    - secret_profile
+    - secrets_conf
+    - docker_slave_setup
+
+- include_vars: "ubuntu18.yml"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "18"
+ 
+- include: setup_user_sshkeys.yml
+  when: ssh_url is defined
+  tags:
+    - setup_user
+    - ssh_setup
+    - secrets_conf
+    - docker_slave_setup
+
+- include: readonly_sshkeys.yml
+  when: readonly_ssh is defined
+
+- include: prepare_env.yml
+  tags: prepare_env
+
+- include: install_jdk10.yml
+  tags:
+    - install_jdk10
+    - install_jdk
+
+- include: install_jdk8.yml
+  tags:
+    - install_jdk8
+    - install_jdk
+
+- include: install_jdk8_171.yml
+  tags:
+    - install_jdk8_171
+    - install_jdk
+
+- include: install_jdk7.yml
+  tags:
+    - install_jdk7
+    - install_jdk
+
+- include: install_jdk7_80.yml
+  tags:
+    - install_jdk7
+    - install_jdk
+
+- include: install_jdk6.yml
+  tags:
+    - install_jdk6
+    - install_jdk
+
+- name: centos5 | yum install python-devel
+  become: yes
+  become_user: root
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '5'
+  tags: install_libraries
+  yum: name={{item}} state=present
+  with_items:
+    - python-devel
+
+- include: install_gradle.yml
+  tags: install_gradle
+
+- include: install_gradle_351.yml
+  tags: install_gradle_351
+
+- include: install_gradle_48.yml
+  tags: install_gradle_48
+
+- include: install_gradle_4102.yml
+  tags: install_gradle_4102
+
+- include: install_gradle_50.yml
+  tags: install_gradle_50
+
+- include: install_maven.yml
+  tags: install_maven
+
+- include: install_ant.yml
+  tags: install_ant
+
+- include: install_sonar_ant_task.yml
+  tags: sonar_ant_task
+
+- include: install_tools.yml
+  tags: install_tools
+
+- include: setup_user_configs.yml
+  when: project != 'dev' and build_user != "nobody"
+  tags: setup_gpg
+
+- include: update_configs.yml
+  when: build_user != "nobody"
+  tags:
+    - update_configs
+    - docker_slave_setup
+
+- include: re_readonly_update_configs.yml
+  when: project == "re" and build_user == "nobody"
+  tags:
+    - update_configs
+    - docker_slave_setup
+
+- include: mvn-gpg-nexus-password.yml
+  when: project != 'dev'
+  tags: mvn-gpg-nexus
+
+- include: download_m2.yml
+  when: project == "re"
+  tags: install_maven

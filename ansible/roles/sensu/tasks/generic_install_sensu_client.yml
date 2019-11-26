@@ -1,0 +1,238 @@
+---
+  - name: Install compiler, etc.
+    tags:  install_compilers
+    become: yes
+    apt:  name={{item}}
+    with_items:
+      - gcc
+      - make
+      - git
+      - openssl
+      - build-essential
+      - zlib1g-dev
+      - libreadline-dev
+      - libssl-dev
+      - libcurl4-openssl-dev
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - name: install repos first
+    tags: install_checkscripts
+    become: yes
+    copy: src=centos/sensu.repo dest=/etc/yum.repos.d/sensu.repo mode=0644
+    when: ansible_os_family == 'RedHat'
+  - stat: path=/usr/local/bin/ruby
+    register: rubyst
+  - name: install Ruby 2.0 (wget)
+    tags: install_checkscripts
+    become: yes
+    command:  wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p598.tar.gz chdir=/opt
+    when: not rubyst.stat.exists
+  - name: install Ruby 2.0 (tar)
+    tags: install_checkscripts
+    become: yes
+    command:  tar xvzf  ruby-2.0.0-p598.tar.gz chdir=/opt
+    when: not  rubyst.stat.exists
+  - name: install Ruby 2.0 (configure)
+    tags: install_checkscripts
+    become: yes
+    command:  ./configure chdir=/opt/ruby-2.0.0-p598
+    when: not  rubyst.stat.exists
+  - name: install Ruby 2.0 (make)
+    tags: install_checkscripts
+    become: yes
+    command:  make chdir=/opt/ruby-2.0.0-p598
+    when: not  rubyst.stat.exists
+  - name: install Ruby 2.0 (make install)
+    tags: install_checkscripts
+    become: yes
+    command:  make install chdir=/opt/ruby-2.0.0-p598
+    when: not  rubyst.stat.exists
+  - name: make sensu conf.d dir
+    tags: install_checkscripts
+    become: yes
+    file: path=/etc/sensu/conf.d state=directory
+  - name: Install sensu-repo signing key.
+    become: yes
+    apt_key: url=http://repos.sensuapp.org/apt/pubkey.gpg   state=present
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - name: Install sensu-repo repository entry.
+    become: yes
+    apt_repository: repo='deb  http://repos.sensuapp.org/apt sensu main' state=present
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - name: Install sensu itself
+    become: yes
+    apt:  name=sensu
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - name: Install sensu itself
+    become: yes
+    command: /usr/local/bin/gem install sensu sensu-em
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Install sensu itself
+    become: yes
+    yum: name={{item}} state=latest update_cache=yes
+    with_items: 
+      - sensu
+      - chkconfig
+    when: ansible_os_family == 'RedHat'
+  - name: Copy in Sensu Rabbitmq configs
+    become: yes
+    tags: rabbitmq
+    template:  src=conf.d/{{item}}.j2   dest=/etc/sensu/conf.d/{{item}}
+    with_items:
+      - rabbitmq.json
+      - client.json
+  - name: Copy in Notice-Change scripts
+    become: yes
+    tags: copyinitscripts
+    copy:  src=restart-upon-change.sh     dest=/etc/sensu/restart-upon-change.sh   mode=0755
+  - name: Make SSL certificate work for now, to keep clean.
+    become: yes
+    tags: ssl_certs
+    file: path=/etc/sensu/ssl state=directory
+  - name: Copy in Sensu SSL certificates to /etc/sensu/ssl also.
+    become: yes
+    tags: ssl_certs
+    copy:  src=ssl_certs/client/{{item}}   dest=/etc/sensu/ssl/{{item}}
+    with_items:
+      - cert.pem
+      - key.pem
+  - name: install sensu plug-in for Ruby2.0
+    become: yes
+    tags: install_checkscripts
+    shell: /usr/local/bin/gem install sensu-plugin
+  - name: make sure plugins-dir is there.
+    tags: install_checkscripts
+    become: yes
+    file: path=/etc/sensu/plugins/{{item}}  state=directory
+    with_items:
+      - system
+      - jenkins
+  - name: copy in scripts for sensu master.
+    become: yes
+    tags: install_checkscripts
+    copy:  src=plug-ins/{{item}}   dest=/etc/sensu/plugins/{{item}}  mode=0755
+    with_items:
+      - check-procs.rb
+      - system/check-disk.rb
+      - system/disk-usage-metrics.rb
+      - jenkins/check-jenkins-job-status.rb
+  - name: configure services
+    become: yes
+    tags: sensu_services
+    shell:  update-rc.d "{{item}}" defaults
+    with_items:
+      - sensu-client
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: Run Sensu client Code in cron reboot
+    cron: name="Run Sensu client Code"
+          job="/usr/local/bin/sensu-client -d /etc/sensu/conf.d -b -l /var/log/sensu/sensy-client.log" 
+          special_time=reboot user=root state=absent
+    tags: copyinitscripts
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+
+
+  - name: Copy in Sensu init.d files
+    become: yes
+    tags: copyinitscripts
+    copy:  src=init.d/{{item}}   dest=/etc/init.d/{{item}}  mode=0755
+    with_items:
+      - sensu-api
+      - sensu-client
+      - sensu-server
+      - sensu-service
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Copy in Sensu init.d files
+    become: yes
+    tags: copyinitscripts
+    file:  state=link   src=/etc/init.d/{{item}}   dest=/etc/init.d/rc3.d/S90{{item}}  mode=0755
+    with_items:
+      - sensu-client
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Add user if necessary
+    become: yes
+    tags: copyinitscripts
+    user:  name=sensu  home=/opt/sensu generate_ssh_key=yes createhome=yes shell=/bin/bash
+  - name: Add user ssh-keys as necessary
+    become: yes
+    tags: copyinitscripts
+    copy: src=ssh_git_deploy/{{item}} dest=/opt/sensu/.ssh/{{item}}  force=yes owner=sensu mode=0600
+    with_items:
+      - id_rsa
+      - id_rsa.pub
+  - name: Make run-dir writeable as necessary.
+    become: yes
+    tags: copyinitscripts
+    file: path={{item}}  owner=sensu mode=0755  state=directory
+    with_items:
+      - /var/run/sensu
+      - /var/log/sensu
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+  - name: Make log-file writeable as necessary
+    become: yes
+    tags: copyinitscripts
+    file: path=/var/log/sensu/sensu-client.log  owner=sensu mode=0644  state=absent
+    when: ansible_distribution == 'Suse' and ansible_distribution_major_version == '11'
+
+  - name: configure services
+    become: yes
+    tags: sensu_services
+    shell:  /sbin/chkconfig "{{item}}"  on
+    with_items:
+      - sensu-client
+    when: ansible_os_family == 'RedHat'
+  - name: make sure services are stopped before starting.
+    become: yes
+    tags: sensu_services
+    service:  name="{{item}}" state=stopped
+    with_items:
+      - sensu-client
+    # when: not (ansible_distribution == 'Suse')
+  - name: start services
+    become: yes
+    tags: sensu_services
+    service:  name="{{item}}" state=started
+    with_items:
+      - sensu-client
+    # when: not (ansible_distribution == 'Suse')
+
+  - name: Setup up git repository retrievals.
+    become: yes
+    file: path={{item}} owner=sensu state=directory 
+    with_items:
+       - /opt
+    tags: gitsetup
+
+  - name: Setup up git repository retrievals.
+    file: path={{item}} owner=sensu state=directory 
+    become: yes
+    become_user: sensu
+    with_items:
+       - /opt/sensu
+       - /opt/sensu/git-repos
+    tags: gitsetup
+
+  - name: Setup up git repository retrievals.
+    git:  accept_hostkey=yes  repo="git@github.com:hortonworks/local-sensu-scripts.git" 
+          update=yes  ssh_opts="-o StrictHostKeyChecking=no"  
+          dest="/opt/sensu/git-repos/local-sensu-scripts" 
+    become: yes
+    become_user: sensu
+    tags: git_clone
+
+  - name: Make symlinks as needed.
+    file: path="/etc/sensu/plugins/imports" owner=sensu state=link   src="/opt/sensu/git-repos/local-sensu-scripts/sensu-root/plugins"
+    tags: gitsetup
+
+    become: yes
+  - name: Run Sensu check-for-restart every so often.
+    cron: name="Run Sensu restart-client Code"
+          job="sh /etc/sensu/restart-upon-change.sh " 
+          minute="*/20" user=root state=present
+    tags: cronsetup
+    become: yes
+  - name: Run Sensu re-pull scripts every so often.
+    cron: name="Run Sensu restart-client Code"
+          job='su sensu -c "cd /etc/sensu/plugins/imports && git pull" '
+          minute="*/20" user=root state=present
+    tags: gitsetup
+    become: yes

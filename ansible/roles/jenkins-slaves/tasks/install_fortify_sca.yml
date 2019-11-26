@@ -1,0 +1,49 @@
+---
+- name: install_fortify_sca | check if fortify sca is installed
+  command: "{{ tools_home }}/fortify_sca_{{ fortify_sca_version }}/bin/sourceanalyzer --version"
+  register: check_fortify_sca
+  ignore_errors: yes
+
+- name: install_fortify_sca | "set fact if fortify sca version is {{ fortify_sca_version }}"
+  set_fact: fortify_sca_exists="true"
+  when: check_fortify_sca.rc == 0 and check_fortify_sca.stdout.find( fortify_sca_version ) != -1
+
+- name: install_fortify_sca | skip fortify_sca installation
+  debug: msg="skipping fortify sca installation as it is already installed"
+  when: fortify_sca_exists is defined
+
+- name: install_fortify_sca | create temp directory
+  become: yes
+  become_user: root
+  file: path="/tmp/fortify" state="directory"
+  when: fortify_sca is not defined
+
+- name: install_fortify_sca | Download fortify sca
+  become: yes
+  become_user: root
+  get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/Fortify/HPE_Security_Fortify_SCA_and_Apps_{{ fortify_sca_version }}_Linux.tar.gz" dest="/tmp/HPE_Security_Fortify_SCA_and_Apps_{{ fortify_sca_version }}_Linux.tar.gz" mode=0644 force=yes timeout=120
+  when: fortify_sca is not defined
+
+- name: install_fortify_sca | Untar fortify sca
+  become: yes
+  become_user: root
+  unarchive: copy=no src=/tmp/HPE_Security_Fortify_SCA_and_Apps_{{ fortify_sca_version }}_Linux.tar.gz dest=/tmp/fortify
+  when: fortify_sca is not defined
+
+- name: install_fortify_sca | download fortify license
+  become: yes
+  become_user: root
+  get_url: url="http://dev.hortonworks.com.s3.amazonaws.com/Fortify/fortify.license" dest="/tmp/fortify/fortify.license" mode=0644 force=yes timeout=120
+  when: fortify_sca is not defined
+
+- name: install_fortify_sca | install scA
+  become: yes
+  become_user: root
+  command: /tmp/fortify/HP_Fortify_SCA_and_Apps_{{ fortify_sca_version }}_linux_x64.run --mode unattended --installer-language en --installdir {{ tools_home }}/fortify_sca_16.10 --fortify_license_path /tmp/fortify/fortify.license
+  when: fortify_sca is not defined
+
+- name: install_fortify_sca | delete temp directory
+  become: yes
+  become_user: root
+  command: rm -rf /tmp/fortify
+  when: fortify_sca is not defined

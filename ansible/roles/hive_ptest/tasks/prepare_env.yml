@@ -1,0 +1,21 @@
+---
+  - name: prepare_env | install tools necessary for ansible exec - debian
+    become: yes
+    become_user: root
+    apt: name={{item}} state=present update_cache=yes
+    with_items:
+    - zip
+    - unzip
+    - lsb
+    when: ansible_os_family == "Debian"
+
+  - name: prepare_env | install tools necessary for ansible exec - centos
+    become: yes
+    become_user: root
+    yum: name={{item}} state=present
+    with_items:
+    - zip
+    - unzip
+    - gcc
+    - zlib-devel
+    when: ansible_os_family == "RedHat"

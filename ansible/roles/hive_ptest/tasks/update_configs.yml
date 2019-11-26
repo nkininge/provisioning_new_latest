@@ -1,0 +1,50 @@
+---
+  - include_vars: "{{ secret_profile_file }}"
+
+  - name: "setup ./m2 settings.xml"
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url={{settings_url}} dest={{build_user_home}}/.m2/settings.xml mode=744
+    ignore_errors: yes
+    tags: nexus_settings
+
+  - name: add entries to limits.conf
+    become: yes
+    become_user: "{{ build_user }}"
+    lineinfile: dest="{{build_user_home}}/.bashrc" line="{{item}}" state=present  create=yes
+    with_items:
+      - "export JAVA_HOME={{tools_home}}/jdk7/latest"
+      - "export MVN_HOME={{tools_home}}/maven/latest"
+      - "export PATH=$JAVA_HOME/bin:$MVN_HOME/bin:$PATH"
+
+  - name: add entries to .bashrc
+    become: yes
+    become_user: root
+    lineinfile: dest="/etc/security/limits.conf" line="{{item}}" state=present  create=yes
+    with_items:
+      - "hiveptest       soft    nproc           376907"
+      - "hiveptest       hard  nproc           376907"
+      - "hiveptest       soft   nofile          8096"
+      - "hiveptest       hard   nofile          8096"
+
+  - name: create swapfile
+    become: yes
+    become_user: root
+    command: "{{ item }}"
+    with_items:
+      - "dd if=/dev/zero of=/swapfile bs=1024 count=65536k"
+      - "mkswap /swapfile"
+      - "chmod 0600 /swapfile"
+      - "swapon /swapfile"
+
+  - name: add entries to /etc/fstab
+    become: yes
+    become_user: root
+    lineinfile: dest="/etc/fstab" line="{{item}}" state=present  create=yes
+    with_items:
+      - "/swapfile  swap swap  defaults 0 0"
+
+  - name: replace hosntame in /etc/hosts
+    become: yes
+    become_user: root
+    command: sed -i 's/openstacklocal/novalocal/g' /etc/hosts

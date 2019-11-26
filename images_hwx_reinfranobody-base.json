@@ -1,0 +1,27 @@
+{
+    "apache": {
+        "reinfranobody": {
+            "branch": "master",
+            "depends-on": [
+                "images_hwx_base@centos6@registry.eng.hortonworks.com/hortonworks/base-centos6:0.1.0.0-LATEST@centos6",
+                "images_hwx_base@centos7.2@registry.eng.hortonworks.com/hortonworks/base-centos7:0.1.0.0-LATEST@centos7"
+            ],
+            "internal-repo-name": "provisioning"
+        },
+        "PROVISIONING": {
+              "branch": "master",
+              "internal-repo-name": "provisioning"
+          }
+    },
+    "hwx": {
+        "stack-version": "0.1.0.0",
+        "poll-frequency": "480",
+        "platforms": [
+             "centos6",
+             "centos7"
+        ]
+    },
+    "remotes":{
+          "hwx":"git@github.com:hortonworks/%s.git"
+      }
+}

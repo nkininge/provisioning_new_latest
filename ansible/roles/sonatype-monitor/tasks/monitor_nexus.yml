@@ -1,0 +1,17 @@
+---
+  - name: "remove target-script first."
+    file: path=/tmp/monitor.sh state=absent
+
+  - name: "copy over a monitoring script."
+    copy: src=monitor.sh  dest=/tmp/monitor.sh
+
+  - name: "Run that monitoring script."
+    shell: MAX="{{upperbound}}" sh /tmp/monitor.sh
+    register: mergatroid
+
+  - name: "remove target-script before thinking we are done."
+    file: path=/tmp/monitor.sh state=absent
+
+  - name: "Tell what we learned."
+    debug: msg="{{mergatroid.stdout}}"
+

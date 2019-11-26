@@ -1,0 +1,80 @@
+---
+- name: install_python35 | check if python35 is installed
+  command: "python3.5 --version"
+  register: check_python35
+  ignore_errors: yes
+
+# check if "check_python35" is defined and value is equal to desired python35 version
+- name: install_python35 | "set fact if python35 version is {{python35_version}}"
+  set_fact: python35_exists="true"
+  when: check_python35.rc == 0 and check_python35.stdout.find(python35_version) != -1
+
+- name: install_python35 | skip python35 installation
+  debug: msg="skipping python35 installation as it is already installed"
+  when: python35_exists is defined
+
+- name: install_tools | Download python35
+  become: yes
+  become_user: root
+  get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/Python-{{python35_version}}.tgz  dest=/tmp/Python-{{python35_version}}.tgz  mode=0644 force=yes timeout=120
+  when: python35_exists is not defined
+
+- name: install_tools | Untar python35
+  become: yes
+  become_user: root
+  unarchive: copy=no src=/tmp/Python-{{python35_version}}.tgz  dest=/tmp
+  when: python35_exists is not defined
+
+- name: install_tools | delete python35 tarball
+  become: yes
+  become_user: root
+  file: path=/tmp/Python-{{python35_version}}.tgz state=absent
+  when: python35_exists is not defined
+
+- name: install_tools | Configure python35
+  become: yes
+  become_user: root
+  command:  ./configure --prefix {{tools_home}}/python3/Python-{{python35_version}} chdir=/tmp/Python-{{python35_version}}
+  when: python35_exists is not defined
+
+- name: install_tools | Compile python35
+  become: yes
+  become_user: root
+  command:  make chdir=/tmp/Python-{{python35_version}}
+  when: python35_exists is not defined
+
+- name: install_tools | Install python35
+  become: yes
+  become_user: root
+  command:  make install chdir=/tmp/Python-{{python35_version}}
+  when: python35_exists is not defined
+
+- name: install_tools | Remove symlink for python35
+  become: yes
+  become_user: root
+  file: path=/usr/local/bin/python35 state=absent
+  when: python35_exists is not defined
+
+- name: install_tools | Symlink python35
+  become: yes
+  become_user: root
+  file:  src={{tools_home}}/python3/Python-{{python35_version}}/bin/python35  dest=/usr/local/bin/python35  mode=0755 state=link force=yes
+  when: python35_exists is not defined
+
+- name: install_tools | Symlink pyvenv-3.5
+  become: yes
+  become_user: root
+  file:  src={{tools_home}}/python3/Python-{{python35_version}}/bin/pyvenv-3.5  dest=/usr/local/bin/pyvenv-3.5  mode=0755 state=link force=yes
+  when: python35_exists is not defined
+
+- name: install_tools | pip install | RedHat except centos5
+  become: yes
+  become_user: root
+  shell: "/usr/local/bin/python35 -m ensurepip"
+  when: project == "re" and ( ansible_os_family == 'RedHat' and ansible_distribution_major_version != '5' )
+
+- name: install_tools | delete python35 from /tmp
+  become: yes
+  become_user: root
+  file: path=/tmp/Python-{{python35_version}} state=absent
+  when: python35_exists is not defined

@@ -1,0 +1,195 @@
+---
+  - name: install_libraries | uninstall 
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=absent
+    with_items:
+      - postgresql-libs
+      - rrdtool-1.2.27
+      - ruby-libs-1.8.7.352
+      - epel-release
+    ignore_errors: yes
+
+  - name: centos7_repo_setup | install epel release
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 7
+    yum: name='http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/epel-release-7-9.noarch.rpm' state=present
+
+  - name: get epel-repo rpm RHEL6
+    become: yes
+    become_user: root
+    shell: yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/6/x86_64/
+    when: ansible_distribution_major_version|int == 6
+
+  - name: install_libraries | centos5 manual rpm install | epel && asciidoc
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 5
+    shell: rpm -Uvh {{item}}
+    with_items:
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/epel-release-5-4.noarch.rpm
+
+  - name: install_libraries | download s3tools repo file
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 5
+    get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/s3tools.repo dest=/etc/yum.repos.d/s3tools.repo timeout=120
+
+  - name: install_libraries | centos
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=latest 
+    with_items:
+      - cmake3
+      - gd-devel
+      - libpng-devel
+      - libjpeg-devel
+      - cairo-devel
+      - gettext-devel
+      - sqlite-devel
+      - intltool
+      - lua-devel
+      - pango-devel
+      - xulrunner-devel
+      - openssl-devel 
+      - openssl-static 
+      - intltool 
+      - cairo-devel 
+      - libxml2-devel 
+      - ruby 
+      - ruby-devel 
+      - tcl-devel
+      - gettext-devel 
+      - tk-devel 
+      - xulrunner-devel 
+      - python-setuptools
+      - rrdtool-python
+      - clamav
+      - python-virtualenv
+      - openssh-clients
+      - lsb 
+      - wget 
+      - openldap-devel
+      - mysql-devel 
+      - fuse-devel 
+      - lzo-devel
+      - pam-devel 
+      - tetex-latex
+      - fakeroot
+      - gcc
+      - cppunit 
+      - cppunit-devel 
+      - snappy-devel
+      - xalan-j2
+      - glib2
+      - cpio
+      - cppunit-devel
+      - ant
+      - libstdc++
+      - ant-apache-bcel
+      - zlib-devel
+      - gcc-c++
+      - rpm-build
+      - redhat-rpm-config
+      - libtool
+      - fuse
+      - fuse-devel
+      - fuse-libs
+      - xmlto
+      - expect
+      - cmake
+      - libffi-devel
+      - s3cmd
+      - curl-devel
+      - createrepo
+      - subversion
+      - gcc-gfortran
+      - rsync
+      - autoconf
+      - automake
+      - centos-release-scl
+      - libevent-devel
+      - bison
+      - doxygen
+      - leveldb-devel
+      - libuuid-devel
+      - libcurl-devel
+      - ccache
+      - pigz
+
+  - name: install_libraries | install devtoolset-6
+    become: yes
+    become_user: root
+    yum: name="devtoolset-6" state=present
+
+  - name: install_libraries | install the 'Development tools' package group
+    become: yes
+    become_user: root
+    yum: name="@Development tools" state=present
+    when: ansible_distribution_major_version|int == 6
+
+  - name: install_libraries | install alien
+    become: yes
+    become_user: root
+    yum: name=http://dev.hortonworks.com.s3.amazonaws.com/REJENKINS/alien-8.81-2.noarch.rpm state=present
+    when: ansible_distribution_major_version|int == 6
+
+  - name: install_libraries | install asciidoc - centos5
+    become: yes
+    become_user: root
+    shell: rpm -Uvh http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/centos5/asciidoc-8.6.9-1.el5.rf.noarch.rpm
+    when: ansible_distribution_major_version|int == 5
+
+  - name: install_libraries | non centos7 | pdsh, ant-nodeps
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int != 7
+    yum: pkg={{item}} state=latest
+    with_items:
+      - pdsh
+      - ant-nodeps
+      - graphviz
+
+  - name: install_libraries | install 7zip
+    become: yes
+    become_user: root
+    yum: pkg={{item}} state=latest
+    with_items:
+      - p7zip
+      - p7zip-plugins
+
+  - name: install_libraries | centos7 | install R
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 7
+    yum: name=R state=latest update_cache=yes
+    tags: install_r
+
+  - name: install_libraries | centos7 | boost-devel
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 7
+    yum: pkg={{item}} state=latest
+    with_items:
+      - boost-devel
+      - boost-filesystem
+      - boost-system
+      - boost-static
+
+  - name: install_libraries | centos6 | boost-filesystem
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 6
+    yum: pkg={{item}} state=latest
+    with_items:
+      - boost148-devel
+      - boost148-filesystem
+      - boost148-system
+
+  - name: install_libraries | centos7 | install oracle_11g_instantclient
+    become: yes
+    become_user: root
+    when: ansible_distribution_major_version|int == 7
+    yum: name=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/oracle/oracle_11g_instantclient-1.0-1.0-3.noarch.rpm state=present
+    tags: install_oracle_11g_instantclient

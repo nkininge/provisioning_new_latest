@@ -1,0 +1,183 @@
+- name: Install_Libraries | Install Debian Libraries and build Tools
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest force=yes
+  with_items:
+      - ant
+      - subversion
+      - autoconf
+      - automake
+      - bison
+      - build-essential
+      - cabal-install
+      - clamav
+      - cmake
+      - curl
+      - dh-make
+      - dpkg-dev
+      - debhelper
+      - devscripts
+      - doxygen
+      - erlang-base
+      - erlang-eunit
+      - erlang-dev
+      - expect
+      - flex
+      - g++
+      - g++-multilib
+      - gcc-multilib
+      - ghc
+      - gcc
+      - libxml2-dev
+      - libxslt1-dev
+      - libsqlite3-dev
+      - libldap2-dev
+#      - libmysqlclient-dev
+      - libkrb5-dev
+      - asciidoc
+      - libzip-dev
+      - libcppunit-dev
+      - lib32z1
+      - lib32ncurses5
+#      - lib32bz2-1.0
+      - libbit-vector-perl
+      - libboost-dev
+      - libboost-program-options-dev
+      - libboost-test-dev
+      - libc6-dev-i386
+      - libclass-accessor-class-perl
+      - libcppunit-dev
+      - libcurl4-openssl-dev
+      - libevent-dev
+      - libfuse-dev
+      - libglib2.0-dev
+#      - libjpeg8-dev
+      - liblzo2-dev
+#      - libmono-system-web2.0-cil
+      - libqt4-dev
+      - libsasl2-dev
+      - libssl-dev
+      - libtool
+      - libxml-xpath-perl
+#      - libboost-system1.49-dev
+#      - libboost-filesystem1.49-dev
+      - libz-dev
+      - make
+#      - mingw32
+#      - mingw32-binutils
+#      - mingw32-runtime
+      - mono-devel
+#      - mono-gmcs
+#      - php5
+#      - php5-cli
+#      - php5-dev
+      - php-pear
+      - pkg-config
+      - protobuf-compiler
+      - python-all
+      - python-all-dev
+      - python-all-dbg
+      - python-boto
+      - python-dev
+      - python-setuptools
+      - libpython3-dev
+#      - python-support
+      - re2c
+      - reprepro
+      - ruby
+      - ruby-dev
+      - sharutils
+      - texlive-latex-base
+      - xmlto
+      - libperl-dev 
+      - libpng-dev
+#      - hardening-wrapper
+      - rubygems
+      - groff
+      - dh-autoreconf 
+      - quilt 
+      - libcairo2-dev 
+      - libpango1.0-dev 
+      - libdbi0-dev 
+      - tcl-dev
+      - liblua5.1-0-dev
+      - lua5.1
+      - libperl-dev 
+#      - libpng12-dev 
+      - dpatch
+#      - ruby1.9.1
+#      - ruby1.9.1-dev
+#      - librrd2-dev
+      - libapr1-dev 
+      - libconfuse-dev 
+      - libpcre3-dev
+      - libbz2-dev
+      - rubygems
+      - python-argparse
+      - rubygems
+      - zlib1g-dev
+      - s3cmd
+      - gfortran
+      - fort77
+      - libpq-dev
+      - libblas-dev
+      - liblapack-dev
+      - libz-dev
+      - yasm
+      - libzstd1
+      - libzstd-dev
+  
+
+- name: install_libraries | Install Ruby Libraries and Debian build Tools
+  sudo: yes
+  sudo_user: root
+  gem:  name={{item}}
+  with_items:
+   - gem2deb
+   - json
+
+- name: Install_Libraries | Install snappy
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest force=yes
+  with_items:
+    - libsnappy-dev
+
+- name: install_libraries | symlink gem | debian 7 only
+  sudo: yes
+  sudo_user: root
+  file: src="/usr/bin/gem"  dest="/usr/local/bin/gem" state=link
+
+- name: install_Libraries | Install 7zip
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest force=yes
+  with_items:
+    - p7zip
+    - p7zip-full
+
+# http://askubuntu.com/questions/101591/how-do-i-install-python-2-7-2-on-ubuntu
+- name: Install_Libraries | Install Debian Libraries and build Tools - debian 7 docker 
+  sudo: yes
+  sudo_user: root
+  apt: pkg={{item}} update_cache=yes state=latest force=yes
+  with_items:
+   - checkinstall
+   - libreadline-gplv2-dev
+   - libncursesw5-dev
+   - libssl-dev
+   - libsqlite3-dev
+   - tk-dev
+   - libgdbm-dev
+   - libc6-dev
+   - libbz2-dev
+   - liblzma-dev
+   - git-core
+   - ccache
+   - pigz
+  when: ansible_virtualization_type == "docker"
+
+- name: Install_Libraries | Symlink git
+  sudo: yes
+  sudo_user: root
+  file:  src=/usr/bin/git  dest=/usr/local/bin/git  mode=0755 state=link force=yes

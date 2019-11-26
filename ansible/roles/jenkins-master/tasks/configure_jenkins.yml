@@ -1,0 +1,23 @@
+---
+
+- name: configure-jenkins | Configure Jenkins
+  become: yes
+  become_user: root
+  template: src=jenkins.j2 dest={{jenkins_configuration}}
+  register: jenkins_configure
+
+- name: configure-jenkins | Ensure Jenkins restarted
+  become: yes
+  become_user: root
+  service: name=jenkins state=restarted
+  when: jenkins_configure.changed
+
+- name: configure-jenkins | Copy jenkins-cli
+  become: yes
+  become_user: "{{jenkins_user}}"
+  get_url: url=http://localhost:{{jenkins_http_port}}/jnlpJars/jenkins-cli.jar dest={{jenkins_home}}/jenkins-cli.jar
+  register: jenkins_cli
+  until: "'OK' in jenkins_cli.msg or 'file already exists' in jenkins_cli.msg"
+  retries: 10
+  delay: 10
+  when: jenkins_plugins

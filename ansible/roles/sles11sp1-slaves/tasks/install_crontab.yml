@@ -1,0 +1,7 @@
+- name: Install crontab | Install clamav crontab
+  cron: name="Daily Virus DB Update"
+        hour=0
+        minute={{ 59 |random}}
+        job="sudo /usr/bin/freshclam --quiet"
+        state=present
+  tags: install_clamav_crontab

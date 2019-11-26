@@ -1,0 +1,29 @@
+---
+- name: install_libraries | uninstall nvidia zypper repo
+  become: yes
+  zypper_repository: name="nVidia-Driver-SLE11-SP3" repo="http://download.nvidia.com/novell/sle11sp3" state=absent
+
+- name: sles11sp3_setup_env | install cd1
+  become: yes
+  zypper_repository: name="cd1" repo="http://romolo.cmb.usc.edu/installs/SLES-11-SP3-SDK/CD1/" state=absent
+
+- name: sles11sp3_setup_env | install cd2
+  become: yes
+  zypper_repository: name="cd1" repo="http://romolo.cmb.usc.edu/installs/SLES-11-SP3-SDK/CD2/" state=absent
+
+- name: sles11sp3_setup_env | install hosted sles11sp3
+  become: yes
+  zypper_repository: name="hosted-sles11sp3" repo="http://{{ec2_hosted_repo_ip}}/sles11sp3" state=present
+  tags: install_openssl1
+
+- name: sles11sp3_setup_env | get hostname
+  shell: 'x=`cat /etc/hostname`; echo $x'
+  register: host_name
+  tags: set_hostname
+
+- name: sles11sp3_setup_env | set hostname
+  become: yes
+  become_user: root
+  shell: "hostname {{host_name.stdout}}"
+  when: ansible_virtualization_type != "docker"
+  tags: set_hostname

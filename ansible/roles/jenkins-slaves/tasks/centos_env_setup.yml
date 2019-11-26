@@ -1,0 +1,42 @@
+---
+  - include_vars: ../../common/vars/{{project}}_secrets.yml
+
+  - name: centos_env_setup | download 
+    get_url: url="{{ rpm_gpg_url }}" dest=/tmp timeout=120
+             url_password={{ url_download_key }} url_username=releng
+
+  - name: centos_env_setup | rpm --import
+    become: yes
+    become_user: root
+    shell: rpm --import /tmp/RPM-GPG-KEY-Jenkins
+
+  - name: centos_env_setup | setup rpmmacros
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url="{{ rpmmacros_url }}" dest={{build_user_home}}/ timeout=120
+             url_password={{ url_download_key }} url_username=releng
+    when: project == "re"
+
+  - name: centos_env_setup | setup rpmmacros
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url="{{ rpmmacros_url }}" dest={{build_user_home}}/ timeout=120
+             url_password={{ url_download_key }} url_username=releng
+    when: project != "re"
+
+  - name: centos_env_setup | unarchive rpmmacros.tar.gz
+    become: yes
+    become_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ rpmmacros_url | basename }} dest={{build_user_home}}/
+
+  - name: centos_env_setup | create jenkins_rpmmacros directory
+    become: yes
+    become_user: "{{ build_user }}"
+    file: path={{item}} state=directory owner="{{ build_user }}"
+    with_items:
+      - "{{build_user_home}}/profiles/jenkins/jenkins_rpmmacros"
+
+  - name: centos_env_setup | unarchive rpmmacros.tar.gz
+    become: yes
+    become_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/{{ rpmmacros_url | basename }} dest={{build_user_home}}/profiles/jenkins/jenkins_rpmmacros/

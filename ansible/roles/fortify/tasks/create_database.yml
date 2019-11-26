@@ -1,0 +1,35 @@
+---
+ - name: update mysql configuration
+   template:
+     src: my.cnf.j2
+     dest: /etc/my.cnf
+     owner: root
+     group: root
+     mode: 0644
+   notify: restart mysql
+
+ # Has to be after the root password assignment, for idempotency.
+ - name: Copy .my.cnf file with root password credentials.
+   template:
+     src: "user-my.cnf.j2"
+     dest: "{{ mysql_user_home }}/.my.cnf"
+     owner: root
+     group: root
+     mode: 0600
+
+ - name: Create fortify user
+   shell: >
+     mysql -u root -NBe
+     'CREATE USER "{{ mysql_fortify_username }}"@"{{ mysql_host }}" IDENTIFIED BY "{{ mysql_fortify_password }}";'
+
+ - name: Create fortify database
+   shell: >
+     mysql -u root -NBe
+     "CREATE DATABASE {{ fortify_database }} DEFAULT CHARACTER SET latin1 DEFAULT COLLATE latin1_general_cs;"
+
+ - name: Grant fortify user permission to fortify database
+   shell: >
+     mysql -u root -NBe
+     "GRANT ALL PRIVILEGES ON {{ fortify_database }}.* TO fortify@{{ mysql_host }};"
+     mysql -u root -NBe
+     'FLUSH PRIVILEGES;'

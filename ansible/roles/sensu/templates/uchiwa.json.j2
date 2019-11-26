@@ -1,0 +1,21 @@
+{
+    "sensu": [
+        {
+            "name": "{{datacentername}}",
+            "host": "{{sensu_master_host}}",
+            "ssl": false,
+            "port": 4567,
+            "user": "admin",
+            "pass": "{{admin_password}}",
+            "path": "",
+            "timeout": 5000
+        }
+    ],
+    "uchiwa": {
+        "user": "",
+        "pass": "",
+        "port": 3000,
+        "stats": 10,
+        "refresh": 10000
+    }
+}

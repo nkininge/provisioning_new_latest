@@ -1,0 +1,72 @@
+---
+ - name: Install unzip
+   yum: name=unzip state=installed
+
+ - name: "Create directory"
+   file:
+     path: "{{ item }}"
+     state: directory
+   with_items:
+     - "/tmp/fortify"
+     - "{{ jdk8_home }}"
+
+ - name: "extract tomcat"
+   unarchive:
+     src: "{{ tomcat_url }}"
+     dest: "{{ cinder_disk_partition }}"
+     copy: no
+
+ - name: "delete webapps"
+   shell: >
+     rm -rf {{ cinder_disk_partition }}/apache-tomcat-7.0.69/webapps/*
+
+ - name: "extract ssc"
+   unarchive:
+     src: "{{ s3_fortify_url }}/{{ ssc_server_zip }}"
+     dest: "{{ fortify_install_temp }}"
+     copy: no
+
+ - name: "extract ssc war"
+   unarchive:
+     src: "{{ fortify_install_temp }}/{{ ssc_war_zip }}"
+     dest: "{{ fortify_install_temp }}"
+     copy: no
+
+ - name: download mysql jdbc driver
+   get_url:
+     url: "{{ s3_fortify_url }}/{{ mysql_jdbc_driver }}"
+     dest: "{{ fortify_install_temp }}/{{ mysql_jdbc_driver }}"
+     mode: 0755
+
+ - name: download fortify license
+   get_url:
+     url: "{{ s3_fortify_url }}/fortify.license"
+     dest: "{{ fortify_install_temp }}/fortify.license"
+     mode: 0600
+
+ - name: copy properties
+   template:
+     src: "{{ item }}.j2"
+     dest: "{{ fortify_install_temp }}/{{ item }}"
+   with_items:
+     - ssc.properties
+     - ldap.properties
+     - datasource.properties
+
+ - name: install jdk8
+   get_url: url={{ jdk8_url }} dest={{ jdk8_home }}/{{ jdk8_url | basename }} mode=744 timeout=120 
+
+ - name: unzip jdk8  
+   unarchive: copy=no src={{ jdk8_home }}/{{ jdk8_tar }} dest={{ jdk8_home }}
+
+ - name: Add ssc server properties files
+   shell: >
+     {{ jdk8_home }}/jdk{{ jdk8_version }}/bin/java -jar {{ fortify_install_temp }}/HPE-Security-Fortify-Server-WAR/ssc-configuration-wizard.jar -automationMode -war {{ fortify_install_temp }}/HPE-Security-Fortify-Server-WAR/ssc.war -jdbcDriver {{ fortify_install_temp }}/mysql-connector-java-5.1.38-bin.jar -license {{ fortify_install_temp }}/fortify.license -loadfrom {{ fortify_install_temp }}/dataSource.properties -loadfrom {{ fortify_install_temp }}/ssc.properties -loadfrom {{ fortify_install_temp }}/ldap.properties
+
+ - name: seed the database
+   shell: >
+     {{ jdk8_home }}/jdk{{ jdk8_version }}/bin/java -jar {{ fortify_install_temp }}/HPE-Security-Fortify-Server-WAR/ssc-configuration-wizard.jar -automationMode -war {{ fortify_install_temp }}/HPE-Security-Fortify-Server-WAR/ssc.war  -bundle HP_Fortify_Process_Seed_Bundle_2016_Q1.zip -bundle HP_Fortify_Report_Seed_Bundle_2016_Q1.zip
+
+ - name: copy ssc.war
+   shell: >
+     cp {{ fortify_install_temp }}/HPE-Security-Fortify-Server-WAR/ssc.war {{ cinder_disk_partition }}/apache-tomcat-7.0.69/webapps

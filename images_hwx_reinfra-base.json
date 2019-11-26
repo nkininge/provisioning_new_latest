@@ -1,0 +1,45 @@
+{
+    "apache": {
+        "reinfra": {
+            "branch": "master",
+            "depends-on": [
+                "images_hwx_base@centos6.8@registry.eng.hortonworks.com/hortonworks/base-centos6:0.1.0.0-LATEST@centos6",
+                "images_hwx_base@centos7.2@registry.eng.hortonworks.com/hortonworks/base-centos7:0.1.0.0-LATEST@centos7",
+                "images_hwx_base@amazonlinux2@registry.eng.hortonworks.com/hortonworks/base-amazonlinux2:0.1.0.0-LATEST@amazonlinux2",
+                "images_hwx_base@debian7@registry.eng.hortonworks.com/hortonworks/base-debian7:0.1.0.0-LATEST@debian7",
+                "images_hwx_base@debian9.3@registry.eng.hortonworks.com/hortonworks/base-debian9.3:0.1.0.0-LATEST@debian9",
+                "images_hwx_base@sles11sp3@registry.eng.hortonworks.com/hortonworks/base-sles11sp3:0.1.0.0-LATEST@suse11sp3",
+                "images_hwx_base@sles12sp1@registry.eng.hortonworks.com/hortonworks/base-sles12sp1:0.1.0.0-LATEST@sles12",
+                "images_hwx_base@ubuntu16@registry.eng.hortonworks.com/hortonworks/base-ubuntu16:0.1.0.0-LATEST@ubuntu16",
+                "images_hwx_base@ubuntu18@registry.eng.hortonworks.com/hortonworks/base-ubuntu18:0.1.0.0-LATEST@ubuntu18",
+                "images_hwx_base@ubuntu14@registry.eng.hortonworks.com/hortonworks/base-ubuntu14:0.1.0.0-LATEST@ubuntu14",
+                "images_hwx_base@ubuntu12@registry.eng.hortonworks.com/hortonworks/base-ubuntu12:0.1.0.0-LATEST@ubuntu12"
+            ],
+            "internal-repo-name": "provisioning"
+        },
+        "PROVISIONING": {
+              "branch": "master",
+              "internal-repo-name": "provisioning"
+          }
+    },
+    "hwx": {
+        "stack-version": "0.1.0.0",
+        "poll-frequency": "360",
+        "platforms": [
+             "centos6",
+             "centos7",
+             "debian7",
+             "debian9",
+             "suse11sp3",
+             "sles12",
+             "ubuntu16",
+             "ubuntu18",
+             "ubuntu12",
+             "ubuntu14",
+             "amazonlinux2"
+        ]
+    },
+    "remotes":{
+          "hwx":"git@github.com:hortonworks/%s.git"
+      }
+}

@@ -1,0 +1,69 @@
+---
+  - name: install_libraries | zypper in
+    become: yes
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest 
+    tags: install_libraries
+    with_items:
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-1.7.0-16.1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/googletest-devel-1.7.0-16.1.x86_64.rpm
+      - http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/suse11sp3/asciidoc-8.6.8-8.1.noarch.rpm
+
+  - name: install_libraries | easy_install python modules
+    become: yes
+    tags: install_libraries
+    easy_install: name=virtualenv
+ 
+  - name: install_libraries | zypper in
+    become: yes
+    tags: install_libraries
+    zypper: pkg={{item}} disable_gpg_check=yes state=latest 
+    with_items:
+      - gd-devel
+      - libpng-devel
+      - libjpeg-devel
+      - cairo-devel
+      - freetype2-devel
+      - glib2-devel
+      - intltool
+      - libart_lgpl-devel
+      - pango-devel
+      - gettext-tools
+      - ruby-devel
+      - lua-devel
+      - tcpd-devel
+      - dejagnu
+      - googletest-devel
+      - rsh 
+      - apache2-devel
+      - x11-devel
+      - pcre-devel  
+      - libapr-util1-devel 
+      - xorg-x11-devel 
+      - fdupes 
+      - tcl-devel 
+      - libconfuse-devel 
+      - rrdtool-devel 
+      - ant 
+      - ant-nodeps
+      - pcre-devel
+
+  - name: install-python-argparse | install python spare libs
+    become: yes
+    easy_install: name=pip
+    easy_install: name=argparse
+    easy_install: name=requests
+    tags:   install_argparse
+  
+  - name: Install_Libraries | Install Ruby Libraries and build Tools
+    become: yes
+    become_user: root
+    apt: pkg={{item}} update_cache=yes state=latest
+    tags: install_rubygems
+    with_items:
+        - rubygems
+  
+  - name: Install_Libraries | Install Ruby Libraries and Debian build Tools
+    become: yes
+    become_user: root
+    gem:  name=gem2deb
+    tags: install_rubygems

@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "check_win_disk": {
+      "handlers": ["hipchat"],
+      "command": "/opt/sensu/embedded/bin/ruby c:/etc/sensu/plugins/check_win_diskcheck.rb -x user, fixed",
+      "interval": 60,
+      "subscribers": [ "win-jenkins" ]
+    }
+  }
+}

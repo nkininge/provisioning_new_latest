@@ -1,0 +1,16 @@
+- hosts: nexus
+  vars:
+    slave: False
+  roles:
+  - common
+  - sonatype-nexus
+  gather_facts: no
+  vars:
+    build_user_uid: 1001
+    slave: False
+    build_user: jenkins
+    build_group: users
+    jenkins_configuration: /etc/default/jenkins
+    build_user_home:  /usr/jenkins
+    jenkins_run_standalone: yes
+    jenkins_name: jenkins

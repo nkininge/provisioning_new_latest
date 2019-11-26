@@ -1,0 +1,22 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:		massageHostname
+# Required-Start:	
+# Required-Stop:	
+# Default-Start:	2 3 4 5
+# Default-Stop:		
+# Short-Description:	Massage hostname to FQDN
+### END INIT INFO
+
+set -e
+
+realHost=`  curl -s http://169.254.169.254/latest/meta-data/hostname  `
+
+case "$realHost" in
+	*.*)	hostname $realHost
+		;;
+	*)	echo Setting hostname to ${realHost}.ec2.internal
+		hostname ${realHost}.ec2.internal
+		;;
+esac

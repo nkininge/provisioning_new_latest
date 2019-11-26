@@ -1,0 +1,57 @@
+---
+- name: install_folly | check if folly is installed
+  stat:
+    path: "{{ hbase_native_home }}/lib/libfolly.so"
+  register: stat_result
+
+- name: install_folly | set fact false if folly is not installed
+  set_fact:
+    folly_exists: false
+  when: stat_result.stat.exists == False
+
+- name: install_folly | set fact true if folly is installed
+  set_fact:
+    folly_exists: true
+  when: stat_result.stat.exists == True
+
+- name: install_folly | skip folly installation
+  debug: msg="skipping folly installation as it is already installed"
+  when: folly_exists
+
+- name: install_folly | download folly
+  get_url: url="{{folly_url}}" dest=/tmp/{{ folly_url | basename }} timeout=120
+  when: not folly_exists
+
+- name: install_folly | unarchive folly tar.gz
+  unarchive: src=/tmp/{{ folly_url | basename }} dest=/tmp/ copy=no
+  when: not folly_exists
+
+- name: install_folly | install folly from src
+  shell: autoreconf -ivf; PKG_CONFIG_PATH={{hbase_native_home}}/lib/pkgconfig LD_LIBRARY_PATH={{ hbase_native_home }}/lib LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;
+  args:
+   chdir: /tmp/folly-{{folly_version}}/folly
+  when: ((not folly_exists) and (ansible_os_family != 'RedHat'))
+
+- name: install_folly | install folly from src
+  shell: scl enable devtoolset-6 "/usr/bin/autoreconf268 -ivf; PKG_CONFIG_PATH={{ hbase_native_home }}/lib/pkgconfig LD_LIBRARY_PATH={{ hbase_native_home }}/lib LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;"
+  args:
+    chdir: /tmp/folly-{{folly_version}}/folly
+  when: ((not folly_exists) and (ansible_os_family == 'RedHat') and (ansible_distribution_major_version == '6'))
+
+- name: install_folly | install folly from src
+  shell: scl enable devtoolset-6 "/usr/bin/autoreconf -ivf; PKG_CONFIG_PATH={{ hbase_native_home }}/lib/pkgconfig LD_LIBRARY_PATH={{ hbase_native_home }}/lib LDFLAGS=-L{{hbase_native_home}}/lib CPPFLAGS=-I{{hbase_native_home}}/include ./configure --prefix={{hbase_native_home}} --with-boost-libdir={{hbase_native_home}}/lib; make; make install;"
+  args:
+    chdir: /tmp/folly-{{folly_version}}/folly
+  when: ((not folly_exists) and (ansible_os_family == 'RedHat') and (ansible_distribution_major_version == '7'))
+
+- name: install_folly | rm /tmp/folly-{{folly_version}}
+  become: yes
+  become_user: root
+  shell: rm -rf /tmp/folly-{{folly_version}}
+  when: not folly_exists
+
+- name: install_folly | rm /tmp/{{ folly_url | basename }}
+  become: yes
+  become_user: root
+  shell: rm -rf /tmp/{{ folly_url | basename }}
+  when: not folly_exists

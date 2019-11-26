@@ -1,0 +1,4 @@
+---
+
+- name: nexus restart
+  service: name=sonatype state=restarted

@@ -1,0 +1,20 @@
+{
+  "handlers": {
+    "default": {
+      "type": "pipe",
+      "command": "/usr/local/bin/ruby /etc/sensu/handlers/file.rb"
+    },
+    "hipchat": {
+      "type": "pipe",
+      "command": "/usr/local/bin/ruby /etc/sensu/handlers/hipchat.rb"
+    }
+ },
+   "hipchat": {
+    "apikey": "{{hipchat_api_token}}",
+    "apiversion": "v2",
+    "server_url": "hipchat.hortonworks.com",
+    "room": "RE-notifications",
+    "from": "Sensu"
+   }
+}
+

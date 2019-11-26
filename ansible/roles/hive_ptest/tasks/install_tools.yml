@@ -1,0 +1,10 @@
+---
+  - name: install_tools | Download tools
+    become: yes
+    become_user: "{{ build_user }}"
+    get_url: url={{tools_url}} dest={{build_user_home}}/tools.tar.gz mode=0744
+
+  - name: install_tools | Untar tools
+    become: yes
+    become_user: "{{ build_user }}"
+    unarchive: copy=no src={{build_user_home}}/tools.tar.gz dest={{build_user_home}}/

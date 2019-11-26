@@ -1,0 +1,8 @@
+---
+- hosts: default
+  gather_facts: yes
+  vars:
+    cinder_disk_partition: "/grid/1" 
+    mysql_host: "localhost"
+  roles:
+    - mysql

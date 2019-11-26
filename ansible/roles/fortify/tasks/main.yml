@@ -1,0 +1,6 @@
+---
+- name: Include variables
+  include_vars: fortify.yml
+
+- include: create_database.yml
+- include: install_ssc.yml
