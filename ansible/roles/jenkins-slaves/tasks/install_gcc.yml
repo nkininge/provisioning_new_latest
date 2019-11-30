@@ -13,7 +13,8 @@
    # check if "check_gcc" is defined and value is greater than to desired gcc version
   - name: install_gcc | "set fact if gcc version is {{ installed_gcc_version }} >= {{gcc_version}}"
     set_fact: gcc_exists="true"
-    when: check_gcc.rc == 0 and installed_gcc_version | version_compare(gcc_version, '>=')
+    when: check_gcc.rc == 0
+    #when: check_gcc.rc == 0 and installed_gcc_version | version_compare(gcc_version, '>=')
 
   - name: install_gcc | skip gcc installation
     debug: msg="skipping gcc installation as it is already installed"

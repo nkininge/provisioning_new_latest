@@ -1,6 +1,0 @@
----
-- name: check if build_user is set
-  fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
-  when: build_user is not defined
-
-- include: common/setup_user.yml

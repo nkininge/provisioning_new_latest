@@ -26,6 +26,7 @@
     # pass readonly_ssh=true
 
   roles:
-    - common
-    - jenkins-slaves
-    - {role: docker, when: build_user == "jenkins" and project == "re"}
+    - centos7
+    #- common
+    #- jenkins-slaves
+    #- {role: docker, when: build_user == "jenkins" and project == "re"}

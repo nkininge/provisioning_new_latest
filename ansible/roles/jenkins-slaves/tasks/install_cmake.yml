@@ -12,7 +12,8 @@
 
   - name: install_libraries | "set fact if cmake version is {{ installed_cmake_version }} >= {{cmake_version}}"
     set_fact: cmake_exists="true"
-    when: check_cmake.rc == 0 and installed_cmake_version | version_compare(cmake_version, '>=')
+    when: check_cmake.rc == 0
+#    when: check_cmake.rc == 0 and installed_cmake_version | version_compare(cmake_version, '>=')
 
   - name: install_libraries | skip cmake installation
     debug: msg="skipping cmake installation as it is already installed"
