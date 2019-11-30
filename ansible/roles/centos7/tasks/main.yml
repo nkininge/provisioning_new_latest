@@ -93,9 +93,9 @@
 - include_role: 
     name: jenkins-slaves
     tasks_from: install_protobuf.yml
-      protobuf_version="2.5.0"
-      protobuf_home="/opt"
-
+  vars:
+    protobuf_version: "2.5.0"
+    protobuf_home: "/opt"
 
 - include_role: 
     name: jenkins-slaves
