@@ -8,6 +8,7 @@
     current_user: "{{ lookup('env','LOGNAME') }}"
     home_base_dir: "/grid/0"
     builds_home: "{{home_base_dir}}/{{ build_user }}"
+    build_user_home: "{{home_base_dir}}/{{ build_user }}"
     secret_profile_file: "{{ project }}_secrets.yml"
     official_re_users: ["jenkins", "devci"]
     build_group: users
@@ -36,7 +37,7 @@
         name: common/setup_users
         tasks_from: setup_user
     
-    - include_vars: "{{ secret_profile_file }}"
+  #  - include_vars: "{{ secret_profile_file }}"
     - include_role:
         name: common/setup_users
         tasks_from: setup_user_sshkeys.yml
