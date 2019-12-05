@@ -92,17 +92,11 @@
         tasks_from: update_configs.yml
       when: build_user != "nobody"
     
-    - include_role:
-        name: jenkins-slaves
-        tasks_from: centos_install_libraries.yml
     
     - include_role:
         name: jenkins-slaves
         tasks_from: install_r.yml
     
-    - include_role:
-        name: jenkins-slaves
-        tasks_from: centos7_install_libraries.yml
     
     - include_role:
         name: jenkins-slaves
