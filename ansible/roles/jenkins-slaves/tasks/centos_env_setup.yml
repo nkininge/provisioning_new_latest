@@ -1,5 +1,5 @@
 ---
-  - include_vars: ../../common/vars/{{project}}_secrets.yml
+  - include_vars: {{project}}_secrets.yml
 
   - name: centos_env_setup | download 
     get_url: url="{{ rpm_gpg_url }}" dest=/tmp timeout=120
