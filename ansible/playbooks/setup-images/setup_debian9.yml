@@ -26,8 +26,6 @@
     # pass readonly_ssh=true
 
   tasks:
-    - include_role:
-        name: common/vars
     - name: check if build_user is set
       fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
       when: build_user is not defined
@@ -36,7 +34,7 @@
         name: common/setup_users
         tasks_from: setup_user
     
-    - include_vars: "{{ secret_profile_file }}"
+    #- include_vars: "{{ secret_profile_file }}"
     - include_role:
         name: common/setup_users
         tasks_from: setup_user_sshkeys.yml

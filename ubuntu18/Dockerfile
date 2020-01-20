@@ -1,5 +1,5 @@
 FROM REPLACE_BASE_IMAGE
-RUN pip install ansible==2.4.1 && ansible --version
+RUN pip install ansible==2.9.0 && ansible --version
 RUN apt-get update
 RUN apt-get install unzip
 COPY . /root/ansible/

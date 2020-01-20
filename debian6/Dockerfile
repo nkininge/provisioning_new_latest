@@ -1,7 +1,7 @@
-FROM registry.eng.hortonworks.com/sseethana/base-debian6:0.1
+FROM REPLACE_BASE_IMAGE 
 
 RUN apt-get install gcc
-RUN pip install ansible==2.4.1 && ansible --version
+RUN pip install ansible==2.9.0 && ansible --version
 
 COPY . /root/ansible/
 ENV ANSIBLE_CONFIG=/root/ansible/ansible/config/ansible.cfg

@@ -2,7 +2,7 @@ FROM REPLACE_BASE_IMAGE
 
 RUN pip install -i https://pypi.python.org/simple/ --upgrade pip==9.0.3
 RUN pip install -i https://pypi.python.org/simple/ cffi
-RUN pip install -i https://pypi.python.org/simple/ ansible==2.4.1 && ansible --version
+RUN pip install -i https://pypi.python.org/simple/ ansible==2.9.0 && ansible --version
 
 COPY . /root/ansible/
 ENV ANSIBLE_CONFIG=/root/ansible/ansible/config/ansible.cfg

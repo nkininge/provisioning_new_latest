@@ -1,4 +1,4 @@
-FROM registry.eng.hortonworks.com/sseethana/base-sles11sp1:0.5
+FROM REPLACE_BASE_IMAGE
 
 RUN zypper rr ARTIFACTS && zypper ar http://172.22.77.245/TD-repo/ hosted_sp1
 RUN zypper refresh && zypper install -y wget yaml
