@@ -1,5 +1,5 @@
 ---
-  - include_vars: {{project}}_secrets.yml
+  - include_vars: ../../../config/group_vars/{{project_name}}_secrets.yml
     when: project != 'dev'
 
   - name: Replace gpg key | Pre clean up

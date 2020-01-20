@@ -1,5 +1,5 @@
 ---
-  - include_vars: re_secrets.yml
+  - include_vars: ../../../config/group_vars/re_secrets.yml
 
   - name: Decvi | setup_user_configs | Download devci gpgkeys
     become: yes

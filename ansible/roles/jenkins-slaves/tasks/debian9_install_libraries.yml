@@ -1,6 +1,5 @@
+---
 - name: Install_Libraries | Install Debian Libraries and build Tools
-  sudo: yes
-  sudo_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
       - ant
@@ -129,28 +128,20 @@
   
 
 - name: install_libraries | Install Ruby Libraries and Debian build Tools
-  sudo: yes
-  sudo_user: root
   gem:  name={{item}}
   with_items:
    - gem2deb
    - json
 
 - name: Install_Libraries | Install snappy
-  sudo: yes
-  sudo_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
     - libsnappy-dev
 
 - name: install_libraries | symlink gem | debian 7 only
-  sudo: yes
-  sudo_user: root
   file: src="/usr/bin/gem"  dest="/usr/local/bin/gem" state=link
 
 - name: install_Libraries | Install 7zip
-  sudo: yes
-  sudo_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
     - p7zip
@@ -158,8 +149,6 @@
 
 # http://askubuntu.com/questions/101591/how-do-i-install-python-2-7-2-on-ubuntu
 - name: Install_Libraries | Install Debian Libraries and build Tools - debian 7 docker 
-  sudo: yes
-  sudo_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
    - checkinstall
@@ -178,6 +167,4 @@
   when: ansible_virtualization_type == "docker"
 
 - name: Install_Libraries | Symlink git
-  sudo: yes
-  sudo_user: root
   file:  src=/usr/bin/git  dest=/usr/local/bin/git  mode=0755 state=link force=yes

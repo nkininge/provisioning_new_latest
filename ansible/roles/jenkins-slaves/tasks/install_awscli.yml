@@ -1,5 +1,5 @@
 ---
-  - include_vars: "{{project_name}}_secrets.yml"
+  - include_vars: ../../../config/group_vars/"{{project_name}}_secrets.yml"
 
   - name: install_aws | Download awscli
     become: yes
