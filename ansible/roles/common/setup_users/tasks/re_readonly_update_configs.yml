@@ -2,7 +2,7 @@
   - include_vars: "{{ secret_profile_file }}"
     tags: new_nexus_settings
 
-  - include_vars: ./../../config/group_vars/dev_secrets.yml
+  - include_vars: dev_secrets.yml
     when: project == "re" and build_user == "nobody"
 
   - name: "Update limits.conf"

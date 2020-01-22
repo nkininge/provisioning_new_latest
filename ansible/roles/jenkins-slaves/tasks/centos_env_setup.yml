@@ -1,5 +1,7 @@
 ---
-  - include_vars: ../../../config/group_vars/{{project_name}}_secrets.yml
+  - include_vars:
+     dir: {{ docker_home_group_vars }} 
+     files_matching: {{project_name}}_secrets.yml
 
   - name: centos_env_setup | download 
     get_url: url="{{ rpm_gpg_url }}" dest=/tmp timeout=120

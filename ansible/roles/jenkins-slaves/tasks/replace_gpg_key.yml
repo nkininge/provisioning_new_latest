@@ -1,5 +1,7 @@
 ---
-  - include_vars: ../../../config/group_vars/{{project_name}}_secrets.yml
+  - include_vars: 
+     dir: {{ docker_home_group_vars }}
+     files_matching: {{project_name}}_secrets.yml
     when: project != 'dev'
 
   - name: Replace gpg key | Pre clean up
