@@ -1,6 +1,6 @@
 ---
   - include_vars: 
-      dir: /root/ansible/ansible/config/group_vars
+      dir: "{{ docker_home_group_vars }}"
       files_matching: "{{ secret_profile_file }}"
     tags: new_nexus_settings
 
