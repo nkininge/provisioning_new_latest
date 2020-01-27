@@ -32,11 +32,11 @@
    chdir: /tmp/boost_1_61_0
   when: not boost_exists and ansible_os_family != 'RedHat'
 
-- name: install_boost | install boost from src
-  shell: scl enable devtoolset-6 "./bootstrap.sh --prefix={{hbase_native_home}} --with-libraries=all; ./b2 install --prefix={{hbase_native_home}}"
-  args:
-   chdir: /tmp/boost_1_61_0
-  when: not boost_exists and ansible_os_family == 'RedHat'
+#- name: install_boost | install boost from src
+#  shell: scl enable devtoolset-6 "./bootstrap.sh --prefix={{hbase_native_home}} --with-libraries=all; ./b2 install --prefix={{hbase_native_home}}"
+#  args:
+#   chdir: /tmp/boost_1_61_0
+#  when: not boost_exists and ansible_os_family == 'RedHat'
 
 - name: install_boost | rm /tmp/boost_1_61_0
   become: yes
