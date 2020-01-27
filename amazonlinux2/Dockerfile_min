@@ -1,5 +1,5 @@
-FROM REPLACE_BASE_IMAGE
-
+#FROM REPLACE_BASE_IMAGE
+FROM registry.eng.hortonworks.com/hortonworks/base-amazonlinux2:0.1.0.0-92
 RUN rpm --rebuilddb
 RUN touch /var/lib/rpm/*
 RUN yum install -y yum-plugin-ovl

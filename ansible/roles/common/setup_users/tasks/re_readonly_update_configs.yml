@@ -1,8 +1,12 @@
 ---
-  - include_vars: "{{ secret_profile_file }}"
+  - include_vars: 
+    dir: "{{ docker_home_group_vars }}"
+    files_matching: "{{ secret_profile_file }}"
     tags: new_nexus_settings
 
-  - include_vars: dev_secrets.yml
+  - include_vars: 
+    dir: "{{ docker_home_group_vars }}"
+    files_matching: dev_secrets.yml
     when: project == "re" and build_user == "nobody"
 
   - name: "Update limits.conf"

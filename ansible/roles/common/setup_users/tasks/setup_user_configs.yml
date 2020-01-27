@@ -1,5 +1,6 @@
----
-  - include_vars: "{{ secret_profile_file }}"
+  - include_vars: 
+      dir: "{{ docker_home_group_vars }}"
+      files_matching: "{{ secret_profile_file }}"
 
   - name: setup_user_configs | Download gpg keys
     become: yes
