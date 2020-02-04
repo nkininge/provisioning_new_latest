@@ -32,14 +32,14 @@
       - libxslt1-dev
       - libsqlite3-dev
       - libldap2-dev
-      - libmysqlclient-dev
+      #- libmysqlclient-dev
       - libkrb5-dev
       - asciidoc
       - libzip-dev
       - libcppunit-dev
       - lib32z1
       - lib32ncurses5
-      - lib32bz2-1.0
+     # - lib32bz2-1.0
       - libbit-vector-perl
       - libboost-dev
       - libboost-program-options-dev
@@ -52,27 +52,27 @@
       - libfuse-dev
       - libglib2.0-0
       - libglib2.0-dev
-      - libjpeg8-dev
+     # - libjpeg8-dev
       - liblzo2-dev
-      - libmono-system-web2.0-cil
+     # - libmono-system-web2.0-cil
       - libqt4-dev
       - libsasl2-dev
       - libssl-dev
       - libtool
       - libxml-xpath-perl
-      - libboost-system1.49-dev
-      - libboost-filesystem1.49-dev
+     # - libboost-system1.49-dev
+     # - libboost-filesystem1.49-dev
       - libz-dev
       - make
-      - mingw32
-      - mingw32-binutils
-      - mingw32-runtime
+     # - mingw32
+     # - mingw32-binutils
+     # - mingw32-runtime
       - mono-devel
-      - mono-gmcs
-      - php5
-      - php5-cli
-      - php5-dev
-      - php-pear
+     # - mono-gmcs
+     # - php5
+     # - php5-cli
+     # - php5-dev
+     # - php-pear
       - pkg-config
       - protobuf-compiler
       - python-all
@@ -81,7 +81,7 @@
       - python-boto
       - python-dev
       - python-setuptools
-      - python-support
+     # - python-support
       - libpython3-dev
       - re2c
       - reprepro
@@ -92,7 +92,7 @@
       - xmlto
       - libperl-dev
       - libpng-dev
-      - hardening-wrapper
+     # - hardening-wrapper
       - rubygems
       - groff
       - dh-autoreconf
@@ -104,11 +104,11 @@
       - liblua5.1-0-dev
       - lua5.1
       - libperl-dev
-      - libpng12-dev
+     # - libpng12-dev
       - dpatch
-      - ruby1.9.1
-      - ruby1.9.1-dev
-      - librrd2-dev
+     # - ruby1.9.1
+     # - ruby1.9.1-dev
+     # - librrd2-dev
       - libapr1-dev
       - libconfuse-dev
       - libpcre3-dev
@@ -135,17 +135,16 @@
    - gem2deb
    - json
 
-- name: install_libraries | setup hdp-utils on debian
-  become: yes
-  become_user: root
-  apt_repository: repo='deb http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.20/repos/debian6 HDP-UTILS main' state=present
+#- name: install_libraries | setup hdp-utils on debian
+#  become: yes
+#  become_user: root
+#  apt_repository: repo='deb http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.20/repos/debian6 HDP-UTILS main' state=present
 
 - name: Install_Libraries | Install snappy
   become: yes
   become_user: root
   apt: pkg={{item}} update_cache=yes state=latest force=yes
   with_items:
-    - libsnappy1
     - libsnappy-dev
 
 - name: install_libraries | symlink gem | debian 7 only

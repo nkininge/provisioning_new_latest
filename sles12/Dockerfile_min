@@ -1,4 +1,4 @@
-FROM REPLACE_BASE_IMAGE
+FROM 
 
 RUN zypper install -y  unzip
 
