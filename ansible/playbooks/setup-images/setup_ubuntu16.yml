@@ -9,6 +9,7 @@
     home_base_dir: "/grid/0"
     builds_home: "{{home_base_dir}}/{{ build_user }}"
     secret_profile_file: "{{ project }}_secrets.yml"
+    docker_home_group_vars: "/root/ansible/ansible/config/group_vars"
     official_re_users: ["jenkins", "devci"]
     build_group: users
     jenkins_configuration: /etc/default/jenkins
@@ -92,6 +93,7 @@
         tasks_from: update_configs.yml
       when: build_user != "nobody"
     
+     
     
     - include_role:
         name: jenkins-slaves

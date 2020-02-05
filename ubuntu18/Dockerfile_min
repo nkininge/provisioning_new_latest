@@ -1,4 +1,4 @@
-FROM REPLACE_BASE_IMAGE
+FROM registry.eng.hortonworks.com/hortonworks/base-ubuntu18:0.1.0.0-92
 RUN pip install ansible==2.9.0 && ansible --version
 RUN apt-get update
 RUN apt-get install unzip

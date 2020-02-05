@@ -9,6 +9,7 @@
     home_base_dir: "/grid/0"
     builds_home: "{{home_base_dir}}/{{ build_user }}"
     secret_profile_file: "{{ project }}_secrets.yml"
+    docker_home_group_vars: "/root/ansible/ansible/config/group_vars"
     official_re_users: ["jenkins", "devci"]
     build_group: users
     jenkins_configuration: /etc/default/jenkins
@@ -26,8 +27,6 @@
     # pass readonly_ssh=true
 
   tasks:
-    - include_role:
-        name: common/vars
     - name: check if build_user is set
       fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
       when: build_user is not defined
@@ -36,7 +35,6 @@
         name: common/setup_users
         tasks_from: setup_user
     
-    - include_vars: "{{ secret_profile_file }}"
     - include_role:
         name: common/setup_users
         tasks_from: setup_user_sshkeys.yml
@@ -92,7 +90,12 @@
         tasks_from: update_configs.yml
       when: build_user != "nobody"
     
-    
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: ubuntu_install_libraries.yml
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: install_libraries.yml  
     - include_role:
         name: jenkins-slaves
         tasks_from: install_r.yml

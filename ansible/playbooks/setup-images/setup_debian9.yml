@@ -108,9 +108,6 @@
         name: jenkins-slaves
         tasks_from: install_cmake.yml
     
-    - include_role:
-        name: jenkins-slaves
-        tasks_from: install_git.yml
     
     - include_role:
         name: jenkins-slaves
@@ -139,9 +136,6 @@
         name: jenkins-slaves
         tasks_from: install_awscli.yml
     
-    - include_role:
-        name: jenkins-slaves
-        tasks_from: install_clamav.yml
     
     - include_role:
         name: jenkins-slaves
