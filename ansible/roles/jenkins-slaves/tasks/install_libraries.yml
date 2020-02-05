@@ -41,106 +41,57 @@
     become_user: root
     yum: pkg={{item}} state=latest 
     with_items:
-      - cmake3
-      - gd-devel
-      - libpng-devel
-      - libjpeg-devel
-      - cairo-devel
-      - gettext-devel
-      - sqlite-devel
+      #- cmake3
+      #- gd-devel
+      #- libpng-devel
+      #- libjpeg-devel
+      #- cairo-devel
+      #- gettext-devel
+      #- sqlite-devel
       - intltool
-      - lua-devel
-      - pango-devel
+      #- lua-devel
+      #- pango-devel
   #    - xulrunner-devel
-      - openssl-devel 
-      - openssl-static 
-      - intltool 
-      - cairo-devel 
-      - libxml2-devel 
+      #- openssl-devel 
+      #- openssl-static 
       - ruby 
-      - ruby-devel 
-      - tcl-devel
-      - gettext-devel 
-      - tk-devel 
    #   - xulrunner-devel 
       - python-setuptools
-      - rrdtool-python
-  #    - clamav
+      #- rrdtool-python
+      - clamav
       - python-virtualenv
-      - openssh-clients
+      #- openssh-clients
       - lsb 
       - wget 
-      - openldap-devel
-      - mysql-devel 
-      - fuse-devel 
-      - lzo-devel
-      - pam-devel 
-      - tetex-latex
    #   - fakeroot
       - gcc
-      - cppunit 
-      - cppunit-devel 
-      - snappy-devel
-      - xalan-j2
-      - glib2
       - cpio
-      - cppunit-devel
       - ant
-      - libstdc++
-      - ant-apache-bcel
-      - zlib-devel
-      - gcc-c++
-      - rpm-build
-      - redhat-rpm-config
+     # - libstdc++
+    #  - rpm-build
+    #  - redhat-rpm-config
       - libtool
       - fuse
-      - fuse-devel
-      - fuse-libs
       - xmlto
       - expect
       - cmake
-      - libffi-devel
+     # - libffi-devel
     #  - s3cmd
-      - curl-devel
+     # - curl-devel
       - createrepo
       - subversion
-      - gcc-gfortran
+    #  - gcc-gfortran
       - rsync
       - autoconf
       - automake
    #   - centos-release-scl
-      - libevent-devel
+     # - libevent-devel
       - bison
       - doxygen
     #  - leveldb-devel
-      - libuuid-devel
-      - libcurl-devel
+      #- libuuid-devel
+      #- libcurl-devel
    #   - ccache
-      - pigz
-
-  - name: install_libraries | install devtoolset-6
-    become: yes
-    become_user: root
-    yum: name="devtoolset-6" state=present
-
-  - name: install_libraries | install the 'Development tools' package group
-    become: yes
-    become_user: root
-    yum: name="@Development tools" state=present
-    when: ansible_distribution_major_version|int == 6
-
-  - name: install_libraries | install alien
-    become: yes
-    become_user: root
-    yum: name=http://dev.hortonworks.com.s3.amazonaws.com/REJENKINS/alien-8.81-2.noarch.rpm state=present
-    when: ansible_distribution_major_version|int == 6
-
-  - name: install_libraries | install asciidoc - centos5
-    become: yes
-    become_user: root
-    shell: rpm -Uvh http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/centos5/asciidoc-8.6.9-1.el5.rf.noarch.rpm
-    when: ansible_distribution_major_version|int == 5
-
   - name: install_libraries | non centos7 | pdsh, ant-nodeps
     become: yes
     become_user: root
@@ -148,7 +99,6 @@
     yum: pkg={{item}} state=latest
     with_items:
       - pdsh
-      - ant-nodeps
       - graphviz
 
   - name: install_libraries | install 7zip
@@ -157,39 +107,3 @@
     yum: pkg={{item}} state=latest
     with_items:
       - p7zip
-      - p7zip-plugins
-
-  - name: install_libraries | centos7 | install R
-    become: yes
-    become_user: root
-    when: ansible_distribution_major_version|int == 7
-    yum: name=R state=latest update_cache=yes
-    tags: install_r
-
-  - name: install_libraries | centos7 | boost-devel
-    become: yes
-    become_user: root
-    when: ansible_distribution_major_version|int == 7
-    yum: pkg={{item}} state=latest
-    with_items:
-      - boost-devel
-      - boost-filesystem
-      - boost-system
-      - boost-static
-
-  - name: install_libraries | centos6 | boost-filesystem
-    become: yes
-    become_user: root
-    when: ansible_distribution_major_version|int == 6
-    yum: pkg={{item}} state=latest
-    with_items:
-      - boost148-devel
-      - boost148-filesystem
-      - boost148-system
-
-  - name: install_libraries | centos7 | install oracle_11g_instantclient
-    become: yes
-    become_user: root
-    when: ansible_distribution_major_version|int == 7
-    yum: name=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/oracle/oracle_11g_instantclient-1.0-1.0-3.noarch.rpm state=present
-    tags: install_oracle_11g_instantclient
