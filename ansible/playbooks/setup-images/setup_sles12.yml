@@ -3,7 +3,7 @@
   tasks:
     - include_vars:
         dir: "/root/ansible/ansible/config/group_vars"
-        files_matching: all.yaml 
+        files_matching: all.yml 
     - name: check if build_user is set
       fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
       when: build_user is not defined
