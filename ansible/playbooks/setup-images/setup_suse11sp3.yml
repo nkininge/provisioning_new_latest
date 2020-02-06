@@ -14,7 +14,6 @@
         name: common/setup_users
         tasks_from: setup_user
     
-    - include_vars: "{{ secret_profile_file }}"
     - include_role:
         name: common/setup_users
         tasks_from: setup_user_sshkeys.yml
@@ -70,7 +69,15 @@
         tasks_from: update_configs.yml
       when: build_user != "nobody"
     
-    
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: sles11sp3_setup_env.yml
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: sles11sp3_install_libraries.yml
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: sles11_install_libraries.yml 
     - include_role:
         name: jenkins-slaves
         tasks_from: install_r.yml
