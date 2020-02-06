@@ -93,6 +93,7 @@
     - include_role:
         name: jenkins-slaves
         tasks_from: ubuntu_install_libraries.yml
+
     - include_role:
         name: jenkins-slaves
         tasks_from: install_libraries.yml  
@@ -100,7 +101,9 @@
         name: jenkins-slaves
         tasks_from: install_r.yml
     
-    
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: ubuntu_env_setup.yml 
     - include_role:
         name: jenkins-slaves
         tasks_from: install_gcc.yml
@@ -108,10 +111,6 @@
     - include_role:
         name: jenkins-slaves
         tasks_from: install_cmake.yml
-    
-    - include_role:
-        name: jenkins-slaves
-        tasks_from: install_git.yml
     
     - include_role:
         name: jenkins-slaves
@@ -140,9 +139,6 @@
         name: jenkins-slaves
         tasks_from: install_awscli.yml
     
-    - include_role:
-        name: jenkins-slaves
-        tasks_from: install_clamav.yml
     
     - include_role:
         name: jenkins-slaves
