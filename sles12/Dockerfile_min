@@ -1,7 +1,7 @@
-FROM 
+FROM registry.eng.hortonworks.com/hortonworks/base-sles12sp1:0.1.0.0-102 
 
 RUN zypper install -y  unzip
-
+RUN pip install ansible==2.9.0
 RUN ansible --version
 COPY . /root/ansible/
 

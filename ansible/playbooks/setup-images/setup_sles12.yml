@@ -1,33 +1,9 @@
 - hosts: default
   gather_facts: yes
-  vars:
-    build_user_uid: 1001
-    slave: False
-    project: "{{ project_name }}"
-    build_user: "{{ username }}"
-    current_user: "{{ lookup('env','LOGNAME') }}"
-    home_base_dir: "/grid/0"
-    builds_home: "{{home_base_dir}}/{{ build_user }}"
-    secret_profile_file: "{{ project }}_secrets.yml"
-    official_re_users: ["jenkins", "devci"]
-    build_group: users
-    jenkins_configuration: /etc/default/jenkins
-    jenkins_run_standalone: yes
-    gem2deb_url: http://ftp.de.debian.org/debian/pool/main/g/gem2deb/gem2deb_0.9.1.tar.xz
-    protobuf_url: "http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/protobuf-2.5.0.tar.gz"
-    push_password: false
-    gpg_file: ~/password_gpg.txt
-    nexus_file: ~/nexus_password.txt
-    security_file: ~/settings-security.xml
-    ec2_hostname: False
-    # ec2 hosted sles sp1 zypper repo ip
-    ec2_hosted_repo_ip: 172.22.77.245
-    tar_url: http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/tar-1.28.tar.gz
-    # pass readonly_ssh=true
-
   tasks:
-    - include_role:
-        name: common/vars
+    - include_vars:
+        dir: "/root/ansible/ansible/config/group_vars"
+        files_matching: all.yaml 
     - name: check if build_user is set
       fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
       when: build_user is not defined
@@ -36,7 +12,6 @@
         name: common/setup_users
         tasks_from: setup_user
     
-    - include_vars: "{{ secret_profile_file }}"
     - include_role:
         name: common/setup_users
         tasks_from: setup_user_sshkeys.yml
@@ -92,7 +67,12 @@
         tasks_from: update_configs.yml
       when: build_user != "nobody"
     
-    
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: sles12sp1_setup_env.yml
+    - include_role:
+        name: jenkins-slaves
+        tasks_from: sles12sp1_install_libraries.yml
     - include_role:
         name: jenkins-slaves
         tasks_from: install_r.yml
@@ -137,9 +117,6 @@
         name: jenkins-slaves
         tasks_from: install_awscli.yml
     
-    - include_role:
-        name: jenkins-slaves
-        tasks_from: install_clamav.yml
     
     - include_role:
         name: jenkins-slaves
