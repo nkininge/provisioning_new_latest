@@ -1,4 +1,0 @@
----
-  - name: stop_IP_tables | stopip
-    become: True
-    shell:  "/etc/init.d/iptables stop"
