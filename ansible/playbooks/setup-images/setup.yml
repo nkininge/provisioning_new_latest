@@ -1,19 +1,73 @@
 - hosts: default
   gather_facts: yes
-  tasks:
-      - include_vars:
-        dir: "/root/ansible/ansible/config/group_vars"
-        files_matching: all.yml
 
-  roles:
-      - common/setup_users
-      - common/system_config
-      - common/java_jdk
-      - common/gradle
-      - common/maven
-      - common/ant
-      - common/cleanup
-      - jenkins-slaves
-    #- include_role: 
-     #  name: docker
-     #  when: build_user == "jenkins" and project == "re"
+  tasks:
+    - include_vars:
+        dir: "/root/ansible/ansible/config/group_vars"
+        files_matching: all.yml 
+    - name: check if build_user is set
+      fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
+      when: build_user is not defined
+    
+    - include_role:
+        name: common/setup_users
+        tasks_from: setup_user
+    
+  #  - include_vars: "{{ secret_profile_file }}"
+    - include_role:
+        name: common/setup_users
+        tasks_from: setup_user_sshkeys.yml
+      when: ssh_url is defined 
+    - include_role:
+        name: common/setup_users
+        tasks_from: readonly_sshkeys.yml
+      when: readonly_ssh is defined
+    
+    - include_role:
+        name: common/system_config
+        tasks_from: prepare_env.yml
+    
+    - include_role:
+        name: common/java_jdk
+        tasks_from: install_jdk10.yml
+    
+    - include_role:
+        name: common/java_jdk
+        tasks_from: install_jdk8.yml
+    
+    - include_role:
+        name: common/java_jdk
+        tasks_from: install_jdk8_171.yml
+    
+    - include_role:
+        name: common/gradle
+        tasks_from: install_gradle_50.yml
+    
+    - include_role:
+        name: common/maven
+        tasks_from: install_maven.yml
+    
+    - include_role:
+        name: common/ant
+        tasks_from: install_ant.yml
+    
+    - include_role:
+        name: common/ant
+        tasks_from: install_sonar_ant_task.yml
+    
+    - include_role:
+        name: common/system_config
+        tasks_from: install_tools.yml
+    
+    - include_role:
+        name: common/setup_users
+        tasks_from: setup_user_configs.yml
+      when: project != 'dev' and build_user != "nobody"
+    
+    - include_role:
+        name: common/system_config
+        tasks_from: update_configs.yml
+      when: build_user != "nobody"
+    
+    - include_role:
+        name: jenkins-slaves

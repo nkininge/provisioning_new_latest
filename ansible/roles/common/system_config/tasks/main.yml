@@ -1,0 +1,3 @@
+- include: prepare_env.yml
+- include: update_configs.yml
+- include: install_tools.yml 

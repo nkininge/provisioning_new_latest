@@ -1,0 +1,5 @@
+- include: install_gradle.yml
+- include: install_gradle_351.yml
+- include: install_gradle_4102.yml
+- include: install_gradle_48.yml
+- include: install_gradle_50.yml

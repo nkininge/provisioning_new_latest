@@ -1,0 +1,14 @@
+- name: check if build_user is set
+  fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
+  when: build_user is not defined
+
+- include: setup_user.yml
+
+- include: setup_user_sshkeys.yml
+  when: ssh_url is defined
+
+- include: readonly_sshkeys.yml
+
+- include: prepare_env.yml
+
+#- include: re_readonly_update_configs.yml

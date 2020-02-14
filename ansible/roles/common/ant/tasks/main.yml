@@ -1,0 +1,2 @@
+- include: install_ant.yml
+- include: install_sonar_ant_task.yml
