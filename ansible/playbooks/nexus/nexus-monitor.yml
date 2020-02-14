@@ -1,7 +1,0 @@
-- hosts: nexus
-  gather_facts: yes
-  vars:
-    upperbound:   80
-
-  roles:
-    - sonatype-monitor
