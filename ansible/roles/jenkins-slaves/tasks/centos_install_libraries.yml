@@ -122,6 +122,7 @@
     become: yes
     become_user: root
     yum: name="devtoolset-6" state=present
+    when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | install the 'Development tools' package group
     become: yes
