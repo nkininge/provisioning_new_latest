@@ -1,106 +1,13 @@
 ---
-build_user_uid: 1001
-slave: False
-project: "{{ project_name }}"
-build_user: "{{ username }}"
-current_user: "{{ lookup('env','LOGNAME') }}"
-home_base_dir: "/grid/0"
-builds_home: "{{home_base_dir}}/{{ build_user }}"
-docker_home_group_vars: "/root/ansible/ansible/config/group_vars"
-secret_profile_file: "{{ project }}_secrets.yml"
-official_re_users: ["jenkins", "devci"]
-build_group: users
-jenkins_configuration: /etc/default/jenkins
-jenkins_run_standalone: yes
-gem2deb_url: http://ftp.de.debian.org/debian/pool/main/g/gem2deb/gem2deb_0.9.1.tar.xz
-protobuf_url: "http://dev.hortonworks.com.s3.amazonaws.com/ARTIFACTS/protobuf-2.5.0.tar.gz"
-push_password: false
-gpg_file: ~/password_gpg.txt
-nexus_file: ~/nexus_password.txt
-security_file: ~/settings-security.xml
-ec2_hostname: False
-ec2_hosted_repo_ip: 172.22.77.245
-tar_url: http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/tar-1.28.tar.gz
-
-build_user_home: "{{home_base_dir}}/{{ build_user }}"
-tools_home: "{{build_user_home}}/tools"
-maven_home: "{{tools_home}}/maven"
-ant_home: "{{tools_home}}/ant"
-
-jdk: 
-  jdk6_home: "{{tools_home}}/jdk64_31"
-  jdk7_home: "{{tools_home}}/jdk7"
-  jdk7_80_home: "{{tools_home}}/jdk7"
-  jdk8_home: "{{tools_home}}/jdk8"
-  jdk8_171_home: "{{tools_home}}/jdk8"
-  jdk10_home: "{{tools_home}}/jdk10"
-
-forrest_home: "{{tools_home}}/forrest"
-hbase_native_home: "{{tools_home}}/native"
-bison_home: "{{tools_home}}/bison"
-thrift_home: "{{tools_home}}/thrift"
-protobuf_351_home: "{{tools_home}}/protobuf/3.5.1"
-tool_utils: "{{tools_home}}/utils"
-helm_home: "{{tools_home}}/helm"
-
-autoconf_version: "2.63"
-
-mvn:
-  mvn_version: "3.1.1"
-  mvn_ambari_version: "3.0.5"
-  mvn333_version: "3.3.3"
-  mvn339_version: "3.3.9"
-  mvn352_version: "3.5.2"
-  mvn362_version: "3.6.2"
-
-ant:
-  ant_version: "1.9.4"
-  ant_old_version: "1.8.2"
-
-forrest_version: "0.9"
-node_version: "10.16.0"
-utils_version: "1.1.0.17"
-
-jdk_version:
-  jdk8_version: "1.8.0_91"
-  jdk8_171_version: "1.8.0_171"
-  jdk10_version: "10.0.2"
-  jdk7_version: "1.7.0_21"
-  jdk7_80_version: "1.7.0_80"
-  jdk6_version: "1.6.0_31"
-
-git_version: "2.4.6"
-asciidoc_version: "8.6.9"
-r_version: "3.2.2"
-zinc_version: "0.3.9"
-hdpchanges_version: "0.2.0"
-cmake_version: "3.5.2"
-gcc_version: "4.8.5"
-gflags_version: "2.2.1"
-rocksdb_version: "5.8"
-gtest_version: "1.8.0"
-glog_version: "0.3.5"
-folly_version: "2017.09.04.00"
-wangle_version: "2017.09.04.00"
-boost_version: "1.61.0"
-zookeeper_version: "3.4.6"
-double_conversion_version: "2.0.1"
-cyrus_sasl_version: "2.1.26"
-bison_version: "3.0.4"
-yasm_version: "1.2.0"
-thrift_version: "0.9.3"
-ruby_version: "1.9.3"
-zookeeper_version: "2.6.2.8"
-helm_version: "2.14.3"
 pypi_index_url: "https://pypi.python.org/simple"
-maven_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-{{ mvn_version }}-bin.tar.gz"
-maven_ambari_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-{{ mvn_ambari_version }}-bin.tar.gz"
+maven_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-{{ mvn.mvn_version }}-bin.tar.gz"
+maven_ambari_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-{{ mvn.mvn_ambari_version }}-bin.tar.gz"
 maven333_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-3.3.3-bin.tar.gz"
 maven339_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-3.3.9-bin.tar.gz"
 maven352_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-3.5.2-bin.tar.gz"
 maven362_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-maven-3.6.2-bin.tar.gz"
-ant_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-ant-{{ant_version}}-bin.tar.gz"
-ant_old_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-ant-{{ant_old_version}}-bin.tar.gz"
+ant_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-ant-{{ant.ant_version}}-bin.tar.gz"
+ant_old_url: "http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/apache-ant-{{ant.ant_old_version}}-bin.tar.gz"
 td_repo: "http://s3.amazonaws.com/dev.hortonworks.com/sles11/sles11.repo"
 jdk6_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/jdk6_31.tar.gz"
 jdk7_url: "http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/jdk-7u21-linux-x64.gz"

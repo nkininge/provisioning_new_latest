@@ -2,13 +2,13 @@
   - name: install_maven | capture maven version
     become: yes
     become_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/maven/apache-maven-{{ mvn_version }}/bin/mvn --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/maven/apache-maven-{{ mvn.mvn_version }}/bin/mvn --version"
     register: check_maven
     ignore_errors: yes
 
-  - name: install_maven | "set fact if maven version is {{mvn_version}}"
+  - name: install_maven | "set fact if maven version is {{mvn.mvn_version}}"
     set_fact: maven_exists="true"
-    when: check_maven.rc == 0 and check_maven.stdout.find(mvn_version) != -1
+    when: check_maven.rc == 0 and check_maven.stdout.find(mvn.mvn_version) != -1
 
   - name: install_maven | skip maven installation
     debug: msg="skipping maven installation as it is already installed"
@@ -41,13 +41,13 @@
   - name: install_maven | capture maven for ambari version
     become: yes
     become_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/maven/apache-maven-{{ mvn_ambari_version }}/bin/mvn --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk64_31/latest ; {{tools_home}}/maven/apache-maven-{{ mvn.mvn_ambari_version }}/bin/mvn --version"
     register: check_maven_ambari
     ignore_errors: yes
 
-  - name: install_maven | "set fact if maven for ambari version is {{mvn_ambari_version}}"
+  - name: install_maven | "set fact if maven for ambari version is {{mvn.mvn_ambari_version}}"
     set_fact: maven_ambari_exists="true"
-    when: check_maven_ambari.rc == 0 and check_maven_ambari.stdout.find(mvn_ambari_version) != -1
+    when: check_maven_ambari.rc == 0 and check_maven_ambari.stdout.find(mvn.mvn_ambari_version) != -1
 
   - name: install_maven | skip maven for ambari installation
     debug: msg="skipping maven installation as it is already installed"
@@ -56,38 +56,38 @@
   - name: install_maven | Download Maven for Ambari
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{maven_ambari_url}} dest={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz mode=0644 force=no timeout=120
+    get_url: url={{maven_ambari_url}} dest={{tools_home}}/maven/maven.{{mvn.mvn_ambari_version}}.tar.gz mode=0644 force=no timeout=120
     when: maven_ambari_exists is not defined
 
   - name: install_maven | Untar Maven for Ambari
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz dest={{tools_home}}/maven
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn.mvn_ambari_version}}.tar.gz dest={{tools_home}}/maven
     when: maven_ambari_exists is not defined
 
   - name: install_maven | symlink Maven -> latest
     become: yes
     become_user: "{{ build_user }}"
-    file: src=apache-maven-{{ mvn_version }} dest={{tools_home}}/maven/latest state=link
+    file: src=apache-maven-{{ mvn.mvn_version }} dest={{tools_home}}/maven/latest state=link
     when: maven_exists is not defined
 
   - name: install_maven | Remove .tar.gz artifact from Maven install.
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{tools_home}}/maven/maven.{{mvn_ambari_version}}.tar.gz state=absent
+    file: path={{tools_home}}/maven/maven.{{mvn.mvn_ambari_version}}.tar.gz state=absent
     when: maven_ambari_exists is not defined
 
   - name: install_maven 3.3.3 | capture maven 3.3.3 version
     become: yes
     become_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn333_version }}/bin/mvn --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn.mvn333_version }}/bin/mvn --version"
     register: check_maven333
     ignore_errors: yes
     tags: maven333
 
-  - name: install_maven 3.3.3 | "set fact if maven version is {{mvn333_version}}"
+  - name: install_maven 3.3.3 | "set fact if maven version is {{mvn.mvn333_version}}"
     set_fact: maven333_exists="true"
-    when: check_maven333.rc == 0 and check_maven333.stdout.find(mvn333_version) != -1
+    when: check_maven333.rc == 0 and check_maven333.stdout.find(mvn.mvn333_version) != -1
     tags: maven333
 
   - name: install_maven 3.3.3 | skip maven 3.3.3 installation
@@ -105,35 +105,35 @@
   - name: install_maven 3.3.3 | Download Maven 3.3.3
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{maven333_url}} dest={{tools_home}}/maven/maven.{{mvn333_version}}.tar.gz mode=0644 timeout=120
+    get_url: url={{maven333_url}} dest={{tools_home}}/maven/maven.{{mvn.mvn333_version}}.tar.gz mode=0644 timeout=120
     when: maven333_exists is not defined
     tags: maven333
 
   - name: install_maven 3.3.3 | Untar Maven 3.3.3
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn333_version}}.tar.gz dest={{tools_home}}/maven
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn.mvn333_version}}.tar.gz dest={{tools_home}}/maven
     when: maven333_exists is not defined
     tags: maven333
 
   - name: install_maven 3.3.3 | Remove .tar.gz artifact from Maven install.
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{tools_home}}/maven/maven.{{mvn333_version}}.tar.gz state=absent
+    file: path={{tools_home}}/maven/maven.{{mvn.mvn333_version}}.tar.gz state=absent
     when: maven333_exists is not defined
     tags: maven333
 
   - name: install_maven 3.3.9 | capture maven 3.3.9 version
     become: yes
     become_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn339_version }}/bin/mvn --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn.mvn339_version }}/bin/mvn --version"
     register: check_maven339
     ignore_errors: yes
     tags: maven339
 
-  - name: install_maven 3.3.9 | "set fact if maven version is {{mvn339_version}}"
+  - name: install_maven 3.3.9 | "set fact if maven version is {{mvn.mvn339_version}}"
     set_fact: maven339_exists="true"
-    when: check_maven339.rc == 0 and check_maven339.stdout.find(mvn339_version) != -1
+    when: check_maven339.rc == 0 and check_maven339.stdout.find(mvn.mvn339_version) != -1
     when: maven339_exists is defined
     tags: maven339
 
@@ -152,35 +152,35 @@
   - name: install_maven 3.3.9 | Download Maven 3.3.9
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{maven339_url}} dest={{tools_home}}/maven/maven.{{mvn339_version}}.tar.gz mode=0644 timeout=120
+    get_url: url={{maven339_url}} dest={{tools_home}}/maven/maven.{{mvn.mvn339_version}}.tar.gz mode=0644 timeout=120
     when: maven339_exists is not defined
     tags: maven339
 
   - name: install_maven 3.3.9 | Untar Maven 3.3.9
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn339_version}}.tar.gz dest={{tools_home}}/maven
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn.mvn339_version}}.tar.gz dest={{tools_home}}/maven
     when: maven339_exists is not defined
     tags: maven339
 
   - name: install_maven 3.3.9 | Remove .tar.gz artifact from Maven install.
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{tools_home}}/maven/maven.{{mvn339_version}}.tar.gz state=absent
+    file: path={{tools_home}}/maven/maven.{{mvn.mvn339_version}}.tar.gz state=absent
     when: maven339_exists is not defined
     tags: maven339
 
   - name: install_maven 3.5.2 | capture maven 3.5.2 version
     become: yes
     become_user: "{{ build_user }}"
-    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn352_version }}/bin/mvn --version"
+    shell: "export JAVA_HOME={{tools_home}}/jdk7/latest ; {{tools_home}}/maven/apache-maven-{{ mvn.mvn352_version }}/bin/mvn --version"
     register: check_maven352
     ignore_errors: yes
     tags: maven352
 
-  - name: install_maven 3.5.2 | "set fact if maven version is {{mvn352_version}}"
+  - name: install_maven 3.5.2 | "set fact if maven version is {{mvn.mvn352_version}}"
     set_fact: maven352_exists="true"
-    when: check_maven352.rc == 0 and check_maven352.stdout.find(mvn352_version) != -1
+    when: check_maven352.rc == 0 and check_maven352.stdout.find(mvn.mvn352_version) != -1
     when: maven352_exists is defined
     tags: maven352
 
@@ -199,27 +199,27 @@
   - name: install_maven 3.5.2 | Download Maven 3.5.2
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{maven352_url}} dest={{tools_home}}/maven/maven.{{mvn352_version}}.tar.gz mode=0644 timeout=120
+    get_url: url={{maven352_url}} dest={{tools_home}}/maven/maven.{{mvn.mvn352_version}}.tar.gz mode=0644 timeout=120
     when: maven352_exists is not defined
     tags: maven352
 
   - name: install_maven 3.5.2 | Untar Maven 3.5.2
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn352_version}}.tar.gz dest={{tools_home}}/maven
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn.mvn352_version}}.tar.gz dest={{tools_home}}/maven
     when: maven352_exists is not defined
     tags: maven352
 
   - name: install_maven 3.5.2 | Remove .tar.gz artifact from Maven install.
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{tools_home}}/maven/maven.{{mvn352_version}}.tar.gz state=absent
+    file: path={{tools_home}}/maven/maven.{{mvn.mvn352_version}}.tar.gz state=absent
     when: maven352_exists is not defined
     tags: maven352
 
-  - name: install_maven 3.6.2 | "set fact if maven version is {{mvn362_version}}"
+  - name: install_maven 3.6.2 | "set fact if maven version is {{mvn.mvn362_version}}"
     set_fact: maven362_exists="true"
-    when: check_maven362.rc == 0 and check_maven362.stdout.find(mvn362_version) != -1
+    when: check_maven362.rc == 0 and check_maven362.stdout.find(mvn.mvn362_version) != -1
     when: maven362_exists is defined
     tags: maven362
 
@@ -238,21 +238,21 @@
   - name: install_maven 3.6.2 | Download Maven 3.6.2
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{maven362_url}} dest={{tools_home}}/maven/maven.{{mvn362_version}}.tar.gz mode=0644 timeout=120
+    get_url: url={{maven362_url}} dest={{tools_home}}/maven/maven.{{mvn.mvn362_version}}.tar.gz mode=0644 timeout=120
     when: maven362_exists is not defined
     tags: maven362
 
   - name: install_maven 3.6.2 | Untar Maven 3.6.2
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn362_version}}.tar.gz dest={{tools_home}}/maven
+    unarchive: copy=no src={{tools_home}}/maven/maven.{{mvn.mvn362_version}}.tar.gz dest={{tools_home}}/maven
     when: maven362_exists is not defined
     tags: maven362
 
   - name: install_maven 3.6.2 | Remove .tar.gz artifact from Maven install.
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{tools_home}}/maven/maven.{{mvn362_version}}.tar.gz state=absent
+    file: path={{tools_home}}/maven/maven.{{mvn.mvn362_version}}.tar.gz state=absent
     when: maven362_exists is not defined
     tags: maven362
 

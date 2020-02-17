@@ -1,14 +1,14 @@
 ---
   - name: install_jdk8 | "Check if jdk8 is installed"
-    command: "{{jdk8_home}}/jdk{{jdk8_version}}/bin/java -version"
+    command: "{{jdk.jdk8_home}}/jdk{{jdk_version.jdk8_version}}/bin/java -version"
     register: check_jdk8
     changed_when: False
     ignore_errors: yes
 
   # check if "check_jdk8" is defined and value is equal to desired jdk8 version
-  - name: install_jdk8 | "set fact if jdk8 version is {{jdk8_version}}"
+  - name: install_jdk8 | "set fact if jdk8 version is {{jdk_version.jdk8_version}}"
     set_fact: jdk8_exists="true"
-    when: check_jdk8.rc == 0 and check_jdk8.stderr.find(jdk8_version) != -1
+    when: check_jdk8.rc == 0 and check_jdk8.stderr.find(jdk_version.jdk8_version) != -1
 
   - name: install_jdk8 | "Skip jdk8 installation"
     debug: msg="skip jdk8 installation as it is already installed"
@@ -17,53 +17,53 @@
   - name: install_jdk8 | "Download Jdk8"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{jdk8_url}} dest={{jdk8_home}}/{{ jdk8_url | basename }} mode=744 timeout=120
+    get_url: url={{jdk8_url}} dest={{jdk.jdk8_home}}/{{ jdk8_url | basename }} mode=744 timeout=120
     when: jdk8_exists is not defined
 
   - name: install_jdk8 | "Install Jdk8"
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk8_home}}/{{ jdk8_url | basename }} dest={{jdk8_home}}
+    unarchive: copy=no src={{jdk.jdk8_home}}/{{ jdk8_url | basename }} dest={{jdk.jdk8_home}}
     when: jdk8_exists is not defined
 
   - name: install_jdk8 | "Install JCE Policy files for JDK8"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK8.zip" dest={{jdk8_home}}/UnlimitedJCEPolicyJDK8.zip mode=744 timeout=120
+    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK8.zip" dest={{jdk.jdk8_home}}/UnlimitedJCEPolicyJDK8.zip mode=744 timeout=120
 
   - name: install_jdk8 | "Symlink jdk8 -> latest"
     become: yes
     become_user: "{{ build_user }}"
-    file: src="jdk{{jdk8_version}}" dest={{jdk8_home}}/latest state=link
+    file: src="jdk{{jdk_version.jdk8_version}}" dest={{jdk.jdk8_home}}/latest state=link
     when: jdk8_exists is not defined
 
   - name: install_jdk8 | "Unzip JCE Policy files"
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk8_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk8_home}}
+    unarchive: copy=no src={{jdk.jdk8_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk.jdk8_home}}
 
   - name: install_jdk8 | "Create lib/security for jdk8"
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{ jdk8_home }}/jdk{{jdk8_version}}/lib/security state=directory
+    file: path={{ jdk.jdk8_home }}/jdk{{jdk_version.jdk8_version}}/lib/security state=directory
 
   - name: install_jdk8 | "Install UnlimitedJCEPolicyJDK8"
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk8_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk8_home}}/
+    unarchive: copy=no src={{jdk.jdk8_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk.jdk8_home}}/
 
   - name: install_jdk8 | "Copy JCE Policy files for JDK8"
     become: yes
     become_user: "{{ build_user }}"
-    shell: cp -r {{jdk8_home}}/UnlimitedJCEPolicyJDK/*.jar {{jdk8_home}}/jdk{{jdk8_version}}/lib/security/
+    shell: cp -r {{jdk.jdk8_home}}/UnlimitedJCEPolicyJDK/*.jar {{jdk.jdk8_home}}/jdk{{jdk_version.jdk8_version}}/lib/security/
 
   - name: install_jdk8 | delete jdk tarball
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{jdk8_home}}/{{ jdk8_url | basename }} state=absent
+    file: path={{jdk.jdk8_home}}/{{ jdk8_url | basename }} state=absent
     when: jdk8_exists is not defined
 
   - name: install_jdk8 | delete JCE Policy files tarball
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{jdk8_home}}/UnlimitedJCEPolicyJDK8.zip state=absent
+    file: path={{jdk.jdk8_home}}/UnlimitedJCEPolicyJDK8.zip state=absent

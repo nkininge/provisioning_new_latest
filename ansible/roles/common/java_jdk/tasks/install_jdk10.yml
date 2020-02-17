@@ -1,14 +1,14 @@
 ---
   - name: install_jdk10 | "Check if jdk10 is installed"
-    command: "{{jdk10_home}}/jdk-{{jdk10_version}}/bin/java -version"
+    command: "{{jdk.jdk10_home}}/jdk-{{jdk_version.jdk10_version}}/bin/java -version"
     register: check_jdk10
     changed_when: False
     ignore_errors: yes
 
   # check if "check_jdk10" is defined and value is equal to desired jdk10 version
-  - name: install_jdk10 | "set fact if jdk10 version is {{jdk10_version}}"
+  - name: install_jdk10 | "set fact if jdk10 version is {{jdk_version.jdk10_version}}"
     set_fact: jdk10_exists="true"
-    when: check_jdk10.rc == 0 and check_jdk10.stderr.find(jdk10_version) != -1
+    when: check_jdk10.rc == 0 and check_jdk10.stderr.find(jdk_version.jdk10_version) != -1
 
   - name: install_jdk10 | "Skip jdk10 installation"
     debug: msg="skip jdk10 installation as it is already installed"
@@ -17,53 +17,53 @@
   - name: install_jdk10 | "Download Jdk10"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url={{jdk10_url}} dest={{jdk10_home}}/{{ jdk10_url | basename }} mode=744 timeout=120
+    get_url: url={{jdk10_url}} dest={{jdk.jdk10_home}}/{{ jdk10_url | basename }} mode=744 timeout=120
     when: jdk10_exists is not defined
 
   - name: install_jdk10 | "Install Jdk10"
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk10_home}}/{{ jdk10_url | basename }} dest={{jdk10_home}}
+    unarchive: copy=no src={{jdk.jdk10_home}}/{{ jdk10_url | basename }} dest={{jdk.jdk10_home}}
     when: jdk10_exists is not defined
 
   - name: install_jdk10 | "Install JCE Policy files for JDK8"
     become: yes
     become_user: "{{ build_user }}"
-    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK8.zip" dest={{jdk10_home}}/UnlimitedJCEPolicyJDK8.zip mode=744 timeout=120
+    get_url: url="http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/UnlimitedJCEPolicyJDK8.zip" dest={{jdk.jdk10_home}}/UnlimitedJCEPolicyJDK8.zip mode=744 timeout=120
 
   - name: install_jdk10 | "Symlink jdk10 -> latest"
     become: yes
     become_user: "{{ build_user }}"
-    file: src="jdk-{{jdk10_version}}" dest={{jdk10_home}}/latest state=link
+    file: src="jdk-{{jdk_version.jdk10_version}}" dest={{jdk.jdk10_home}}/latest state=link
     when: jdk10_exists is not defined
 
   - name: install_jdk10 | "Unzip JCE Policy files"
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk10_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk10_home}}
+    unarchive: copy=no src={{jdk.jdk10_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk.jdk10_home}}
 
   - name: install_jdk10 | "Create lib/security for jdk10"
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{ jdk10_home }}/jdk-{{jdk10_version}}/lib/security state=directory
+    file: path={{ jdk.jdk10_home }}/jdk-{{jdk_version.jdk10_version}}/lib/security state=directory
 
   - name: install_jdk10 | "Install UnlimitedJCEPolicyJDK8"
     become: yes
     become_user: "{{ build_user }}"
-    unarchive: copy=no src={{jdk10_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk10_home}}/
+    unarchive: copy=no src={{jdk.jdk10_home}}/UnlimitedJCEPolicyJDK8.zip dest={{jdk.jdk10_home}}/
 
   - name: install_jdk10 | "Copy JCE Policy files for JDK8"
     become: yes
     become_user: "{{ build_user }}"
-    shell: cp -r {{jdk10_home}}/UnlimitedJCEPolicyJDK/*.jar {{jdk10_home}}/jdk-{{jdk10_version}}/lib/security/
+    shell: cp -r {{jdk.jdk10_home}}/UnlimitedJCEPolicyJDK/*.jar {{jdk.jdk10_home}}/jdk-{{jdk_version.jdk10_version}}/lib/security/
 
   - name: install_jdk10 | delete jdk tarball
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{jdk10_home}}/{{ jdk10_url | basename }} state=absent
+    file: path={{jdk.jdk10_home}}/{{ jdk10_url | basename }} state=absent
     when: jdk10_exists is not defined
 
   - name: install_jdk10 | delete JCE Policy files tarball
     become: yes
     become_user: "{{ build_user }}"
-    file: path={{jdk10_home}}/UnlimitedJCEPolicyJDK8.zip state=absent
+    file: path={{jdk.jdk10_home}}/UnlimitedJCEPolicyJDK8.zip state=absent

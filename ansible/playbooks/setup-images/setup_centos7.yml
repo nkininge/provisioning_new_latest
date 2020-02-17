@@ -4,7 +4,13 @@
   tasks:
     - include_vars:
         dir: "/root/ansible/ansible/config/group_vars"
-        files_matching: all.yml 
+        files_matching: variables.yml
+    - include_vars:
+        dir: "/root/ansible/ansible/config/group_vars"
+        files_matching: versions.yml
+    - include_vars:
+        dir: "/root/ansible/ansible/config/group_vars"
+        files_matching: urls.yml 
     - name: check if build_user is set
       fail: msg='Bailing out. this play requires username, Please pass in the form  -e \"build_user=xyz\"'
       when: build_user is not defined
