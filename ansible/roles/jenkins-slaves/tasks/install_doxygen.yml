@@ -1,0 +1,25 @@
+---
+  - name: install_doxygen | download doxygen package
+    become: yes
+    become_user: "{{build_user}}"
+    get_url: url={{doxygen_url}} dest={{doxygen_tmp}}/{{ doxygen_url | basename }} mode=744 timeout=120
+
+  - name: install_doxygen | Remove existing version
+    become: yes
+    become_user: root
+    apt: name=doxygen state=absent
+
+  - name: install_doxygen | Install doxygen package
+    become: yes
+    become_user: root
+    apt: deb={{doxygen_tmp}}/{{doxygen_url | basename}}
+
+  - name: install_doxygen | clean up doxygen package
+    become: yes
+    become_user: root
+    file: path={{doxygen_tmp}}/{{ doxygen_url | basename }} state=absent
+
+  - name: install_doxygen | install graphviz
+    become: yes
+    become_user: root
+    apt: name=graphviz

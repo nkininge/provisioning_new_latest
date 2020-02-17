@@ -10,7 +10,9 @@
      - yasm
      - libzstd
      - libzstd-devel
-
+     - wget
+     - bzip2
+ 
   - name: install_libraries | install asciidoc - centos7
     become: yes
     become_user: root

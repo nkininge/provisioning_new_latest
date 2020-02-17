@@ -45,6 +45,16 @@
     shell: cd {{thrift_home}}/thrift-{{ thrift_version }}; ./configure --prefix={{ thrift_home }}/{{ thrift_version }} --without-python --without-cpp --disable-gen-erl --disable-gen-hs --without-ruby --without-haskell --without-erlang --without-perl --without-csharp --without-haxe --without-dotnetcore --without-php --without-dart --without-lua --without-nodejs
     environment:
       JAVA_PREFIX: '{{ thrift_home }}/{{ thrift_version }}/lib'
+  
+  - name: install_thrift | "setup maven repo"
+    become: yes
+    become_user: root
+    file: path=/root/.m2 state=absent
+
+  - name: install_thrift | "update maven settings"
+    become: yes
+    become_user: root
+    file: src=/grid/0/{{ build_user }}/.m2 dest=/root/.m2 owner=root group=root state=link
 
   - name: install_thrift | "make install"
     become: yes

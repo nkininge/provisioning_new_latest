@@ -2,6 +2,6 @@
 - name: install_tools | pip install ansible
   become: yes
   become_user: root
-  shell: "/usr/local/bin/pip2.7 install ansible==1.9.2"
+  shell: "/usr/local/bin/pip2.7 install --ignore-installed -U ansible==2.9.0"
   tags: install_ansible
-  when: project == "re" and ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' )
+  when: project == "re" and ( ansible_distribution != 'Suse' and ansible_distribution != 'SLES' ) and not (ansible_virtualization_type != "docker" and ((ansible_os_family == "CentOS" or ansible_os_family == "RedHat")))

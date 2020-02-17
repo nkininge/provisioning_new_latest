@@ -4,3 +4,4 @@
 - include: install_jdk8.yml
 - include: install_jdk8_171.yml
 - include: install_jdk10.yml
+- include: install_jdk11.yml

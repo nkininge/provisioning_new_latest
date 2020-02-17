@@ -27,3 +27,9 @@
   shell: "hostname {{host_name.stdout}}"
   when: ansible_virtualization_type != "docker"
   tags: set_hostname
+
+- name: sles11sp3_setup_env | delete cloud.repo
+  shell: rm -rf /etc/zypp/repos.d/cloud.repo
+  become: yes
+  become_user: root
+  when: ansible_virtualization_type != "docker"

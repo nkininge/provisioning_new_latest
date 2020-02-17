@@ -276,3 +276,11 @@
 
   - include: install_kube_docker_util.yml
     tags: install_kube_docker_util
+  
+  - include: install_ccache.yml
+    tags: install_ccache
+    when: (ansible_distribution == 'Suse' or ansible_distribution == 'SLES') and ansible_distribution_major_version == '12' and ansible_distribution_release == '1'
+  
+  - include: install_doxygen.yml
+    tags: install_doxygen
+    when: (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '18')

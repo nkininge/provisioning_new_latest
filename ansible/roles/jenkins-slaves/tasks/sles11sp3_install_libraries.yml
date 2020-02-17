@@ -56,6 +56,11 @@
     register: shell_result
     with_items:
       - /tmp/gcc-suse11sp3/gcc-c++-4.3-62.12.x86_64.rpm
+  
+  - name: zypper refresh | suse11sp3
+    become: yes
+    become_user: root
+    shell: zypper refresh
 
   - name: install 7zip | suse11sp3
     become: yes

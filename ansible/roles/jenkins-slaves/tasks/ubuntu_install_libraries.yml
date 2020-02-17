@@ -100,6 +100,14 @@
       - devscripts
       - libpq-dev
 
+- name: Install_Libraries | Install Ubuntu Libraries
+  become: yes
+  become_user: root
+  apt: pkg={{item}} state=latest force=yes
+  ignore_errors: yes
+  with_items:
+      - libpython3-dev
+
 - name: Install_Libraries | Install Ubuntu Libraries and build Tools - ubuntu18
   become: yes
   become_user: root

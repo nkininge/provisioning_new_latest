@@ -1,0 +1,61 @@
+---
+  - name: install_ccache | check if ccache is installed
+    command: "/usr/bin/ccache --version"
+    register: check_ccache
+    changed_when: False
+    ignore_errors: yes
+
+  - name: install_ccache | "set fact if ccache version is {{ccache_version}}"
+    set_fact: ccache_exists="true"
+    when: check_ccache  .rc == 0 and check_ccache.stderr.find(ccache_version) != -1
+
+  - name: install_cache | skip ccache installation
+    debug: msg="skip ccache installation as it is already installed"
+    when: ccache_exists is defined
+
+  - name: install_cache | "Download ccache tar"
+    become: yes
+    become_user: "{{build_user}}"
+    get_url: url={{ccache_url}} dest={{ ccache_download_dir }}/{{ ccache_url | basename }} mode=744 timeout=120
+    when: ccache_exists is not defined
+
+  - name: install_ccache | "Untar"
+    become: yes
+    become_user: "{{build_user}}"
+    unarchive: copy=no src={{ ccache_download_dir }}/{{ ccache_url | basename }} dest={{ ccache_download_dir }}
+    when: ccache_exists is not defined
+
+  - name: install_ccache | "add execute permission for ./configure"
+    become: yes
+    become_user: "{{ build_user }}"
+    file: path={{ ccache_download_dir }}/ccache-{{ ccache_version }}/configure mode=755
+
+  - name: install_ccache | "run configure"
+    become: yes
+    become_user: "{{ build_user }}"
+    register: command_result
+    shell: cd {{ ccache_download_dir }}/ccache-{{ ccache_version }}; ./configure
+
+  - name: install_ccache | "make install"
+    become: yes
+    become_user: root
+    register: command_result
+    shell: cd {{ ccache_download_dir }}/ccache-{{ ccache_version }}; make install
+
+  - name: install_ccache | create a sym link to bin
+    file:
+      src: /usr/local/bin/ccache
+      dest: /usr/bin/ccache
+      owner: root
+      group: root
+      state: link
+
+  - name: install_ccache | delete ccache tarball
+    become: yes
+    become_user: root
+    file: path={{ ccache_download_dir }}/{{ ccache_url | basename }} state=absent
+
+  - name: install_cache | delete ccache build area
+    become: yes
+    become_user: root
+    file: path={{ ccache_download_dir }}/ccache-{{ ccache_version }} state=absent

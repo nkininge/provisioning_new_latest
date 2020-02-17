@@ -1,6 +1,6 @@
 FROM REPLACE_BASE_IMAGE
 
-RUN zypper rr ARTIFACTS && zypper ar http://172.22.77.245/TD-repo/ hosted_sp1
+RUN zypper rr ARTIFACTS && zypper ar http://sles-repos-re.eng.hortonworks.com/TD-repo/ hosted_sp1
 RUN zypper refresh && zypper install -y wget yaml
 
 #RUN zypper remove -y ansible python-crypto

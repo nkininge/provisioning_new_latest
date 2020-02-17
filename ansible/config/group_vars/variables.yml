@@ -21,7 +21,8 @@ security_file: ~/settings-security.xml
 ec2_hostname: False
 ec2_hosted_repo_ip: 172.22.77.245
 tar_url: http://s3.amazonaws.com/dev.hortonworks.com/REJENKINS/tar-1.28.tar.gz
-
+ccache_download_dir: /tmp
+doxygen_tmp: /tmp
 build_user_home: "{{home_base_dir}}/{{ build_user }}"
 tools_home: "{{build_user_home}}/tools"
 maven_home: "{{tools_home}}/maven"
@@ -34,6 +35,7 @@ jdk:
   jdk8_home: "{{tools_home}}/jdk8"
   jdk8_171_home: "{{tools_home}}/jdk8"
   jdk10_home: "{{tools_home}}/jdk10"
+  jdk11_home: "{{tools_home}}/jdk11"
 
 forrest_home: "{{tools_home}}/forrest"
 hbase_native_home: "{{tools_home}}/native"

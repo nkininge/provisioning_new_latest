@@ -24,6 +24,7 @@ jdk_version:
   jdk7_version: "1.7.0_21"
   jdk7_80_version: "1.7.0_80"
   jdk6_version: "1.6.0_31"
+  jdk11_version: "11.0.5"
 
 git_version: "2.4.6"
 asciidoc_version: "8.6.9"
@@ -48,3 +49,4 @@ thrift_version: "0.9.3"
 ruby_version: "1.9.3"
 zookeeper_version: "2.6.2.8"
 helm_version: "2.14.3"
+ccache_version: "3.3.4"

@@ -1,7 +1,7 @@
 ---
 - name: install_libraries | install sles12 sp3 zypper repo | sles12
   become: yes
-  zypper_repository: name="HOSTED_SLES12_SP3" repo="http://172.22.77.245/sles12sp3" state=present disable_gpg_check=yes
+  zypper_repository: name="HOSTED_SLES12_SP3" repo="http://sles-repos-re.eng.hortonworks.com/sles12sp3" state=present disable_gpg_check=yes
 
 - name: sles12sp3_setup_env | get hostname
   shell: 'x=`cat /etc/hostname`; echo $x'

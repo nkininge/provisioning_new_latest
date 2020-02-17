@@ -1,6 +1,6 @@
 FROM REPLACE_BASE_IMAGE
 
-RUN zypper ar http://172.22.77.245/sles11sp3 hosted_sp3
+RUN zypper ar http://sles-repos-re.eng.hortonworks.com/sles11sp3 hosted_sp3
 RUN zypper install -y --force-resolution gcc43-c++ unzip
 
 RUN zypper remove -y ansible python-crypto

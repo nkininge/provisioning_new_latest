@@ -19,7 +19,7 @@
   - name: get epel-repo rpm RHEL6
     become: yes
     become_user: root
-    shell: yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/6/x86_64/
+    shell: yum-config-manager --add-repo http://dl.fedoraproject.org/pub/epel/6/x86_64/
     when: ansible_distribution_major_version|int == 6
 
   - name: install_libraries | centos5 manual rpm install | epel && asciidoc
@@ -35,6 +35,20 @@
     become_user: root
     when: ansible_distribution_major_version|int == 5
     get_url: url=http://s3.amazonaws.com/dev.hortonworks.com/ARTIFACTS/centos5/s3tools.repo dest=/etc/yum.repos.d/s3tools.repo timeout=120
+  
+  - name: replace https with http in epel.repo centos7
+    become: yes
+    become_user: root
+    command: sed -i 's/https/http/g' /etc/yum.repos.d/epel.repo
+    when: ansible_distribution_major_version|int == 7 or ansible_distribution_major_version|int == 6
+    ignore_errors: yes
+
+  - name: replace https with http in epel.repo centos6
+    become: yes
+    become_user: root
+    command: sed -i 's/https/http/g' /etc/yum.repos.d/dl.fedoraproject.org_pub_epel_6_x86_64_.repo
+    when: ansible_distribution_major_version|int == 6
+    ignore_errors: yes
 
   - name: install_libraries
     become: yes
